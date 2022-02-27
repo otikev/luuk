@@ -1,4 +1,10 @@
 <resources>
+    <!-- Google -->
     <string name="server_client_id_">323086391588-a8q3401cmin73dqcsbs13md88stgcgtk.apps.googleusercontent.com</string>
     <string name="server_client_id">323086391588-rvm5c6492ngk4c8aclr8q7l08tqv555n.apps.googleusercontent.com</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">684178072610069</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">56789</string>
 </resources>
