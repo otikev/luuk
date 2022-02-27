@@ -16,7 +16,24 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        debug {
+            keyAlias System.getenv('LUUK_KEY_ALIAS')
+            storeFile file("../keystore.jks")
+            storePassword System.getenv('LUUK_STORE_PASSWORD')
+            keyPassword System.getenv('LUUK_KEY_PASSWORD')
+        }
+        release {
+            keyAlias System.getenv('LUUK_KEY_ALIAS')
+            storeFile file("../keystore.jks")
+            storePassword System.getenv('LUUK_STORE_PASSWORD')
+            keyPassword System.getenv('LUUK_KEY_PASSWORD')
+        }
+    }
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
