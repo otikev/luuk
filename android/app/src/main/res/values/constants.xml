@@ -1,6 +1,7 @@
 <resources>
+    <string name="app_name">Luuk</string>
+
     <!-- Google -->
-    <string name="server_client_id_">323086391588-a8q3401cmin73dqcsbs13md88stgcgtk.apps.googleusercontent.com</string>
     <string name="server_client_id">323086391588-rvm5c6492ngk4c8aclr8q7l08tqv555n.apps.googleusercontent.com</string>
 
     <!-- Facebook -->

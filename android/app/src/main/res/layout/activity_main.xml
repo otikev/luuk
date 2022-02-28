@@ -12,22 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:menu="@menu/bottom_navigation_menu" />
 
             <RelativeLayout
                 android:id="@+id/button_container"
@@ -35,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="8dp"
                 android:layout_height="80dp"
-                android:layout_alignParentBottom="true"
+                android:layout_above="@+id/bottom_navigation"
                 android:clipChildren="false">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -83,9 +78,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/button_container"
-                android:padding="4dp"
-                android:clipToPadding="false">
+                android:clipToPadding="false"
+                android:padding="4dp">
+
             </com.elmenture.luuk.cardstackview.CardStackView>
+
 
         </RelativeLayout>
 

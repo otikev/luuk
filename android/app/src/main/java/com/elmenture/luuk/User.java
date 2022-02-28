@@ -32,4 +32,8 @@ public class User {
         User.user = user;
         user.facebookLoginResult = loginResult;
     }
+
+    public void logout(){
+
+    }
 }

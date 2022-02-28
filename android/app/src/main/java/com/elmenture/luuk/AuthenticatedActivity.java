@@ -17,4 +17,8 @@ public class AuthenticatedActivity extends BaseActivity {
             finish();
         }
     }
+
+    protected  void logout(){
+        //TODO
+    }
 }
