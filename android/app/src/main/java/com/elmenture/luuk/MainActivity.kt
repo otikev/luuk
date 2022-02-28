@@ -112,12 +112,12 @@ class MainActivity : AuthenticatedActivity(), CardStackListener,
     }
 
     override fun onCardAppeared(view: View, position: Int) {
-        val textView = view.findViewById<TextView>(R.id.item_name)
+        val textView = view.findViewById<TextView>(R.id.item_price)
         Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
-        val textView = view.findViewById<TextView>(R.id.item_name)
+        val textView = view.findViewById<TextView>(R.id.item_price)
         Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
     }
 
@@ -289,9 +289,8 @@ class MainActivity : AuthenticatedActivity(), CardStackListener,
 
     private fun createSpot(): Spot {
         return Spot(
-            name = "Yasaka Shrine",
-            city = "Kyoto",
-            url = "https://source.unsplash.com/Xq1ntWruZQI/600x800"
+            price = 2000,
+            url = "https://www.collinsdictionary.com/images/full/mannequin_398527027_1000.jpg"
         )
     }
 
@@ -299,72 +298,62 @@ class MainActivity : AuthenticatedActivity(), CardStackListener,
         val spots = ArrayList<Spot>()
         spots.add(
             Spot(
-                name = "Yasaka Shrine",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/Xq1ntWruZQI/600x800"
+                price = 2000,
+                url = "https://www.collinsdictionary.com/images/full/mannequin_398527027_1000.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Fushimi Inari Shrine",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/NYyCqdBOKwc/600x800"
+                price = 1200,
+                url = "https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Bamboo Forest",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/buF62ewDLcQ/600x800"
+                price = 1150,
+                url = "https://www.miamidisplay.us/wp-content/uploads/2017/09/IMG_1131.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Brooklyn Bridge",
-                city = "New York",
-                url = "https://source.unsplash.com/THozNzxEP3g/600x800"
+                price = 1300,
+                url = "https://img.freepik.com/free-photo/brown-jacket-black-bag-mannequin-wearing-jacket-with-purse-lady-s-outerwear-with-classic-handbag-clothes-selection-outlet-store_274234-8033.jpg?size=338&ext=jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Empire State Building",
-                city = "New York",
-                url = "https://source.unsplash.com/USrZRcRS2Lw/600x800"
+                price = 2000,
+                url = "https://i.pinimg.com/originals/10/48/13/1048139b3a94cc9366d35ab693ae29cc.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "The statue of Liberty",
-                city = "New York",
-                url = "https://source.unsplash.com/PeFk7fzxTdk/600x800"
+                price = 2300,
+                url = "https://cdn.trendhunterstatic.com/phpthumbnails/163/163334/163334_1_800.jpeg"
             )
         )
         spots.add(
             Spot(
-                name = "Louvre Museum",
-                city = "Paris",
-                url = "https://source.unsplash.com/LrMWHKqilUw/600x800"
+                price = 1500,
+                url = "https://retaildesignblog.net/wp-content/uploads/2017/09/Hans-Boodt-Mannequins-by-Fashion-Sports07.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Eiffel Tower",
-                city = "Paris",
-                url = "https://source.unsplash.com/HN-5Z6AmxrM/600x800"
+                price = 850,
+                url = "https://images.megapixl.com/2103/21033554.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Big Ben",
-                city = "London",
-                url = "https://source.unsplash.com/CdVAUADdqEc/600x800"
+                price = 200,
+                url = "https://assets.vogue.com/photos/5d362c03043937000867bd17/master/w_2255,h_3000,c_limit/2.%20Dress,KarlLagerfeldforChloe,SpringSummer1984.jpg"
             )
         )
         spots.add(
             Spot(
-                name = "Great Wall of China",
-                city = "China",
-                url = "https://source.unsplash.com/AWh9C-QjhE4/600x800"
+                price = 2700,
+                url = "https://www.metmuseum.org/-/media/images/exhibitions/2019/in-pursuit-of-fashion-schreier/new-images/in-pursuit-of-fashion_landingpage_listview_480x480_101819.jpg"
             )
         )
         return spots
