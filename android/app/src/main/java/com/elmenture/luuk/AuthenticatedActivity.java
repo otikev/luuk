@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.login.LoginManager;
+
 public class AuthenticatedActivity extends BaseActivity {
 
     @Override
@@ -19,6 +21,8 @@ public class AuthenticatedActivity extends BaseActivity {
     }
 
     protected  void logout(){
+        LoginManager.getInstance().logOut();
+        mGoogleSignInClient.signOut();
         //TODO:
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);

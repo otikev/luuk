@@ -3,6 +3,7 @@ package com.elmenture.luuk;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -39,6 +40,8 @@ public class SignInActivity extends BaseActivity {
 
         btnGoogle = findViewById(R.id.btnGoogle);
         btnGoogle.setSize(SignInButton.SIZE_STANDARD);
+        TextView textView = (TextView) btnGoogle.getChildAt(0);
+        textView.setText("Continue with Google");
 
         setupClickListeners();
     }
