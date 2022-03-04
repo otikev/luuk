@@ -1,6 +1,5 @@
 package com.elmenture.luuk;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.elmenture.luuk.utils.LogUtils;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,11 +19,23 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected LogUtils logUtils = new LogUtils(this.getClass());
     protected GoogleSignInClient mGoogleSignInClient;
+    protected CallbackManager callbackManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureGoogleSignIn();
+        configureFacebookSignin();
+    }
+
+    private void configureFacebookSignin() {
+        callbackManager = CallbackManager.Factory.create();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if (isLoggedIn) {
+            User.setFacebookUser(Profile.getCurrentProfile());
+        }
     }
 
     private void configureGoogleSignIn() {
@@ -38,15 +52,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) {
-            Log.d(getClass().getSimpleName(), "No user signed in");
-            if(!(this instanceof SignInActivity)){
-                Intent intent = new Intent(this, SignInActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        } else {
+        if (account != null) {
             Log.d(getClass().getSimpleName(), "User exists");
+            User.setGoogleUser(account);
         }
     }
 }

@@ -7,9 +7,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import java.util.Arrays;
 
 public class SignInActivity extends BaseActivity {
-    private CallbackManager callbackManager;
     private SignInButton btnGoogle;
     private LoginButton btnFacebook;
 
@@ -41,7 +40,6 @@ public class SignInActivity extends BaseActivity {
         btnGoogle = findViewById(R.id.btnGoogle);
         btnGoogle.setSize(SignInButton.SIZE_STANDARD);
 
-        callbackManager = CallbackManager.Factory.create();
         setupClickListeners();
     }
 
@@ -57,8 +55,8 @@ public class SignInActivity extends BaseActivity {
                 AccessToken accessToken = loginResult.getAccessToken();
                 boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-                if(isLoggedIn){
-                    User.setFacebookUser(loginResult);
+                if (isLoggedIn) {
+                    User.setFacebookUser(Profile.getCurrentProfile());
                     setResult(RESULT_OK);
                     showMainScreen();
                 }
@@ -76,14 +74,6 @@ public class SignInActivity extends BaseActivity {
             }
         });
     }
-
-    View.OnClickListener facebookOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
-        }
-    };
 
     View.OnClickListener googleOnClickListener = new View.OnClickListener() {
         @Override
@@ -103,7 +93,7 @@ public class SignInActivity extends BaseActivity {
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-        }else{
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -124,7 +114,7 @@ public class SignInActivity extends BaseActivity {
         showMainScreen();
     }
 
-    private void showMainScreen(){
+    private void showMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -19,7 +19,6 @@ import com.google.android.material.navigation.NavigationBarView
 class MainActivity : AuthenticatedActivity(), CardStackListener,
     NavigationBarView.OnItemSelectedListener, NavigationBarView.OnItemReselectedListener {
 
-    private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawer_layout) }
     private val cardStackView by lazy { findViewById<CardStackView>(R.id.card_stack_view) }
     private val manager by lazy { CardStackLayoutManager(this, this) }
     private val adapter by lazy { CardStackAdapter(createSpots()) }
@@ -82,14 +81,6 @@ class MainActivity : AuthenticatedActivity(), CardStackListener,
     private fun setupBottomNavView() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener(this)
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {

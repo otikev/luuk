@@ -1,5 +1,6 @@
 package com.elmenture.luuk;
 
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -7,7 +8,7 @@ public class User {
 
     private String email;
     private GoogleSignInAccount googleAccount;
-    private LoginResult facebookLoginResult;
+    private Profile facebookProfile;
 
     private static User user;
 
@@ -27,10 +28,14 @@ public class User {
         user.googleAccount = account;
     }
 
-    public static void setFacebookUser(LoginResult loginResult) {
+    public static void setFacebookUser(Profile profile) {
         User user = new User();
         User.user = user;
-        user.facebookLoginResult = loginResult;
+        user.facebookProfile = profile;
+    }
+
+    public static boolean hasUser(){
+        return user != null;
     }
 
     public void logout(){

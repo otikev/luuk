@@ -19,6 +19,9 @@ public class AuthenticatedActivity extends BaseActivity {
     }
 
     protected  void logout(){
-        //TODO
+        //TODO:
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
