@@ -2,11 +2,15 @@ package com.elmenture.luuk;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.os.HandlerCompat;
 
+import com.elmenture.luuk.network.Network;
+import com.elmenture.luuk.network.NetworkCallback;
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -19,8 +23,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import cz.msebera.android.httpclient.NameValuePair;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+
+//https://developers.google.com/identity/sign-in/android/backend-auth
 public class SignInActivity extends BaseActivity {
     private SignInButton btnGoogle;
     private LoginButton btnFacebook;
@@ -59,9 +69,7 @@ public class SignInActivity extends BaseActivity {
                 boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
                 if (isLoggedIn) {
-                    User.setFacebookUser(Profile.getCurrentProfile());
-                    setResult(RESULT_OK);
-                    showMainScreen();
+                    verifyFacebookTokenWithBackend(accessToken);
                 }
             }
 
@@ -104,22 +112,56 @@ public class SignInActivity extends BaseActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
+            verifyGoogleTokenWithBackend(account);
         } catch (ApiException e) {
             logUtils.e(e);
         }
-    }
-
-    private void updateUI(GoogleSignInAccount googleSignInAccount) {
-        User.setGoogleUser(googleSignInAccount);
-        showMainScreen();
     }
 
     private void showMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    void verifyFacebookTokenWithBackend(AccessToken accessToken){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("userToken", accessToken.getToken()));
+
+        Network.INSTANCE.post("auth/facebooksignin", nameValuePairs, new NetworkCallback() {
+            @Override
+            public void onResponse(int responseCode, String response) {
+                if(responseCode == 200){
+                    User.setFacebookUser(Profile.getCurrentProfile());
+                    setResult(RESULT_OK);
+                    showMainScreen();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                logUtils.w(error);
+            }
+        }, HandlerCompat.createAsync(Looper.getMainLooper()));
+    }
+
+    void verifyGoogleTokenWithBackend(GoogleSignInAccount account){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("idToken", account.getIdToken()));
+
+        Network.INSTANCE.post("auth/googlesignin", nameValuePairs, new NetworkCallback() {
+            @Override
+            public void onResponse(int responseCode, String response) {
+                if(responseCode == 200){
+                    User.setGoogleUser(account);
+                    showMainScreen();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                logUtils.w(error);
+            }
+        }, HandlerCompat.createAsync(Looper.getMainLooper()));
     }
 }

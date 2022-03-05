@@ -1,7 +1,7 @@
-package com.elmenture.luuk.utils;
+package com.elmenture.luuk.network;
 
 public interface NetworkCallback {
     void onResponse(int responseCode, String response);
 
-    void onError(int responseCode, String error);
+    void onError(String error);
 }

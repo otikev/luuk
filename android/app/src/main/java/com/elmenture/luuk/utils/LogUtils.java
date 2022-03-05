@@ -55,6 +55,10 @@ public class LogUtils {
     }
 
     public void e(Throwable cause) {
-        Log.e(this.prefixedTag, cause.getMessage(), cause);
+        e(cause.getMessage(), cause);
+    }
+
+    public void e(String message, Throwable cause) {
+        Log.e(this.prefixedTag, message, cause);
     }
 }
