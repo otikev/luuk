@@ -23,6 +23,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +48,7 @@ public class SignInActivity extends BaseActivity {
         setContentView(R.layout.activity_sign_in);
 
         btnFacebook = findViewById(R.id.btnFacebook);
-        btnFacebook.setReadPermissions(Arrays.asList(EMAIL));
+        btnFacebook.setPermissions(Arrays.asList(EMAIL));
         btnFacebook.setAuthType(AUTH_TYPE);
 
         btnGoogle = findViewById(R.id.btnGoogle);
@@ -124,14 +127,14 @@ public class SignInActivity extends BaseActivity {
         finish();
     }
 
-    void verifyFacebookTokenWithBackend(AccessToken accessToken){
+    void verifyFacebookTokenWithBackend(AccessToken accessToken) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("userToken", accessToken.getToken()));
 
         Network.INSTANCE.post("auth/facebooksignin", nameValuePairs, new NetworkCallback() {
             @Override
             public void onResponse(int responseCode, String response) {
-                if(responseCode == 200){
+                if (responseCode == 200) {
                     User.setFacebookUser(Profile.getCurrentProfile());
                     setResult(RESULT_OK);
                     showMainScreen();
@@ -145,16 +148,31 @@ public class SignInActivity extends BaseActivity {
         }, HandlerCompat.createAsync(Looper.getMainLooper()));
     }
 
-    void verifyGoogleTokenWithBackend(GoogleSignInAccount account){
+    void verifyGoogleTokenWithBackend(GoogleSignInAccount account) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("idToken", account.getIdToken()));
 
         Network.INSTANCE.post("auth/googlesignin", nameValuePairs, new NetworkCallback() {
             @Override
             public void onResponse(int responseCode, String response) {
-                if(responseCode == 200){
-                    User.setGoogleUser(account);
-                    showMainScreen();
+                if (responseCode == 200) {
+                    try {
+                        //{"success":true,"isNewAccount":false,"authToken":"somevalue"}
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getBoolean("success")) {
+                            logUtils.i("Google signin success");
+                            Network.INSTANCE.setNetworkAuthToken(jsonObject.getString("authToken"));
+                            User.setGoogleUser(account);
+                            showMainScreen();
+                        } else {
+                            logUtils.w("Google signin failed");
+                            signinFailed();
+                        }
+                    } catch (JSONException e) {
+                        logUtils.e(e);
+                    }
+                } else {
+                    signinFailed();
                 }
             }
 
@@ -163,5 +181,9 @@ public class SignInActivity extends BaseActivity {
                 logUtils.w(error);
             }
         }, HandlerCompat.createAsync(Looper.getMainLooper()));
+    }
+
+    private void signinFailed() {
+        //Notify the user
     }
 }

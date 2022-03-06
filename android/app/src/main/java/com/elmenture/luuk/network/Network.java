@@ -24,11 +24,21 @@ public class Network {
     public static Network INSTANCE = new Network();
     private static ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-    private static final String BASE_URL = "http://192.168.0.101:8080/";
+    private static final String BASE_URL = "http://192.168.0.102:8080/";
     private LogUtils logUtils = new LogUtils(this.getClass());
     private Network(){}
 
-    public void post(String endpoint, List<NameValuePair> nameValuePairs, final NetworkCallback callback,final Handler resultHandler){
+    private String networkAuthToken;
+
+    public String getNetworkAuthToken() {
+        return networkAuthToken;
+    }
+
+    public void setNetworkAuthToken(String networkAuthToken) {
+        this.networkAuthToken = networkAuthToken;
+    }
+
+    public void post(String endpoint, List<NameValuePair> nameValuePairs, final NetworkCallback callback, final Handler resultHandler){
         executorService.execute(new Runnable() {
             @Override
             public void run() {
