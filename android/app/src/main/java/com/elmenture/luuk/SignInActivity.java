@@ -48,7 +48,7 @@ public class SignInActivity extends BaseActivity {
         setContentView(R.layout.activity_sign_in);
 
         btnFacebook = findViewById(R.id.btnFacebook);
-        btnFacebook.setPermissions(Arrays.asList(EMAIL));
+        btnFacebook.setPermissions(Arrays.asList("public_profile",EMAIL));
         btnFacebook.setAuthType(AUTH_TYPE);
 
         btnGoogle = findViewById(R.id.btnGoogle);
@@ -135,9 +135,22 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onResponse(int responseCode, String response) {
                 if (responseCode == 200) {
-                    User.setFacebookUser(Profile.getCurrentProfile());
-                    setResult(RESULT_OK);
-                    showMainScreen();
+                    try {
+                        //{"success":true,"isNewAccount":false,"authToken":"somevalue"}
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getBoolean("success")) {
+                            logUtils.i("Facebook signin success");
+                            Network.INSTANCE.setNetworkAuthToken(jsonObject.getString("authToken"));
+                            User.setFacebookUser(Profile.getCurrentProfile());
+                            setResult(RESULT_OK);
+                            showMainScreen();
+                        } else {
+                            logUtils.w("Facebook signin failed");
+                            signinFailed();
+                        }
+                    } catch (JSONException e) {
+                        logUtils.e(e);
+                    }
                 }
             }
 

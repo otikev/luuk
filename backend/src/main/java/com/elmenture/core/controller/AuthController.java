@@ -3,6 +3,7 @@ package com.elmenture.core.controller;
 import com.elmenture.core.SignInResponse;
 import com.elmenture.core.model.User;
 import com.elmenture.core.repository.UserRepository;
+import com.elmenture.core.utils.Properties;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -35,37 +36,42 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    String GOOGLE_CLIENT_ID = "323086391588-rvm5c6492ngk4c8aclr8q7l08tqv555n.apps.googleusercontent.com";
-
     @PostMapping("/facebooksignin")
-    public SignInResponse facebookTokenSignin(@Valid @RequestParam MultiValueMap<String, String> idTokenString) {
-        try {
-            String userToken = idTokenString.get("userToken").get(0);
-            SignInResponse response = new SignInResponse();
-            String clientId = "684178072610069";
-            String clientSecret = "f1abeabfe94faa3c28c4a5083758fb82";
-            String url = "https://graph.facebook.com/oauth/access_token?client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials";
+    public ResponseEntity<SignInResponse> facebookTokenSignin(@Valid @RequestParam MultiValueMap<String, String> idTokenString) {
+        String userToken = idTokenString.get("userToken").get(0);
+        SignInResponse response = new SignInResponse();
+        String url = "https://graph.facebook.com/oauth/access_token?client_id=" + Properties.facebookAppId + "&client_secret=" + Properties.facebookAppSecret + "&grant_type=client_credentials";
 
-            RestTemplate restTemplate = new RestTemplate();
-            String resultAppToken = restTemplate.getForObject(url, String.class);
-            JSONObject jsonObject = new JSONObject(resultAppToken);
-            String accessToken = String.valueOf(jsonObject.get("access_token"));
+        RestTemplate restTemplate = new RestTemplate();
+        String resultAppToken = restTemplate.getForObject(url, String.class);
+        JSONObject jsonObject = new JSONObject(resultAppToken);
+        String accessToken = String.valueOf(jsonObject.get("access_token"));
 
-            String url2 = "https://graph.facebook.com/debug_token?input_token=" + userToken + "&access_token=" + accessToken;
-            String resultUserId = restTemplate.getForObject(url2, String.class);
-            JSONObject json = new JSONObject(resultUserId);
-            JSONObject metadata = (JSONObject) json.get("metadata");
-            String userId = String.valueOf(metadata.get("user_id"));
-            if (userId != null && !userId.isEmpty()) {
-                response.success = true;
-                User user = userRepository.findBySocialIdAndSocialAccountType(userId, FACEBOOK.value());
+        String url2 = "https://graph.facebook.com/debug_token?input_token=" + userToken + "&access_token=" + accessToken;
+        String resultUserId = restTemplate.getForObject(url2, String.class);
+        JSONObject json = new JSONObject(resultUserId);
+        String userId = json.getJSONObject("data").getString("user_id");
+        if (userId != null && !userId.isEmpty()) {
+            User user = userRepository.findBySocialIdAndSocialAccountType(userId, FACEBOOK.value());
+
+            if(user == null){
+                response.isNewAccount = true;
+                user = new User();
+                //user.setFirstName(String.valueOf(idTokenString.get("firstName")));
+                //user.setLastName(String.valueOf(idTokenString.get("lastName")));
+                user.setSocialId(userId);
+                user.setSocialAccountType(FACEBOOK.value());
+                //boolean emailVerified = payload.getEmailVerified();
             }
-
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
+            String auth = createSession(user);
+            response.authToken = auth;
+            response.success = true;
+        }else {
+            System.out.println("Invalid user token.");
+            response.success = false;
         }
-        return new SignInResponse();
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/googlesignin")
@@ -75,7 +81,7 @@ public class AuthController {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
                 // Specify the CLIENT_ID of the app that accesses the backend:
                 .setIssuer("https://accounts.google.com")
-                .setAudience(Collections.singletonList(GOOGLE_CLIENT_ID))
+                .setAudience(Collections.singletonList(Properties.googleClientId))
                 .build();
         SignInResponse response = new SignInResponse();
         String token = idTokenString.get("idToken").get(0);
