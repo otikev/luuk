@@ -23,8 +23,9 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 public class Network {
     public static Network INSTANCE = new Network();
     private static ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private static final String BASE_URL = "https://luukatme.herokuapp.com/";
+    //private static final String BASE_URL = "http://192.168.0.110:8080/";
 
-    private static final String BASE_URL = "http://192.168.0.110:8080/";
     private LogUtils logUtils = new LogUtils(this.getClass());
     private Network(){}
 

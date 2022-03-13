@@ -1,6 +1,9 @@
 # Luuk
 
-##Deploying the Heroku backend
+Dev server running at https://luukatme.herokuapp.com/
+
+
+## Deploying the Heroku backend
 
 If you haven't already, log in to your Heroku account run the following:
 ```markdown
@@ -15,10 +18,11 @@ From the root of this project run:
 git subtree push --prefix backend heroku master
 ```
 
-test
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
+* [Heroku Postgres](https://devcenter.heroku.com/articles/heroku-postgresql)
 * [Preparing a Spring Boot App for Production on Heroku](https://devcenter.heroku.com/articles/preparing-a-spring-boot-app-for-production-on-heroku)
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.6.3/gradle-plugin/reference/html/)
