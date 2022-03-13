@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.elmenture.luuk.utils.LogUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,7 +36,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
-            User.setFacebookUser(Profile.getCurrentProfile());
+            if(!User.hasSignedInUser()){
+                LoginManager.getInstance().logOut();
+            }
         }
     }
 
@@ -53,8 +57,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            Log.d(getClass().getSimpleName(), "User exists");
-            User.setGoogleUser(account);
+            if(!User.hasSignedInUser()){
+                mGoogleSignInClient.signOut();
+            }
         }
     }
 }

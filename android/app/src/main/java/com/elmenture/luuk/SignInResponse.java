@@ -1,4 +1,4 @@
-package com.elmenture.core;
+package com.elmenture.luuk;
 
 public class SignInResponse {
     public boolean success = false;

@@ -5,25 +5,19 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.login.LoginManager;
-
 public class AuthenticatedActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(User.getCurrent() == null){
+        if (!User.hasSignedInUser()) {
             logUtils.w("No user logged in");
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
-            finish();
+            logout();
         }
     }
 
-    protected  void logout(){
-        LoginManager.getInstance().logOut();
-        mGoogleSignInClient.signOut();
-        //TODO:
+    protected void logout() {
+        User.getCurrent().logout();
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();

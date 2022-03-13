@@ -29,16 +29,6 @@ public class Network {
     private LogUtils logUtils = new LogUtils(this.getClass());
     private Network(){}
 
-    private String networkAuthToken;
-
-    public String getNetworkAuthToken() {
-        return networkAuthToken;
-    }
-
-    public void setNetworkAuthToken(String networkAuthToken) {
-        this.networkAuthToken = networkAuthToken;
-    }
-
     public void post(String endpoint, List<NameValuePair> nameValuePairs, final NetworkCallback callback, final Handler resultHandler){
         executorService.execute(new Runnable() {
             @Override

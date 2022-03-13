@@ -3,9 +3,7 @@ package com.elmenture.luuk
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import com.elmenture.luuk.databinding.ActivitySplashBinding
 
 class SplashActivity : BaseActivity() {
@@ -25,7 +23,7 @@ class SplashActivity : BaseActivity() {
             }
 
             override fun onFinish() {
-                if (User.hasUser()) {
+                if (User.hasSignedInUser()) {
                     startMainScreen()
                 } else {
                     startLoginScreen()

@@ -15,7 +15,6 @@ import com.elmenture.luuk.network.NetworkCallback;
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -134,6 +133,19 @@ public class SignInActivity extends BaseActivity {
         finish();
     }
 
+    private SignInResponse parseSignInResponse(String response) throws JSONException {
+        SignInResponse signInResponse = new SignInResponse();
+
+        JSONObject jsonObject = new JSONObject(response);
+        if (jsonObject.getBoolean("success")) {
+            signInResponse.success = true;
+            signInResponse.authToken = jsonObject.getString("authToken");
+            signInResponse.isNewAccount = jsonObject.getBoolean("isNewAccount");
+            //TODO: add other user related fields like email, name etc
+        }
+        return signInResponse;
+    }
+
     void verifyFacebookTokenWithBackend(AccessToken accessToken) {
         socialLayout.setVisibility(View.GONE);
         progressLayout.setVisibility(View.VISIBLE);
@@ -146,12 +158,11 @@ public class SignInActivity extends BaseActivity {
             public void onResponse(int responseCode, String response) {
                 if (responseCode == 200) {
                     try {
-                        //{"success":true,"isNewAccount":false,"authToken":"somevalue"}
-                        JSONObject jsonObject = new JSONObject(response);
-                        if (jsonObject.getBoolean("success")) {
+                        SignInResponse signInResponse = parseSignInResponse(response);
+
+                        if (signInResponse.success) {
+                            User.getCurrent().setSignInResponse(signInResponse);
                             logUtils.i("Facebook signin success");
-                            Network.INSTANCE.setNetworkAuthToken(jsonObject.getString("authToken"));
-                            User.setFacebookUser(Profile.getCurrentProfile());
                             setResult(RESULT_OK);
                             showMainScreen();
                         } else {
@@ -185,12 +196,11 @@ public class SignInActivity extends BaseActivity {
             public void onResponse(int responseCode, String response) {
                 if (responseCode == 200) {
                     try {
-                        //{"success":true,"isNewAccount":false,"authToken":"somevalue"}
-                        JSONObject jsonObject = new JSONObject(response);
-                        if (jsonObject.getBoolean("success")) {
+                        SignInResponse signInResponse = parseSignInResponse(response);
+
+                        if (signInResponse.success) {
+                            User.getCurrent().setSignInResponse(signInResponse);
                             logUtils.i("Google signin success");
-                            Network.INSTANCE.setNetworkAuthToken(jsonObject.getString("authToken"));
-                            User.setGoogleUser(account);
                             showMainScreen();
                         } else {
                             logUtils.w("Google signin failed");
