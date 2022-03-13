@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.os.HandlerCompat;
 
 import com.elmenture.luuk.network.Network;
@@ -42,10 +43,18 @@ public class SignInActivity extends BaseActivity {
     private static final String AUTH_TYPE = "rerequest";
     private static final int RC_SIGN_IN = 10001;
 
+    private LinearLayoutCompat socialLayout;
+    private LinearLayoutCompat progressLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        socialLayout = findViewById(R.id.socialLayout);
+        progressLayout = findViewById(R.id.progressLayout);
+
+        socialLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
 
         btnFacebook = findViewById(R.id.btnFacebook);
         btnFacebook.setPermissions(Arrays.asList("public_profile",EMAIL));
@@ -66,8 +75,6 @@ public class SignInActivity extends BaseActivity {
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // App code
-
                 AccessToken accessToken = loginResult.getAccessToken();
                 boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
@@ -128,6 +135,9 @@ public class SignInActivity extends BaseActivity {
     }
 
     void verifyFacebookTokenWithBackend(AccessToken accessToken) {
+        socialLayout.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
+
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("userToken", accessToken.getToken()));
 
@@ -157,11 +167,16 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 logUtils.w(error);
+                socialLayout.setVisibility(View.VISIBLE);
+                progressLayout.setVisibility(View.GONE);
             }
         }, HandlerCompat.createAsync(Looper.getMainLooper()));
     }
 
     void verifyGoogleTokenWithBackend(GoogleSignInAccount account) {
+        socialLayout.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
+
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("idToken", account.getIdToken()));
 
@@ -192,11 +207,15 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 logUtils.w(error);
+                socialLayout.setVisibility(View.VISIBLE);
+                progressLayout.setVisibility(View.GONE);
             }
         }, HandlerCompat.createAsync(Looper.getMainLooper()));
     }
 
     private void signinFailed() {
         //Notify the user
+        socialLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
     }
 }

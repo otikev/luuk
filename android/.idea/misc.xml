@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/content_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_spot.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/overlay.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.5164835164835165" />
