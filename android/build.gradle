@@ -8,3 +8,8 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext{
+    OK_HTTP_VERSION = "4.3.1"
+    RETROFIT_VERSION = "2.9.0"
+}
