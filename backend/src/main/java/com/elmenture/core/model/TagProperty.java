@@ -1,0 +1,41 @@
+package com.elmenture.core.model;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Set;
+
+/**
+ * Created by otikev on 16-Mar-2022
+ */
+
+@Data
+@Entity
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "tag_properties")
+@NoArgsConstructor
+public class TagProperty extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "value", nullable = false)
+    private String value;
+
+
+    @OneToMany(mappedBy = "tagProperty", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<ItemProperty> itemProperties;
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
+
+    public TagProperty(Tag _tag, String value) {
+        this.tag = _tag;
+        this.value = value;
+    }
+}
