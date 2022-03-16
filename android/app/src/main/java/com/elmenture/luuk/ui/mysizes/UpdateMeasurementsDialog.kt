@@ -49,8 +49,16 @@ class UpdateMeasurementsDialog : DialogFragment() {
     }
 
     private fun observeViewModelLiveData() {
-        mySizesViewModel.bodyMeasurements.observe(viewLifecycleOwner) { bodyMeasurements ->
+        mySizesViewModel.bodyMeasurementsLiveData.observe(viewLifecycleOwner) { bodyMeasurements ->
             updateView(bodyMeasurements)
+        }
+
+        mySizesViewModel.postBodyMeasurementsApiState.observe(viewLifecycleOwner) { apiState ->
+            apiState?.let {
+                if (apiState.isSuccessful) {
+                    dialog?.dismiss()
+                }
+            }
         }
     }
 
@@ -78,7 +86,7 @@ class UpdateMeasurementsDialog : DialogFragment() {
             thigh = binding.etThigh.text.toString().toInt()
             leg = binding.etLeg.text.toString().toInt()
         }
-        mySizesViewModel.bodyMeasurements.value = bodyMeasurements
+        mySizesViewModel.updateBodyMeasurements(bodyMeasurements)
     }
 
     fun show(manager: FragmentManager) {

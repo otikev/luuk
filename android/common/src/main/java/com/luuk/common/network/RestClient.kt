@@ -1,5 +1,7 @@
 package com.luuk.common.network
 
+import userdata.User
+
 
 object RestClient {
     fun <T> serviceWithExternalEndPoint(service: Class<T>, externalBaseUrl: String): T {
@@ -7,7 +9,12 @@ object RestClient {
             .create(service)
     }
 
-    fun <T> serviceWithUserAuthentication(authKey: String,service: Class<T>): T {
+    fun <T> serviceWithUserAuthentication(service: Class<T>): T {
+
+        var authKey = "null"
+        if (User.getCurrent() != null) {
+            authKey = User.getCurrent().userDetails.authToken
+        }
         return RestAdapterBuilderFactory.authenticated(authKey).build().create(service)
     }
 

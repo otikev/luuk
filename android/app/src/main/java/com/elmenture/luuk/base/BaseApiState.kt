@@ -5,15 +5,15 @@ class BaseApiState(
     var errorCode: Int? = null,
     var errorMessage: String? = null,
     var currentState: State? = null,
-    var isLoading: Boolean = (currentState == State.LOADING)
 ) {
+    val isSuccessful: Boolean
+        get() = currentState == State.SUCCESS
 
     enum class State {
-        LOADING, SUCCESS, FAILED;
+        SUCCESS, FAILED;
     }
     companion object {
         var ERROR_STATE: BaseApiState = BaseApiState(currentState = State.FAILED)
-        var LOADING_STATE: BaseApiState = BaseApiState(currentState = State.LOADING)
         var SUCCESS_STATE: BaseApiState = BaseApiState(currentState = State.SUCCESS)
     }
 }

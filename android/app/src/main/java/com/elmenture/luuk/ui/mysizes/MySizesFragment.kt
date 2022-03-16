@@ -40,7 +40,7 @@ class MySizesFragment : BaseFragment() {
     }
 
     private fun observeViewModelLiveData() {
-        mySizesViewModel.bodyMeasurements.observe(viewLifecycleOwner) { bodyMeasurements ->
+        mySizesViewModel.bodyMeasurementsLiveData.observe(viewLifecycleOwner) { bodyMeasurements ->
             updateView(bodyMeasurements)
         }
     }

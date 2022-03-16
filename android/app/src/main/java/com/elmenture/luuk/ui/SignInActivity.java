@@ -11,8 +11,8 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.os.HandlerCompat;
 
 import com.elmenture.luuk.R;
-import com.elmenture.luuk.SignInResponse;
-import com.elmenture.luuk.User;
+import com.luuk.common.models.SignInResponse;
+import userdata.User;
 import com.elmenture.luuk.base.BaseActivity;
 import com.elmenture.luuk.network.Network;
 import com.elmenture.luuk.network.NetworkCallback;
@@ -165,7 +165,7 @@ public class SignInActivity extends BaseActivity {
                         SignInResponse signInResponse = parseSignInResponse(response);
 
                         if (signInResponse.success) {
-                            User.getCurrent().setSignInResponse(signInResponse);
+                            User.getCurrent().setUserDetails(signInResponse);
                             logUtils.i("Facebook signin success");
                             setResult(RESULT_OK);
                             showMainScreen();
@@ -203,7 +203,7 @@ public class SignInActivity extends BaseActivity {
                         SignInResponse signInResponse = parseSignInResponse(response);
 
                         if (signInResponse.success) {
-                            User.getCurrent().setSignInResponse(signInResponse);
+                            User.getCurrent().setUserDetails(signInResponse);
                             logUtils.i("Google signin success");
                             showMainScreen();
                         } else {

@@ -3,8 +3,6 @@ package com.luuk.common.network
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.luuk.common.BuildConfig
-import com.luuk.common.network.interceptors.AuthorizationRequestInterceptor
-import com.luuk.common.network.interceptors.ConnectivityInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,28 +12,28 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object RestAdapterBuilderFactory {
-    lateinit var APP_ENDPOINT:String
+    lateinit var APP_ENDPOINT: String
 
     fun unauthenticated(): Retrofit.Builder {
-        return com.luuk.common.network.RestAdapterBuilderFactory.builder.client(com.luuk.common.network.RestAdapterBuilderFactory.okClient).baseUrl(
-            com.luuk.common.network.RestAdapterBuilderFactory.APP_ENDPOINT
+        return builder.client(okClient).baseUrl(
+            APP_ENDPOINT
         )
     }
 
     fun externalEndPoint(externalBaseUrl: String?): Retrofit.Builder {
-        return com.luuk.common.network.RestAdapterBuilderFactory.builder.client(com.luuk.common.network.RestAdapterBuilderFactory.okClient).baseUrl(externalBaseUrl!!)
+        return builder.client(okClient).baseUrl(externalBaseUrl!!)
     }
 
     fun authenticated(authKey: String): Retrofit.Builder {
         return com.luuk.common.network.RestAdapterBuilderFactory.builder.client(
-            com.luuk.common.network.RestAdapterBuilderFactory.getOkClient(
+            RestAdapterBuilderFactory.getOkClient(
                 authKey
             )
-        ).baseUrl(com.luuk.common.network.RestAdapterBuilderFactory.APP_ENDPOINT)
+        ).baseUrl(APP_ENDPOINT)
     }
 
     fun getFileAdapter(absoluteUrl: String?): Retrofit.Builder {
-        return com.luuk.common.network.RestAdapterBuilderFactory.builder.baseUrl(absoluteUrl!!)
+        return builder.baseUrl(absoluteUrl!!)
     }
 
     private val okClient: OkHttpClient

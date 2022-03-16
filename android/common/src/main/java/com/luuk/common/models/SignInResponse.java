@@ -1,4 +1,4 @@
-package com.elmenture.luuk;
+package com.luuk.common.models;
 
 public class SignInResponse {
     public boolean success = false;

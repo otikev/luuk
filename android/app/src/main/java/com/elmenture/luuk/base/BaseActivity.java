@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.elmenture.luuk.R;
-import com.elmenture.luuk.User;
+import userdata.User;
 import com.elmenture.luuk.utils.LogUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;

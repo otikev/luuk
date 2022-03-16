@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.navigation.ui.AppBarConfiguration
-import com.elmenture.luuk.User
+import userdata.User
 import com.elmenture.luuk.base.BaseActivity
 import com.elmenture.luuk.databinding.ActivitySplashBinding
 
