@@ -13,7 +13,7 @@ object RestClient {
 
         var authKey = "null"
         if (User.getCurrent() != null) {
-            authKey = User.getCurrent().userDetails.authToken
+            authKey = User.getCurrent().userDetails.authToken!!
         }
         return RestAdapterBuilderFactory.authenticated(authKey).build().create(service)
     }
