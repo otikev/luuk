@@ -19,8 +19,9 @@ public class BodyMeasurements extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne()
+    @JoinColumn(name = "user_id", referencedColumnName = "id",insertable = true, updatable = true)
+    private User user;
 
     @Column(name = "neck", nullable = true)
     private int neck;

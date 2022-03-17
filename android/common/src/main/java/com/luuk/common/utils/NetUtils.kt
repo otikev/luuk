@@ -18,6 +18,8 @@ class NetUtils {
 
         const val MOCK_SERVER_URL = "https://c93d2298-b08b-4518-9400-a74ede1a39c7.mock.pstmn.io"
         const val LOCAL_TEST_URL = "http://192.168.0.109:8080/"
+        const val BASE_URL = "https://luukatme.herokuapp.com/";
+
         private val TAG = NetUtils::class.java.simpleName
         private var context: Context? = null
 
