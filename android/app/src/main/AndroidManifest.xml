@@ -34,7 +34,7 @@
             android:name=".ui.MainActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".ui.SignInActivity"/>
+        <activity android:name=".ui.signin.SignInActivity"/>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

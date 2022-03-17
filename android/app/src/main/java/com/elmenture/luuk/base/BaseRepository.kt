@@ -8,6 +8,7 @@ import com.luuk.common.network.interceptors.ConnectivityInterceptor
 import com.luuk.common.utils.LogUtils
 import com.luuk.common.utils.NetUtils
 import retrofit2.Call
+import java.util.HashMap
 
 object BaseRepository {
     val responseErrorCode = MutableLiveData<Int>()
@@ -48,6 +49,11 @@ object BaseRepository {
 
     fun doPostUserBodyMeasurements(request: BodyMeasurements): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).postUserBodyMeasurements(request)
+        return processRequest(call)
+    }
+
+    fun signInWithGoogle(request: HashMap<String, String>): BaseApiState {
+        val call = RestClient.service(EndPoints::class.java).googleSignIn(request)
         return processRequest(call)
     }
 

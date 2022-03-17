@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.elmenture.luuk.base.BaseActivity;
-import com.elmenture.luuk.ui.SignInActivity;
+import com.elmenture.luuk.ui.signin.SignInActivity;
 
 import userdata.User;
 
