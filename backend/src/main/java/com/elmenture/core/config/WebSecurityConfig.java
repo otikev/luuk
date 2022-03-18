@@ -16,6 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**","/image/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth/facebooksignin").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth/googlesignin").permitAll()
+                .antMatchers(HttpMethod.GET,"/items/all").permitAll()
                 .anyRequest().authenticated();
     }
 }

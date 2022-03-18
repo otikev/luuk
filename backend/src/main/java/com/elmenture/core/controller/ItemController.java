@@ -6,12 +6,10 @@ import com.elmenture.core.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -34,5 +32,10 @@ public class ItemController {
         itemRepository.save(item);
 
         return ResponseEntity.ok(new ItemCreationResponse(item.getId()));
+    }
+
+    @GetMapping("/all")
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
     }
 }
