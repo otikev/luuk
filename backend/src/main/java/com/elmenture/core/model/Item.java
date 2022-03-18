@@ -2,6 +2,7 @@ package com.elmenture.core.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "items")
+@NoArgsConstructor
 public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +29,23 @@ public class Item extends BaseEntity {
     private String sizeInternational;
 
     @Column(name = "size_number")
-    private long sizeNumber;
+    private Long sizeNumber;
 
     @Column(name = "price")
     private long price;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<ItemProperty> itemProperties;
+
+    public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
+        this.description = description;
+        this.sizeInternational = sizeInternational;
+        this.sizeNumber = sizeNumber;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
 }

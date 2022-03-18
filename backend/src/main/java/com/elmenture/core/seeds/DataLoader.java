@@ -1,12 +1,18 @@
 package com.elmenture.core.seeds;
 
+import com.elmenture.core.model.Item;
+import com.elmenture.core.model.ItemProperty;
 import com.elmenture.core.model.Tag;
 import com.elmenture.core.model.TagProperty;
+import com.elmenture.core.repository.ItemPropertyRepository;
+import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Random;
 
 /**
  * Created by otikev on 16-Mar-2022
@@ -19,6 +25,14 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     TagPropertyRepository tagPropertyRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
+
+    @Autowired
+    ItemPropertyRepository itemPropertyRepository;
+
+    String[] CLOTHING_SIZES = new String[]{"XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL"};
 
     @Override
     public void run(String... args) throws Exception {
@@ -147,5 +161,34 @@ public class DataLoader implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "sundresses"));
         }
         System.out.println("Tag properties = " + tagPropertyRepository.count());
+
+        if (itemRepository.count() == 0) {
+            Random rn = new Random();
+            String placeholderImageUrl = "https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg";
+            //Generate 50 dummy items
+            for (int i = 1; i <= 50; i++) {
+                int size_max = CLOTHING_SIZES.length - 1;
+                int size_min = 0;
+                String clothingSize = CLOTHING_SIZES[rn.nextInt(size_max - size_min + 1) + size_min];
+                int price_max = 600000;
+                int price_min = 20000;
+                long price = rn.nextInt(price_max - price_min + 1) + price_min;
+                Item item = new Item("Clothing " + i, clothingSize, null, price, placeholderImageUrl);
+                itemRepository.save(item);
+
+                //Generate 5 dummy tags
+                for (int j = 0; j < 5; j++) {
+                    //Generate tags
+                    int maxTagPropertyId = (int) tagPropertyRepository.count();
+                    int minTagPropertyId = 1;
+                    long tagPropertyId = rn.nextInt(maxTagPropertyId - minTagPropertyId + 1) + minTagPropertyId;
+                    TagProperty tagProperty = tagPropertyRepository.getById(tagPropertyId);
+                    ItemProperty itemProperty = new ItemProperty(item, tagProperty);
+                    itemPropertyRepository.save(itemProperty);
+                }
+            }
+        }
+        System.out.println("Items = " + itemRepository.count());
+        System.out.println("Item properties = " + itemPropertyRepository.count());
     }
 }

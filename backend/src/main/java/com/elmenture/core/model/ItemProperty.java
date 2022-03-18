@@ -29,4 +29,8 @@ public class ItemProperty extends BaseEntity  {
     @JoinColumn(name = "tag_property_id", nullable = false)
     private TagProperty tagProperty;
 
+    public ItemProperty(Item item, TagProperty tagProperty) {
+        this.item = item;
+        this.tagProperty = tagProperty;
+    }
 }
