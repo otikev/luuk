@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.mysizes
+package com.elmenture.luuk.ui.main.accountmanagement.mysizes
 
 import android.os.Bundle
 import android.view.LayoutInflater

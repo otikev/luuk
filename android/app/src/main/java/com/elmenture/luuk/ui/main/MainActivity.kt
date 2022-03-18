@@ -1,10 +1,12 @@
-package com.elmenture.luuk.ui
+package com.elmenture.luuk.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
 import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.R
-import com.elmenture.luuk.ui.mysizes.MySizesFragment
+import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
+import com.elmenture.luuk.ui.main.home.HomeFragment
+import com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
@@ -13,7 +15,7 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_dummy)
+        setContentView(R.layout.activity_main)
         setupBottomNavView()
     }
 

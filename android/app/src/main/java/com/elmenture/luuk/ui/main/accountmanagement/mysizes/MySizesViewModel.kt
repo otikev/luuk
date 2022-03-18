@@ -1,10 +1,10 @@
-package com.elmenture.luuk.ui.mysizes
+package com.elmenture.luuk.ui.main.accountmanagement.mysizes
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elmenture.luuk.base.BaseApiState
-import com.elmenture.luuk.ui.MyAccountRepository
+import com.elmenture.luuk.repositories.AccountManagementRepository
 import com.luuk.common.models.BodyMeasurements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class MySizesViewModel : ViewModel() {
       bodyMeasurementsLiveData.value = bodyMeasurements
 
       viewModelScope.launch(Dispatchers.IO) {
-            val response = MyAccountRepository.postBodyMeasurements(bodyMeasurements)
+            val response = AccountManagementRepository.postBodyMeasurements(bodyMeasurements)
             withContext(Dispatchers.Main) {
               postBodyMeasurementsApiState.value = response
             }

@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui
+package com.elmenture.luuk.ui.main.accountmanagement
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.databinding.FragmentAccountManagementBinding
+import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 
 /**

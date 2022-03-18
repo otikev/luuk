@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.elmenture.luuk.R;
 import com.elmenture.luuk.base.BaseActivity;
-import com.elmenture.luuk.ui.MainActivity;
+import com.elmenture.luuk.ui.main.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -22,9 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.luuk.common.models.SignInResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Collections;
 import java.util.HashMap;

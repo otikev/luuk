@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui
+package com.elmenture.luuk.repositories
 
 import com.elmenture.luuk.base.BaseApiState
 import com.elmenture.luuk.base.BaseRepository

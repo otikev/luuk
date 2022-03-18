@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.elmenture.luuk.ui.AccountManagementFragment"
+        android:name="com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_my_sizes">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.elmenture.luuk.ui.mysizes.MySizesFragment"
+        android:name="com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_account_management">
 

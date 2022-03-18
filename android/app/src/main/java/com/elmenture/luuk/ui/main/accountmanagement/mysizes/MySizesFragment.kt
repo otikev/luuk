@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.mysizes
+package com.elmenture.luuk.ui.main.accountmanagement.mysizes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
-import com.elmenture.luuk.ui.MainActivityView
+import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 import com.luuk.common.models.BodyMeasurements
 

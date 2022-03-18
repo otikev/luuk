@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="@dimen/dimens_large_size"
-    tools:context=".ui.mysizes.MySizesFragment"
+    tools:context=".ui.main.accountmanagement.mysizes.MySizesFragment"
     tools:ignore="MissingDefaultResource">
 
 

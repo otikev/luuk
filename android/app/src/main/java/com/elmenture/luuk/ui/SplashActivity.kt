@@ -7,6 +7,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import userdata.User
 import com.elmenture.luuk.base.BaseActivity
 import com.elmenture.luuk.databinding.ActivitySplashBinding
+import com.elmenture.luuk.ui.main.MainActivity
 import com.elmenture.luuk.ui.signin.SignInActivity
 
 class SplashActivity : BaseActivity() {
