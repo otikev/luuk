@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.luuk.common.network.RestAdapterBuilderFactory;
-import com.luuk.common.utils.NetUtils;
+import network.RestAdapterBuilderFactory;
+import utils.NetUtils;
 
 public class LuukApp extends Application {
 

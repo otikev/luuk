@@ -21,7 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.luuk.common.models.SignInResponse;
+import models.SignInResponse;
 
 import java.util.Collections;
 import java.util.HashMap;

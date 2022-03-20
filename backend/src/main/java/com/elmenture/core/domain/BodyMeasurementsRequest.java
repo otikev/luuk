@@ -1,10 +1,10 @@
 package com.elmenture.core.domain;
 
+import com.google.gson.annotations.SerializedName;
+import lombok.Data;
+
+@Data
 public class BodyMeasurementsRequest {
-    public int neck;
-    public int shoulder;
-    public int chest;
-    public int waist;
-    public int thigh;
-    public int leg;
+    private String sizeInternational;
+    private int sizeNumber;
 }

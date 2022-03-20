@@ -20,24 +20,12 @@ public class BodyMeasurements extends BaseEntity {
     private long id;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id",insertable = true, updatable = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "neck", nullable = true)
-    private int neck;
+    @Column(name = "size_international")
+    private String sizeInternational;
 
-    @Column(name = "shoulder", nullable = true)
-    private int shoulder;
-
-    @Column(name = "chest", nullable = true)
-    private int chest;
-
-    @Column(name = "waist", nullable = true)
-    private int waist;
-
-    @Column(name = "thigh", nullable = true)
-    private int thigh;
-
-    @Column(name = "leg", nullable = true)
-    private int leg;
+    @Column(name = "size_number")
+    private long sizeNumber;
 }

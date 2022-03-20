@@ -17,7 +17,7 @@ import com.elmenture.luuk.SpotDiffCallback
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.CardStackAdapter
 import com.kokonetworks.kokosasa.base.BaseFragment
-import com.luuk.common.views.cardstackview.*
+import views.cardstackview.*
 
 
 class HomeFragment : BaseFragment(), CardStackListener {

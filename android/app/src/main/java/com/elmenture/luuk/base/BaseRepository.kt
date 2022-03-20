@@ -1,12 +1,12 @@
 package com.elmenture.luuk.base
 
 import androidx.lifecycle.MutableLiveData
-import com.luuk.common.network.service.EndPoints
-import com.luuk.common.models.BodyMeasurements
-import com.luuk.common.network.RestClient
-import com.luuk.common.network.interceptors.ConnectivityInterceptor
-import com.luuk.common.utils.LogUtils
-import com.luuk.common.utils.NetUtils
+import network.service.EndPoints
+import models.BodyMeasurements
+import network.RestClient
+import network.interceptors.ConnectivityInterceptor
+import utils.LogUtils
+import utils.NetUtils
 import retrofit2.Call
 import java.util.HashMap
 

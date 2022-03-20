@@ -15,45 +15,44 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.luuk.common.views.BannerView
+        <views.BannerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"/>
 
-        <com.luuk.common.views.SimpleItemView
+        <views.SimpleItemView
             android:id="@+id/item_my_sizes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@drawable/ic_my_sizes"
             app:title="My Sizes" />
 
-        <com.luuk.common.views.SimpleItemView
+        <views.SimpleItemView
             android:id="@+id/item_order_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@drawable/ic_order_history"
             app:title="Order History" />
 
-        <com.luuk.common.views.SimpleItemView
+        <views.SimpleItemView
             android:id="@+id/item_profile_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@drawable/ic_profile"
             app:title="Profile Settings" />
 
-        <com.luuk.common.views.SimpleItemView
+        <views.SimpleItemView
             android:id="@+id/item_app_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@drawable/ic_setting"
             app:title="App Settings" />
 
-        <com.luuk.common.views.SimpleItemView
+        <views.SimpleItemView
             android:id="@+id/item_help"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@drawable/ic_info_square"
             app:title="Help" />
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

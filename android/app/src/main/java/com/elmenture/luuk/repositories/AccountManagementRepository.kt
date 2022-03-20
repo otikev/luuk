@@ -2,7 +2,7 @@ package com.elmenture.luuk.repositories
 
 import com.elmenture.luuk.base.BaseApiState
 import com.elmenture.luuk.base.BaseRepository
-import com.luuk.common.models.BodyMeasurements
+import models.BodyMeasurements
 
 object AccountManagementRepository {
 

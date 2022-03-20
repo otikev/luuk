@@ -19,7 +19,6 @@ import java.util.StringTokenizer;
 /**
  * Created by otikev on 06-Mar-2022
  */
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -31,7 +30,7 @@ public class UserController {
     private BodyMeasurementsRepository bodyMeasurementsRepository;
 
     @PostMapping(value = "/update-measurements", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers,@Valid @RequestBody BodyMeasurementsRequest bodyMeasurementsRequest) {
+    public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers,@Valid @RequestBody BodyMeasurementsRequest request) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         User user = userRepository.findByAuthToken(token);
         if(user == null){
@@ -41,16 +40,10 @@ public class UserController {
         BodyMeasurements measurements = bodyMeasurementsRepository.findByUserId(user.getId());
         if (measurements == null) {
             measurements = new BodyMeasurements();
-
-
         }
         measurements.setUser(user);
-        measurements.setNeck(bodyMeasurementsRequest.neck);
-        measurements.setShoulder(bodyMeasurementsRequest.shoulder);
-        measurements.setChest(bodyMeasurementsRequest.chest);
-        measurements.setWaist(bodyMeasurementsRequest.waist);
-        measurements.setThigh(bodyMeasurementsRequest.thigh);
-        measurements.setLeg(bodyMeasurementsRequest.leg);
+        measurements.setSizeInternational(request.getSizeInternational());
+        measurements.setSizeNumber(request.getSizeNumber());
         bodyMeasurementsRepository.save(measurements);
 
         return ResponseEntity.ok("Updated Successfully");

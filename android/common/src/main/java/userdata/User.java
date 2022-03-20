@@ -1,6 +1,6 @@
 package userdata;
 
-import com.luuk.common.models.SignInResponse;
+import models.SignInResponse;
 
 public class User {
 

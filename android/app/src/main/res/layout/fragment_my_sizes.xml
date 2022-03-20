@@ -12,14 +12,47 @@
         android:background="@drawable/rectangle_cornered"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_overal_size"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimens_large_size"
+            android:layout_margin="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_overall_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Overal Size"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_weight="0"
-            android:layout_marginVertical="@dimen/dimens_mid_size"
+            android:padding="4dp"
             android:gravity="center"
-            android:text="Overal Size is 12 UK" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="International Size"/>
+            <Spinner
+                android:id="@+id/spn_international"
+                android:layout_marginStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/dimens_mid_size"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+
 
 
         <Button
@@ -27,6 +60,7 @@
             style="@style/buttonStylePrimary"
             android:layout_marginHorizontal="@dimen/dimens_large_size"
             android:layout_weight="0"
+            android:layout_marginVertical="@dimen/dimens_mid_size"
             android:text="Update Measurements" />
 
 
@@ -47,36 +81,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_neck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_measurements_bg"
-                android:gravity="center"
-                android:paddingHorizontal="6dp"
-                android:text="Neck: 33 CM"
-                app:layout_constraintHorizontal_bias=".75"
-                app:layout_constraintVertical_bias=".28"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"  />
-
-            <TextView
-                android:id="@+id/tv_shoulder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_measurements_bg"
-                android:gravity="center"
-                android:paddingHorizontal="6dp"
-                android:text="Shoulder: 45CM"
-                app:layout_constraintHorizontal_bias=".15"
-                app:layout_constraintVertical_bias=".35"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/tv_chest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,8 +88,8 @@
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
                 android:text="Chest: 55CM"
-                app:layout_constraintHorizontal_bias=".75"
-                app:layout_constraintVertical_bias=".40"
+                app:layout_constraintHorizontal_bias=".70"
+                app:layout_constraintVertical_bias=".35"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,42 +104,27 @@
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
                 android:text="Waist : 36CM"
-                app:layout_constraintHorizontal_bias=".20"
-                app:layout_constraintVertical_bias=".50"
+                app:layout_constraintHorizontal_bias=".25"
+                app:layout_constraintVertical_bias=".47"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"  />
 
             <TextView
-                android:id="@+id/tv_thigh"
+                android:id="@+id/tv_hips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_measurements_bg"
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
-                android:text="Thigh: 66CM"
+                android:text="Hips: 66CM"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintHorizontal_bias=".75"
-                app:layout_constraintVertical_bias=".60"/>
-
-            <TextView
-                android:id="@+id/tv_leg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_measurements_bg"
-                android:gravity="center"
-                android:paddingHorizontal="6dp"
-                android:text="Leg : 20CM"
-                app:layout_constraintHorizontal_bias=".25"
-                app:layout_constraintVertical_bias=".75"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintVertical_bias=".55"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
