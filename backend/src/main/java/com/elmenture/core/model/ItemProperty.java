@@ -1,5 +1,8 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,18 +18,25 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "item_properties")
 @NoArgsConstructor
-public class ItemProperty extends BaseEntity  {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class ItemProperty extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "item_id", nullable = false)
+    @JsonBackReference
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tag_property_id", nullable = false)
+    @JsonBackReference
     private TagProperty tagProperty;
 
+    public ItemProperty(Item item, TagProperty tagProperty) {
+        this.item = item;
+        this.tagProperty = tagProperty;
+    }
 }

@@ -1,5 +1,9 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,6 +20,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "tag_properties")
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TagProperty extends BaseEntity {
 
     @Id
@@ -26,8 +31,8 @@ public class TagProperty extends BaseEntity {
     private String value;
 
 
-    @OneToMany(mappedBy = "tagProperty", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tagProperty", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<ItemProperty> itemProperties;
 
     @ManyToOne

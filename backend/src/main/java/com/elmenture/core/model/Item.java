@@ -1,7 +1,12 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +19,8 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "items")
+@NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +34,24 @@ public class Item extends BaseEntity {
     private String sizeInternational;
 
     @Column(name = "size_number")
-    private long sizeNumber;
+    private Long sizeNumber;
 
     @Column(name = "price")
     private long price;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //TODO: @JsonManagedReference
+    @JsonIgnore //Ignore serializing this for now. Facing issue with infinite recursion
     private Set<ItemProperty> itemProperties;
+
+    public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
+        this.description = description;
+        this.sizeInternational = sizeInternational;
+        this.sizeNumber = sizeNumber;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
 }

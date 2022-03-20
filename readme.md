@@ -18,6 +18,26 @@ From the root of this project run:
 git subtree push --prefix backend heroku master
 ```
 
+## Accessing Postgres console
+
+Switch to postgres user
+```
+~$ sudo su - postgres
+```
+Launch psql
+```
+~$ psql
+```
+
+Connect to dev db
+```
+postgres=# \connect luuk_dev;
+```
+
+Exiting psql
+```
+luuk_dev=# \q
+```
 
 ### Reference Documentation
 For further reference, please consider the following sections:
