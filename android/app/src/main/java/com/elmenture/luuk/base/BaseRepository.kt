@@ -51,9 +51,18 @@ object BaseRepository {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).postUserBodyMeasurements(request)
         return processRequest(call)
     }
+    fun getUserBodyMeasurements(): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).getUserBodyMeasurements()
+        return processRequest(call)
+    }
 
     fun signInWithGoogle(request: HashMap<String, String>): BaseApiState {
         val call = RestClient.service(EndPoints::class.java).googleSignIn(request)
+        return processRequest(call)
+    }
+
+    fun fetchItems(): BaseApiState {
+        val call = RestClient.service(EndPoints::class.java).fetchItems()
         return processRequest(call)
     }
 

@@ -22,4 +22,15 @@ class MySizesViewModel : ViewModel() {
             }
         }
     }
+
+    fun getUserBodyMeasurements() {
+      viewModelScope.launch(Dispatchers.IO) {
+            val response = AccountManagementRepository.getUserBodyMeasurements()
+            withContext(Dispatchers.Main) {
+                if(response.isSuccessful){
+                    bodyMeasurementsLiveData.value = response.data as BodyMeasurements
+                }
+            }
+        }
+    }
 }

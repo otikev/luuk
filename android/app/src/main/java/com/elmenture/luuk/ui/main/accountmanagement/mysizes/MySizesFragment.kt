@@ -61,11 +61,15 @@ class MySizesFragment : BaseFragment() {
     private fun initView() {
         activityView = requireActivity() as MainActivityView
         mySizesViewModel = ViewModelProvider(requireActivity()).get(MySizesViewModel::class.java);
+        setUpSizesSpinner()
+        mySizesViewModel.getUserBodyMeasurements()
+    }
 
-
+    private fun setUpSizesSpinner() {
         for (size in InternationalSizes.values()) {
             spinnerArray.add(size.sizeName)
         }
+
         val spinnerAdapter = ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_list_item_1,
@@ -105,11 +109,6 @@ class MySizesFragment : BaseFragment() {
             sizeInternational = binding.spnInternational.selectedItem.toString()
         }
         mySizesViewModel.bodyMeasurementsLiveData.value = bodyMeasurements
-    }
-
-    private fun showUpdateMeasurementsDialog() {
-        val dialog = UpdateMeasurementsDialog.newInstance()
-        dialog.show(requireActivity().supportFragmentManager)
     }
 
 }

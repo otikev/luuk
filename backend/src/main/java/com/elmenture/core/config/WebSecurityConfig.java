@@ -14,6 +14,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/health").permitAll()
+                .antMatchers("/all").permitAll()
+                .antMatchers("/measurements/update").permitAll()
                 .antMatchers("/update-measurements").permitAll()
                 .antMatchers("/**","/image/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth/facebooksignin").permitAll()

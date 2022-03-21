@@ -1,17 +1,18 @@
 package network.service
 
 import models.BodyMeasurements
+import models.Item
 import models.SignInResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.FieldMap
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface EndPoints {
-    @POST("user/update-measurements")
+    @POST("user/measurements/update")
     fun postUserBodyMeasurements(@Body request: BodyMeasurements): Call<ResponseBody>
+
+    @GET("user/measurements")
+    fun getUserBodyMeasurements(): Call<BodyMeasurements>
 
     @POST("auth/facebooksignin")
     fun facebookSignIn(@FieldMap params: Map<String, String>): Call<SignInResponse>
@@ -19,4 +20,7 @@ interface EndPoints {
     @FormUrlEncoded
     @POST("auth/googlesignin")
     fun googleSignIn(@FieldMap params: Map<String, String>): Call<SignInResponse>
+
+    @GET("items/all")
+    fun fetchItems(): Call<List<Item>>
 }

@@ -5,10 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
@@ -25,9 +24,10 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
-    private val adapter by lazy { CardStackAdapter(createSpots()) }
+    private lateinit var adapter : CardStackAdapter
     private val cardStackView by lazy { binding.cardStackView }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
+    lateinit var homeViewModel: HomeViewModel
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -44,10 +44,23 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        observeViewModelLiveData()
         setupCardStackView()
-        setupButton()
     }
 
+    private fun observeViewModelLiveData() {
+        homeViewModel.itemsLiveData.observe(viewLifecycleOwner) { items ->
+            items?.let {
+                adapter = CardStackAdapter(createSpots())
+                cardStackView.adapter = adapter            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.fetchItems()
+    }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
         Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
@@ -71,6 +84,11 @@ class HomeFragment : BaseFragment(), CardStackListener {
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
         Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
+
+        val price = adapter.getSpots()[position].price
+        val size = adapter.getSpots()[position].sizeInternational
+        binding.tvPrice.text = "KES  $price"
+        binding.tvSize.text = "Size  $size"
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
@@ -82,39 +100,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
         initialize()
     }
 
-    private fun setupButton() {
-        val skip = binding.skipButton
-        skip.setOnClickListener {
-            val setting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Left)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
-            manager.setSwipeAnimationSetting(setting)
-            cardStackView.swipe()
-        }
-
-        val rewind = binding.rewindButton
-        rewind.setOnClickListener {
-            val setting = RewindAnimationSetting.Builder()
-                .setDirection(Direction.Bottom)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(DecelerateInterpolator())
-                .build()
-            manager.setRewindAnimationSetting(setting)
-            cardStackView.rewind()
-        }
-
-        val like = binding.likeButton
-        like.setOnClickListener {
-            val setting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Right)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
-            manager.setSwipeAnimationSetting(setting)
-            cardStackView.swipe()
-        }
+    private fun initView() {
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java);
     }
 
     private fun initialize() {
@@ -130,7 +117,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
         cardStackView.layoutManager = manager
-        cardStackView.adapter = adapter
+        //cardStackView.adapter = adapter
         cardStackView.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
                 supportsChangeAnimations = false
@@ -245,74 +232,16 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     private fun createSpot(): Spot {
-        return Spot(
-            price = 2000,
-            url = "https://www.collinsdictionary.com/images/full/mannequin_398527027_1000.jpg"
-        )
+        return createSpots()[0]
     }
 
     private fun createSpots(): List<Spot> {
         val spots = ArrayList<Spot>()
-        spots.add(
-            Spot(
-                price = 2000,
-                url = "https://www.collinsdictionary.com/images/full/mannequin_398527027_1000.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 1200,
-                url = "https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 1150,
-                url = "https://www.miamidisplay.us/wp-content/uploads/2017/09/IMG_1131.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 1300,
-                url = "https://img.freepik.com/free-photo/brown-jacket-black-bag-mannequin-wearing-jacket-with-purse-lady-s-outerwear-with-classic-handbag-clothes-selection-outlet-store_274234-8033.jpg?size=338&ext=jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 2000,
-                url = "https://i.pinimg.com/originals/10/48/13/1048139b3a94cc9366d35ab693ae29cc.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 2300,
-                url = "https://cdn.trendhunterstatic.com/phpthumbnails/163/163334/163334_1_800.jpeg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 1500,
-                url = "https://retaildesignblog.net/wp-content/uploads/2017/09/Hans-Boodt-Mannequins-by-Fashion-Sports07.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 850,
-                url = "https://images.megapixl.com/2103/21033554.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 200,
-                url = "https://assets.vogue.com/photos/5d362c03043937000867bd17/master/w_2255,h_3000,c_limit/2.%20Dress,KarlLagerfeldforChloe,SpringSummer1984.jpg"
-            )
-        )
-        spots.add(
-            Spot(
-                price = 2700,
-                url = "https://www.metmuseum.org/-/media/images/exhibitions/2019/in-pursuit-of-fashion-schreier/new-images/in-pursuit-of-fashion_landingpage_listview_480x480_101819.jpg"
-            )
-        )
+        homeViewModel.itemsLiveData.value?.let {
+            for (item in it) {
+            spots.add(Spot(url = item.imageUrl!!, price = item.price!!, sizeInternational = item.sizeInternational!!, sizeNumber = item.sizeNumber , itemId = item.id!!, description = item.description!!))
+            }
+        }
         return spots
     }
 
