@@ -85,9 +85,10 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val textView = view.findViewById<TextView>(R.id.item_price)
         Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
 
-        val price = adapter.getSpots()[position].price
+        val priceCents = adapter.getSpots()[position].priceCents
         val size = adapter.getSpots()[position].sizeInternational
-        binding.tvPrice.text = "KES  $price"
+
+        binding.tvPrice.text = "KES  ${priceCents/100}"
         binding.tvSize.text = "Size  $size"
     }
 
@@ -239,7 +240,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val spots = ArrayList<Spot>()
         homeViewModel.itemsLiveData.value?.let {
             for (item in it) {
-            spots.add(Spot(url = item.imageUrl!!, price = item.price!!, sizeInternational = item.sizeInternational!!, sizeNumber = item.sizeNumber , itemId = item.id!!, description = item.description!!))
+            spots.add(Spot(url = item.imageUrl!!, priceCents = item.price!!, sizeInternational = item.sizeInternational!!, sizeNumber = item.sizeNumber , itemId = item.id!!, description = item.description!!))
             }
         }
         return spots

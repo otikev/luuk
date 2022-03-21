@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Item(
 
-	@field:SerializedName("price")
+	@field:SerializedName("price") //cents
 	val price: Long? = null,
 
 	@field:SerializedName("imageUrl")
