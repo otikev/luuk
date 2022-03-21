@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 /**
  * Created by otikev on 06-Mar-2022
@@ -29,7 +27,22 @@ public class UserController {
     @Autowired
     private BodyMeasurementsRepository bodyMeasurementsRepository;
 
-    @PostMapping(value = "/update-measurements", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/measurements")
+    public ResponseEntity<Object> getBodyMeasurements(@RequestHeader HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        User user = userRepository.findByAuthToken(token);
+        if(user == null){
+            return new ResponseEntity<>("User does not exist",HttpStatus.BAD_REQUEST);
+        }
+        BodyMeasurements measurements = bodyMeasurementsRepository.findByUserId(user.getId());
+        if(measurements==null ){
+            return new ResponseEntity<>("measurements do not exist for user",HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(measurements);
+
+    }
+
+        @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers,@Valid @RequestBody BodyMeasurementsRequest request) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         User user = userRepository.findByAuthToken(token);
