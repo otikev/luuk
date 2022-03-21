@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Luuk" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Luuk" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/luuk_mint_green</item>
         <item name="colorPrimaryVariant">@color/luuk_mint_green</item>
@@ -17,9 +17,8 @@
     <style name="Theme.Luuk.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@android:color/white</item>
     </style>
 
-    <style name="Theme.Luuk.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Luuk.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

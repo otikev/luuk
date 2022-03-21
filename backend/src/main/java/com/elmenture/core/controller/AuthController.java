@@ -14,10 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
@@ -54,7 +51,7 @@ public class AuthController {
         if (userId != null && !userId.isEmpty()) {
             User user = userRepository.findBySocialIdAndSocialAccountType(userId, FACEBOOK.value());
 
-            if(user == null){
+            if (user == null) {
                 response.isNewAccount = true;
                 user = new User();
                 //user.setFirstName(String.valueOf(idTokenString.get("firstName")));
@@ -66,7 +63,7 @@ public class AuthController {
             String auth = createSession(user);
             response.authToken = auth;
             response.success = true;
-        }else {
+        } else {
             System.out.println("Invalid user token.");
             response.success = false;
         }

@@ -2,16 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.elmenture.luuk">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".LuukApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Luuk">
+        android:windowSoftInputMode="adjustResize"
+        android:theme="@style/Theme.Luuk.NoActionBar">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -20,7 +20,7 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:exported="true"
             android:label="@string/title_activity_splash"
             android:theme="@style/Theme.Luuk.NoActionBar">
@@ -31,11 +31,10 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".SignInActivity"
-            android:theme="@style/Theme.Luuk.NoActionBar"/>
+        <activity android:name=".ui.signin.SignInActivity"/>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

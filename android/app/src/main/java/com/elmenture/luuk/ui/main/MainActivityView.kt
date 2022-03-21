@@ -1,0 +1,10 @@
+package com.elmenture.luuk.ui.main
+
+import androidx.fragment.app.Fragment
+import com.elmenture.luuk.base.BaseActivityView
+
+interface MainActivityView: BaseActivityView {
+    fun startHomeFragment()
+    fun startAccountManagementFragment()
+    fun startMySizesFragment()
+}

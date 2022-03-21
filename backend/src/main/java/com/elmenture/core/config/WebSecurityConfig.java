@@ -13,6 +13,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/health").permitAll()
+                .antMatchers("/all").permitAll()
+                .antMatchers("/measurements/update").permitAll()
+                .antMatchers("/update-measurements").permitAll()
                 .antMatchers("/**","/image/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth/facebooksignin").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth/googlesignin").permitAll()
