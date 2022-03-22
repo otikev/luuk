@@ -49,14 +49,14 @@ public class AuthController {
         JSONObject json = new JSONObject(resultUserId);
         String userId = json.getJSONObject("data").getString("user_id");
         if (userId != null && !userId.isEmpty()) {
-            User user = userRepository.findBySocialIdAndSocialAccountType(userId, FACEBOOK.value());
+            User user = userRepository.findByUsernameAndSocialAccountType(userId, FACEBOOK.value());
 
             if (user == null) {
                 response.isNewAccount = true;
                 user = new User();
                 //user.setFirstName(String.valueOf(idTokenString.get("firstName")));
                 //user.setLastName(String.valueOf(idTokenString.get("lastName")));
-                user.setSocialId(userId);
+                user.setUsername(userId);
                 user.setSocialAccountType(FACEBOOK.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
@@ -90,14 +90,14 @@ public class AuthController {
             String userId = payload.getSubject();
             System.out.println("User ID: " + userId);
 
-            User user = userRepository.findBySocialIdAndSocialAccountType(userId, GOOGLE.value());
+            User user = userRepository.findByUsernameAndSocialAccountType(userId, GOOGLE.value());
             if (user == null) {
                 response.isNewAccount = true;
                 user = new User();
                 user.setEmail(payload.getEmail());
                 user.setFirstName(String.valueOf(payload.get("given_name")));
                 user.setLastName(String.valueOf(payload.get("family_name")));
-                user.setSocialId(payload.getSubject());
+                user.setUsername(payload.getSubject());
                 user.setSocialAccountType(GOOGLE.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
