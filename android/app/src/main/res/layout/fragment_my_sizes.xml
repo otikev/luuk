@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <views.CustomToolBar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:nav_visible="true"
+        app:toolbar_title="My Sizes" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/dimens_large_size"
+        android:layout_weight="1"
         android:background="@drawable/rectangle_cornered"
         android:orientation="vertical">
 
@@ -16,8 +26,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dimens_large_size"
-            android:layout_margin="24dp">
+            android:layout_margin="24dp"
+            android:layout_marginHorizontal="@dimen/dimens_large_size">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_overall_size"
@@ -31,21 +41,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_weight="0"
-            android:padding="4dp"
+            android:background="@drawable/rectangle_outlined_dark"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="International Size"/>
+                android:text="International Size"
+                android:textSize="16sp" />
+
             <Spinner
                 android:id="@+id/spn_international"
-                android:layout_marginStart="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/dimens_mid_size"
+                android:layout_marginStart="8dp"
                 android:layout_weight="0"
                 android:gravity="center"
                 android:textSize="16dp" />
@@ -53,16 +64,13 @@
         </LinearLayout>
 
 
-
-
         <Button
             android:id="@+id/btn_update_measurements"
             style="@style/buttonStylePrimary"
             android:layout_marginHorizontal="@dimen/dimens_large_size"
-            android:layout_weight="0"
             android:layout_marginVertical="@dimen/dimens_mid_size"
+            android:layout_weight="0"
             android:text="Update Measurements" />
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,12 +96,12 @@
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
                 android:text="Chest: 55CM"
-                app:layout_constraintHorizontal_bias=".70"
-                app:layout_constraintVertical_bias=".35"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".70"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".35" />
 
             <TextView
                 android:id="@+id/tv_waist"
@@ -104,12 +112,12 @@
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
                 android:text="Waist : 36CM"
-                app:layout_constraintHorizontal_bias=".25"
-                app:layout_constraintVertical_bias=".47"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".25"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"  />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".47" />
 
             <TextView
                 android:id="@+id/tv_hips"
@@ -121,13 +129,13 @@
                 android:text="Hips: 66CM"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".75"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias=".75"
-                app:layout_constraintVertical_bias=".55"/>
+                app:layout_constraintVertical_bias=".55" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

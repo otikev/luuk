@@ -101,6 +101,10 @@ class MySizesFragment : BaseFragment() {
             mySizesViewModel.updateBodyMeasurements()
         }
 
+        binding.toolBar.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
     }
 
     private fun updateLivedata() {

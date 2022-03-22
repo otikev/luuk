@@ -7,28 +7,31 @@
     android:orientation="vertical"
     android:paddingHorizontal="16dp">
 
-    <RelativeLayout
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="24dp"
+        android:background="@drawable/rectangle_outlined"
+        app:defaultQueryHint="Search Here"
+        app:queryBackground="@null"
+        app:iconifiedByDefault="false"
+        app:searchIcon="@drawable/search" />
+
+    <views.cardstackview.CardStackView
+        android:id="@+id/card_stack_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
-        android:clipChildren="false">
+        android:clipToPadding="false"
+        android:padding="4dp">
 
-        <views.cardstackview.CardStackView
-            android:id="@+id/card_stack_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="24dp"
-            android:clipToPadding="false"
-            android:padding="4dp">
-
-        </views.cardstackview.CardStackView>
-
-
-    </RelativeLayout>
+    </views.cardstackview.CardStackView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_rectangle_yellow"
         android:orientation="horizontal">
 
@@ -36,26 +39,77 @@
             android:id="@+id/tv_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Size:12"
-            android:textSize="18sp"
-            android:padding="16dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1"/>
+            android:padding="16dp"
+            android:text="Size:12"
+            android:textSize="18sp" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/white"/>
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Size:12"
+            android:layout_weight="1"
             android:gravity="center"
-            android:textSize="18sp"
             android:padding="16dp"
-            android:layout_weight="1"/>
+            android:text="Size:12"
+            android:textSize="18sp" />
 
     </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="36dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_rectangle_yellow"
+                android:backgroundTint="#3383CC"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="Top Picks"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_rectangle_yellow"
+                android:backgroundTint="#33B0CC"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="What's new "
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_rectangle_yellow"
+                android:backgroundTint="#CC336A"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="Trends"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 </LinearLayout>

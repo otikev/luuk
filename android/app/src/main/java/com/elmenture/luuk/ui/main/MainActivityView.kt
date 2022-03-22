@@ -7,4 +7,6 @@ interface MainActivityView: BaseActivityView {
     fun startHomeFragment()
     fun startAccountManagementFragment()
     fun startMySizesFragment()
+    fun logout()
+    fun resetBottomNavigation()
 }

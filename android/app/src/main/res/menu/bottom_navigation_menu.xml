@@ -19,9 +19,4 @@
         android:enabled="true"
         android:icon="@drawable/profile"
         android:title="@string/profile"/>
-    <item
-        android:id="@+id/navLogout"
-        android:enabled="true"
-        android:icon="@drawable/logout"
-        android:title="@string/logout"/>
 </menu>

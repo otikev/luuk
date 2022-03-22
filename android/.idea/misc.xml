@@ -10,6 +10,8 @@
         <entry key="app/src/main/res/drawable/design_primary_btn_pressed.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/design_yellow_btn.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/ic_girl.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/ic_info_square.xml" value="0.243" />
+        <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/ic_measurements_bg.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/luuk_logo.xml" value="0.3195" />
         <entry key="app/src/main/res/drawable/selector_primary_btn.xml" value="0.24" />
@@ -20,7 +22,7 @@
         <entry key="app/src/main/res/layout/banner_view.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/layout/content_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_body_measurements.xml" value="0.72" />
-        <entry key="app/src/main/res/layout/fragment_account_management.xml" value="0.2582781456953642" />
+        <entry key="app/src/main/res/layout/fragment_account_management.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.6" />
         <entry key="app/src/main/res/layout/fragment_my_sizes.xml" value="0.72" />
@@ -35,8 +37,9 @@
         <entry key="common/src/main/res/drawable/ic_white_circle.xml" value="0.1475" />
         <entry key="common/src/main/res/drawable/rectangle_cornered.xml" value="0.24" />
         <entry key="common/src/main/res/drawable/rectangle_outlined.xml" value="0.3195" />
+        <entry key="common/src/main/res/drawable/rectangle_outlined_dark.xml" value="0.161" />
         <entry key="common/src/main/res/layout/account_item.xml" value="0.4" />
-        <entry key="common/src/main/res/layout/banner_view.xml" value="0.3338541666666667" />
+        <entry key="common/src/main/res/layout/banner_view.xml" value="0.6" />
         <entry key="common/src/main/res/layout/custom_toolbar.xml" value="0.31666666666666665" />
         <entry key="common/src/main/res/layout/item_spot.xml" value="0.1375" />
         <entry key="common/src/main/res/layout/pin_view.xml" value="0.3338541666666667" />
@@ -44,7 +47,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

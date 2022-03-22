@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
-import com.elmenture.luuk.Spot
-import com.elmenture.luuk.SpotDiffCallback
 import com.elmenture.luuk.databinding.FragmentHomeBinding
-import com.elmenture.luuk.ui.CardStackAdapter
+import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 import views.cardstackview.*
 
@@ -28,6 +26,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private val cardStackView by lazy { binding.cardStackView }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
     lateinit var homeViewModel: HomeViewModel
+    private val activityView by lazy { activity as MainActivityView }
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -47,6 +46,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         initView()
         observeViewModelLiveData()
         setupCardStackView()
+        homeViewModel.fetchItems()
     }
 
     private fun observeViewModelLiveData() {
@@ -55,11 +55,6 @@ class HomeFragment : BaseFragment(), CardStackListener {
                 adapter = CardStackAdapter(createSpots())
                 cardStackView.adapter = adapter            }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        homeViewModel.fetchItems()
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
@@ -250,4 +245,10 @@ class HomeFragment : BaseFragment(), CardStackListener {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onResumeFromBackstack() {
+        super.onResumeFromBackstack()
+        activityView.resetBottomNavigation()
+    }
+
 }
