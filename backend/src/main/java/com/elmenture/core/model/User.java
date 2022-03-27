@@ -1,5 +1,6 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -39,4 +40,9 @@ public class User extends BaseEntity {
 
     @Column(name = "auth_token", nullable = true)
     private String authToken;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "measurements_id", referencedColumnName = "id")
+    private BodyMeasurements bodyMeasurements;
 }

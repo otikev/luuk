@@ -27,37 +27,26 @@ public class UserController {
     @Autowired
     private BodyMeasurementsRepository bodyMeasurementsRepository;
 
-    @GetMapping(value = "/measurements")
-    public ResponseEntity<Object> getBodyMeasurements(@RequestHeader HttpHeaders headers) {
+    @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers, @Valid @RequestBody BodyMeasurements request) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         User user = userRepository.findByAuthToken(token);
-        if(user == null){
-            return new ResponseEntity<>("User does not exist",HttpStatus.BAD_REQUEST);
-        }
-        BodyMeasurements measurements = bodyMeasurementsRepository.findByUserId(user.getId());
-        if(measurements==null ){
-            return new ResponseEntity<>("measurements do not exist for user",HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok(measurements);
-
-    }
-
-        @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers,@Valid @RequestBody BodyMeasurementsRequest request) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        User user = userRepository.findByAuthToken(token);
-        if(user == null){
-            return new ResponseEntity<>("User does not exist",HttpStatus.BAD_REQUEST);
+        if (user == null) {
+            return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        BodyMeasurements measurements = bodyMeasurementsRepository.findByUserId(user.getId());
+        BodyMeasurements measurements = user.getBodyMeasurements();
         if (measurements == null) {
             measurements = new BodyMeasurements();
         }
-        measurements.setUser(user);
         measurements.setSizeInternational(request.getSizeInternational());
         measurements.setSizeNumber(request.getSizeNumber());
-        bodyMeasurementsRepository.save(measurements);
+        measurements.setChest(request.getChest());
+        measurements.setWaist(request.getWaist());
+        measurements.setHips(request.getHips());
+
+        user.setBodyMeasurements(measurements);
+        userRepository.save(user);
 
         return ResponseEntity.ok("Updated Successfully");
     }

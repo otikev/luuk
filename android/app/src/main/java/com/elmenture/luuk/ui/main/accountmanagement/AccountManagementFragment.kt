@@ -42,6 +42,10 @@ class AccountManagementFragment : BaseFragment() {
         binding.itemLogout.setOnClickListener{
             activityView.logout()
         }
+
+        binding.itemInventoryManagement.setOnClickListener{
+            activityView.startCreateItemFragment()
+        }
     }
 
 }

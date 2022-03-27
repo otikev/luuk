@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/dimens_mid_size"
-        android:paddingHorizontal="@dimen/dimens_large_size"
+        android:paddingStart="@dimen/dimens_large_size"
+        android:paddingEnd="8dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_left_arrow" />
 
@@ -22,6 +23,7 @@
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textSize="22sp"
+                android:paddingStart="@dimen/dimens_large_size"
                 android:gravity="center_vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

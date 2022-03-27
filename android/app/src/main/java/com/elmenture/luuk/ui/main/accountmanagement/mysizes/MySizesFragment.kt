@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
@@ -44,75 +42,39 @@ class MySizesFragment : BaseFragment() {
 
     private fun observeViewModelLiveData() {
         mySizesViewModel.bodyMeasurementsLiveData.observe(viewLifecycleOwner) { bodyMeasurements ->
-            updateView(bodyMeasurements)
+            bodyMeasurements?.let {
+                updateView(it)
+            }
         }
     }
 
     private fun updateView(bodyMeasurements: BodyMeasurements) {
-        binding.etOverallSize.setText(bodyMeasurements.sizeNumber.toString())
-
-        val internationalSize = InternationalSizes.fromString(bodyMeasurements.sizeInternational!!)
-
-        binding.tvChest.text = "Chest: ${internationalSize!!.sizeMeasurement.bust_chest} \""
-        binding.tvWaist.text = "Waist: ${internationalSize!!.sizeMeasurement.waist} \""
-        binding.tvHips.text = "Hips: ${internationalSize!!.sizeMeasurement.hips} \""
+        binding.tvOverallSize.text = "Overall Size: ${bodyMeasurements.sizeNumber}"
+        binding.tvInternationalSize.text =
+            "International Size: ${bodyMeasurements.sizeInternational}"
+        binding.tvChest.text = "Chest: ${bodyMeasurements.chest} \""
+        binding.tvWaist.text = "Waist: ${bodyMeasurements.waist} \""
+        binding.tvHips.text = "Hips: ${bodyMeasurements.hips} \""
     }
 
     private fun initView() {
         activityView = requireActivity() as MainActivityView
         mySizesViewModel = ViewModelProvider(requireActivity()).get(MySizesViewModel::class.java);
-        setUpSizesSpinner()
-        mySizesViewModel.getUserBodyMeasurements()
-    }
-
-    private fun setUpSizesSpinner() {
-        for (size in InternationalSizes.values()) {
-            spinnerArray.add(size.sizeName)
-        }
-
-        val spinnerAdapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            spinnerArray
-        )
-
-        binding.spnInternational.adapter = spinnerAdapter
     }
 
     private fun setUpEventListeners() {
-        binding.spnInternational.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    p0: AdapterView<*>?,
-                    p1: View?,
-                    position: Int,
-                    p3: Long
-                ) {
-                    updateLivedata()
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-
-            }
-
         binding.btnUpdateMeasurements.setOnClickListener {
-            updateLivedata()
-            mySizesViewModel.updateBodyMeasurements()
+            showUpdateMeasurementsDialog()
         }
 
-        binding.toolBar.setOnClickListener {
+        binding.toolBar.setNavClickListener {
             requireActivity().onBackPressed()
         }
 
     }
 
-    private fun updateLivedata() {
-        val bodyMeasurements = BodyMeasurements().apply {
-            sizeNumber = binding.etOverallSize.text.toString().toInt()
-            sizeInternational = binding.spnInternational.selectedItem.toString()
-        }
-        mySizesViewModel.bodyMeasurementsLiveData.value = bodyMeasurements
+    private fun showUpdateMeasurementsDialog() {
+        val dialog = UpdateMeasurementsDialog.newInstance()
+        dialog.show(requireActivity().supportFragmentManager)
     }
-
 }

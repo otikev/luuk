@@ -1,26 +1,27 @@
 package com.elmenture.luuk.base
 
-import com.facebook.CallbackManager.Factory.create
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.facebook.CallbackManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.facebook.AccessToken
-import com.facebook.login.LoginManager
 import com.elmenture.luuk.R
 import com.elmenture.luuk.utils.LogUtils
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.CallbackManager.Factory.create
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kokonetworks.kokosasa.base.BaseFragment
 import userdata.User
 
 abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
     protected var logUtils = LogUtils(this.javaClass)
+
     @JvmField
     protected var mGoogleSignInClient: GoogleSignInClient? = null
+
     @JvmField
     protected var callbackManager: CallbackManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.layout_fragment_container, fragment, tag)
             .commitAllowingStateLoss()
+    }
+
+    fun clearBackStack() {
+        suspend {
+            while (supportFragmentManager.backStackEntryCount > 0) {
+                supportFragmentManager.popBackStack()
+            }
+        }
     }
 
     private fun configureGoogleSignIn() {

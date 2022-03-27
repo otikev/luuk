@@ -9,4 +9,5 @@ interface MainActivityView: BaseActivityView {
     fun startMySizesFragment()
     fun logout()
     fun resetBottomNavigation()
+    fun startCreateItemFragment()
 }

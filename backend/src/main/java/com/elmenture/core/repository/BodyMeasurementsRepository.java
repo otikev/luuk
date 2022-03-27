@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface BodyMeasurementsRepository extends JpaRepository<BodyMeasurements, Long> {
-    BodyMeasurements findByUserId(long userId);
+
 }

@@ -14,4 +14,7 @@ class SignInResponse {
 
     @field:SerializedName("email")
     var email: String? = null
+
+    @field:SerializedName("measurements")
+    var bodyMeasurements: BodyMeasurements? = null
 }

@@ -52,7 +52,7 @@ public class AuthController {
             User user = userRepository.findBySocialIdAndSocialAccountType(userId, FACEBOOK.value());
 
             if (user == null) {
-                response.isNewAccount = true;
+                response.setNewAccount(true);
                 user = new User();
                 //user.setFirstName(String.valueOf(idTokenString.get("firstName")));
                 //user.setLastName(String.valueOf(idTokenString.get("lastName")));
@@ -61,11 +61,12 @@ public class AuthController {
                 //boolean emailVerified = payload.getEmailVerified();
             }
             String auth = createSession(user);
-            response.authToken = auth;
-            response.success = true;
+            response.setAuthToken(auth);
+            response.setSuccess(true);
+            response.setMeasurements(user.getBodyMeasurements());
         } else {
             System.out.println("Invalid user token.");
-            response.success = false;
+            response.setSuccess(false) ;
         }
 
         return ResponseEntity.ok(response);
@@ -92,7 +93,7 @@ public class AuthController {
 
             User user = userRepository.findBySocialIdAndSocialAccountType(userId, GOOGLE.value());
             if (user == null) {
-                response.isNewAccount = true;
+                response.setNewAccount(true);
                 user = new User();
                 user.setEmail(payload.getEmail());
                 user.setFirstName(String.valueOf(payload.get("given_name")));
@@ -102,11 +103,12 @@ public class AuthController {
                 //boolean emailVerified = payload.getEmailVerified();
             }
             String auth = createSession(user);
-            response.authToken = auth;
-            response.success = true;
+            response.setAuthToken(auth);
+            response.setSuccess(true) ;
+            response.setMeasurements(user.getBodyMeasurements());
         } else {
             System.out.println("Invalid ID token.");
-            response.success = false;
+            response.setSuccess(false) ;
         }
 
         return ResponseEntity.ok(response);

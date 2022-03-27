@@ -7,6 +7,7 @@ import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
+import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.google.android.material.navigation.NavigationBarView
@@ -28,6 +29,7 @@ class MainActivity : AuthenticatedActivity(),
     }
 
     override fun startHomeFragment() {
+        clearBackStack()
         replaceFragment(HomeFragment.newInstance(), HomeFragment::class.java.simpleName)
     }
 
@@ -44,6 +46,11 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun startMySizesFragment() {
         addFragment(MySizesFragment.newInstance(), MySizesFragment::class.java.canonicalName)
+    }
+
+
+    override fun startCreateItemFragment() {
+        addFragment(CreateNewItemFragment.newInstance(), CreateNewItemFragment::class.java.canonicalName)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

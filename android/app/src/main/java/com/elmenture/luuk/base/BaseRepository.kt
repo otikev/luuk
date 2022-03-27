@@ -3,6 +3,7 @@ package com.elmenture.luuk.base
 import androidx.lifecycle.MutableLiveData
 import network.service.EndPoints
 import models.BodyMeasurements
+import models.Item
 import network.RestClient
 import network.interceptors.ConnectivityInterceptor
 import utils.LogUtils
@@ -61,8 +62,18 @@ object BaseRepository {
         return processRequest(call)
     }
 
+    fun signInWithFacebook(request: HashMap<String, String>): BaseApiState {
+        val call = RestClient.service(EndPoints::class.java).facebookSignIn(request)
+        return processRequest(call)
+    }
+
     fun fetchItems(): BaseApiState {
         val call = RestClient.service(EndPoints::class.java).fetchItems()
+        return processRequest(call)
+    }
+
+    fun createNewItem(request: Item): BaseApiState {
+        val call = RestClient.service(EndPoints::class.java).createNewItem(request)
         return processRequest(call)
     }
 

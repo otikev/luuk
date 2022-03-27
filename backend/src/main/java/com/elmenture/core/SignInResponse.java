@@ -1,8 +1,13 @@
 package com.elmenture.core;
 
+import com.elmenture.core.model.BodyMeasurements;
+import lombok.Data;
+
+@Data
 public class SignInResponse {
-    public boolean success = false;
-    public boolean isNewAccount = false;
-    public String authToken;
-    public String email;
+    private boolean success = false;
+    private boolean isNewAccount = false;
+    private String authToken;
+    private String email;
+    private BodyMeasurements measurements;
 }

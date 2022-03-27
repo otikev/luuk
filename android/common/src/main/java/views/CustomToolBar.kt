@@ -34,7 +34,7 @@ class CustomToolBar : LinearLayout {
     }
 
     fun setNavClickListener(onClickListener: OnClickListener){
-        ivImage?.setOnClickListener { onClickListener }
+        ivImage?.setOnClickListener(onClickListener)
     }
     private fun initializeViews(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
