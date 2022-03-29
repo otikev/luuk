@@ -24,7 +24,7 @@ public class AuthorizationRequestInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
-        builder.addHeader("Authorization", authKey);
+        builder.addHeader("Luuk-X-Authorization", authKey);
         return chain.proceed(builder.build());
     }
 }

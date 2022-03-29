@@ -9,8 +9,8 @@ class SignInResponse {
     @field:SerializedName("isNewAccount")
     var isNewAccount: Boolean = false
 
-    @field:SerializedName("authToken")
-    var authToken: String? = null
+    @field:SerializedName("sessionKey")
+    var sessionKey: String? = null
 
     @field:SerializedName("email")
     var email: String? = null

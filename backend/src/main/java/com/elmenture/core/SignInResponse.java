@@ -7,7 +7,7 @@ import lombok.Data;
 public class SignInResponse {
     private boolean success = false;
     private boolean isNewAccount = false;
-    private String authToken;
+    private String sessionKey;
     private String email;
     private BodyMeasurements measurements;
 }

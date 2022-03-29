@@ -39,4 +39,9 @@ public class ItemController {
     public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
+
+    @RequestMapping("/open")
+    public String open(){
+        return "Is this what you expect to see?";
+    }
 }
