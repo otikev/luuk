@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class RestAuthenticationProvider  implements AuthenticationProvider {
+public class RestAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     UserDetailsServiceImpl userService;
@@ -38,11 +38,11 @@ public class RestAuthenticationProvider  implements AuthenticationProvider {
         }
 
         User user = repository.findByAuthToken(token);
-        if(user == null){
+        if (user == null) {
             throw new BadCredentialsException("Invalid or expired token");
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,token,userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, token, userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return authenticationToken;

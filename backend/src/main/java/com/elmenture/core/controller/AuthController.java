@@ -10,16 +10,22 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -60,8 +66,8 @@ public class AuthController {
                 user.setSocialAccountType(FACEBOOK.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
-            String auth = createSession(user);
-            response.authToken = auth;
+
+            response.sessionKey = createSession(user);
             response.success = true;
         } else {
             System.out.println("Invalid user token.");
@@ -101,8 +107,8 @@ public class AuthController {
                 user.setSocialAccountType(GOOGLE.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
-            String auth = createSession(user);
-            response.authToken = auth;
+
+            response.sessionKey = createSession(user);
             response.success = true;
         } else {
             System.out.println("Invalid ID token.");
@@ -113,9 +119,9 @@ public class AuthController {
     }
 
     private String createSession(User user) {
-        UUID uuid = UUID.randomUUID();
-        user.setAuthToken(uuid.toString());
+        user.setAuthToken(UUID.randomUUID().toString());
         userRepository.save(user);
-        return user.getAuthToken();
+        String sessionKey = UUID.fromString(DateTime.now().toString())+":"+user.getUsername()+":"+user.getAuthToken();
+        return Base64.getEncoder().encodeToString(sessionKey.getBytes(StandardCharsets.UTF_8));
     }
 }
