@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,12 +26,16 @@ class CustomToolBar : LinearLayout {
         context.theme.obtainStyledAttributes(attrs, R.styleable.CustomToolBar, 0, 0).apply {
             try {
                 tvTitle?.text = getString(R.styleable.CustomToolBar_toolbar_title)
+                ivImage?.visibility = if (getBoolean(R.styleable.CustomToolBar_nav_visible, true)) View.VISIBLE else View.GONE
             } finally {
                 recycle()
             }
         }
     }
 
+    fun setNavClickListener(onClickListener: OnClickListener){
+        ivImage?.setOnClickListener(onClickListener)
+    }
     private fun initializeViews(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.custom_toolbar, this, true)

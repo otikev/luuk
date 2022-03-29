@@ -1,5 +1,6 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +46,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "auth_token")
     private String authToken;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "measurements_id", referencedColumnName = "id")
+    private BodyMeasurements bodyMeasurements;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

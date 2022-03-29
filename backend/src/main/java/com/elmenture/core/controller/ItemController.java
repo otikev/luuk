@@ -23,12 +23,13 @@ public class ItemController {
     private ItemRepository itemRepository;
 
     @PostMapping("/new")
-    public ResponseEntity<ItemCreationResponse> createItem(@Valid @RequestParam MultiValueMap<String, String> _item) {
+    public ResponseEntity<ItemCreationResponse> createItem(@Valid @RequestBody Item _item) {
         Item item = new Item();
-        item.setDescription(String.valueOf(_item.get("description")));
-        item.setSizeInternational(String.valueOf(_item.get("size_international")));
-        item.setSizeNumber(Long.parseLong(String.valueOf(_item.get("size_number"))));
-        item.setPrice(Long.parseLong(String.valueOf(_item.get("price"))));
+        item.setDescription(String.valueOf(_item.getDescription()));
+        item.setSizeInternational(String.valueOf(_item.getSizeInternational()));
+        item.setSizeNumber(Long.parseLong(String.valueOf(_item.getSizeNumber())));
+        item.setPrice(Long.parseLong(String.valueOf(_item.getPrice())));
+        item.setImageUrl(String.valueOf(_item.getImageUrl()));
         itemRepository.save(item);
 
         return ResponseEntity.ok(new ItemCreationResponse(item.getId()));

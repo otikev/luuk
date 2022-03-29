@@ -6,7 +6,7 @@ import com.elmenture.luuk.base.BaseRepository
 object SignInRepository {
 
     fun signInWithFacebook(request: HashMap<String, String>): BaseApiState {
-        return BaseRepository.signInWithGoogle(request)
+        return BaseRepository.signInWithFacebook(request)
     }
 
     fun signInWithGoogle(request: HashMap<String, String>): BaseApiState {

@@ -6,5 +6,11 @@ data class BodyMeasurements(
     @field:SerializedName("sizeInternational")
     var sizeInternational: String? = "L",
     @field:SerializedName("sizeNumber")
-    var sizeNumber: Int = 12
+    var sizeNumber: Int = 0,
+    @field:SerializedName("chest")
+    var chest: Int = 0,
+    @field:SerializedName("waist")
+    var waist: Int = 0,
+    @field:SerializedName("hips")
+    var hips: Int = 0,
 )

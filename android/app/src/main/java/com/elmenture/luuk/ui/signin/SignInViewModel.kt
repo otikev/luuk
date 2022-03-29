@@ -19,7 +19,7 @@ class SignInViewModel : ViewModel() {
 
     fun signInWithFacebook(map: HashMap<String, String>) {
         viewModelScope.launch(Dispatchers.IO) {
-            signUpApiState.postValue(SignInRepository.signInWithGoogle(map))
+            signUpApiState.postValue(SignInRepository.signInWithFacebook(map))
         }
     }
 }

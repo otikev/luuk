@@ -21,14 +21,15 @@ public class BodyMeasurements extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @JsonIgnore
-    @ManyToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
     @Column(name = "size_international")
     private String sizeInternational;
 
     @Column(name = "size_number")
-    private long sizeNumber;
+    private int sizeNumber;
+    @Column(name = "chest")
+    private int chest;
+    @Column(name = "waist")
+    private int waist;
+    @Column(name = "hips")
+    private int hips;
 }

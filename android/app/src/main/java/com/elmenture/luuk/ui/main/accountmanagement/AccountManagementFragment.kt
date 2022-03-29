@@ -38,6 +38,14 @@ class AccountManagementFragment : BaseFragment() {
         binding.itemMySizes.setOnClickListener {
             activityView.startMySizesFragment()
         }
+
+        binding.itemLogout.setOnClickListener{
+            activityView.logout()
+        }
+
+        binding.itemInventoryManagement.setOnClickListener{
+            activityView.startCreateItemFragment()
+        }
     }
 
 }

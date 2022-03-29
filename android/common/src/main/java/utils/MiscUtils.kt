@@ -103,11 +103,9 @@ object MiscUtils {
 
 
     @JvmStatic
-    fun getFormattedAmount(number: Double?, currency: String): String {
-        val formatter = DecimalFormat("#,###.##")
-        val amountStr = formatter.format(number)
-
-        return String.format("$currency %s", amountStr)
+    fun getFormattedAmount(number: Double?): String {
+        val formatter = DecimalFormat("#,###.00")
+        return formatter.format(number)
     }
 
 

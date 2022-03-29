@@ -2,44 +2,58 @@ package com.elmenture.luuk.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.view.get
 import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.R
+import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
-import com.elmenture.luuk.ui.main.home.HomeFragment
+import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AuthenticatedActivity(),
     NavigationBarView.OnItemSelectedListener, MainActivityView {
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupBottomNavView()
-    }
-
-    override fun onResume() {
-        super.onResume()
         startHomeFragment()
     }
 
     override fun startHomeFragment() {
+        clearBackStack()
         replaceFragment(HomeFragment.newInstance(), HomeFragment::class.java.simpleName)
     }
 
     override fun startAccountManagementFragment() {
-        replaceFragment(AccountManagementFragment.newInstance(), AccountManagementFragment::class.java.simpleName)
+        addFragment(
+            AccountManagementFragment.newInstance(),
+            AccountManagementFragment::class.java.canonicalName
+        )
+    }
+
+    override fun logout() {
+        super.logout()
     }
 
     override fun startMySizesFragment() {
-        replaceFragment(MySizesFragment.newInstance(), MySizesFragment::class.java.simpleName)
+        addFragment(MySizesFragment.newInstance(), MySizesFragment::class.java.canonicalName)
+    }
+
+
+    override fun startCreateItemFragment() {
+        addFragment(CreateNewItemFragment.newInstance(), CreateNewItemFragment::class.java.canonicalName)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.navHome -> {
-                startHomeFragment()
+                if(!item.isChecked)
+                    startHomeFragment()
                 true
             }
             R.id.navSearch -> {
@@ -51,19 +65,20 @@ class MainActivity : AuthenticatedActivity(),
                 true
             }
             R.id.navProfile -> {
-                startAccountManagementFragment()
+                if(!item.isChecked)
+                    startAccountManagementFragment()
                 true
             }
-            R.id.navLogout -> {
-                logout()
-                true
-            }
+
             else -> false
         }
     }
 
     private fun setupBottomNavView() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnItemSelectedListener(this)
+        binding.bottomNavigation.setOnItemSelectedListener(this)
+    }
+
+    override fun resetBottomNavigation() {
+        binding.bottomNavigation.menu.findItem(R.id.navHome).isChecked =  true
     }
 }
