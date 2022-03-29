@@ -48,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/items/open");//for testing
+        web.ignoring().antMatchers("/");
+        web.ignoring().antMatchers("/**", "/image/**");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/facebooksignin");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/googlesignin");
     }
@@ -56,8 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/**", "/image/**").permitAll()
                 .anyRequest().authenticated().and()
                 .requestCache().disable();
         http.authenticationProvider(restAuthenticationProvider);
