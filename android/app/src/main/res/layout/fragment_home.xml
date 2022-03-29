@@ -74,39 +74,47 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/buttonStylePrimary"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/ic_rectangle_yellow"
                 android:backgroundTint="#3383CC"
                 android:gravity="center"
                 android:paddingHorizontal="24dp"
                 android:text="Top Picks"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/buttonStylePrimary"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/ic_rectangle_yellow"
                 android:backgroundTint="#33B0CC"
-                android:gravity="center"
                 android:paddingHorizontal="24dp"
-                android:text="What's new "
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:text="What's New " />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/ic_rectangle_yellow"
+                style="@style/buttonStylePrimary"
                 android:backgroundTint="#CC336A"
-                android:gravity="center"
                 android:paddingHorizontal="24dp"
-                android:text="Trends"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:text="Trends" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                style="@style/buttonStylePrimary"
+                android:backgroundTint="#388E3C"
+                android:paddingHorizontal="24dp"
+                android:text="Favorites" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                style="@style/buttonStylePrimary"
+                android:backgroundTint="#F57C00"
+                android:paddingHorizontal="24dp"
+                android:text="Recently Viewed" />
 
 
         </LinearLayout>

@@ -14,6 +14,7 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
+import utils.MiscUtils
 import views.cardstackview.*
 
 
@@ -22,7 +23,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var adapter : CardStackAdapter
+    private lateinit var adapter: CardStackAdapter
     private val cardStackView by lazy { binding.cardStackView }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
     lateinit var homeViewModel: HomeViewModel
@@ -53,7 +54,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) { items ->
             items?.let {
                 adapter = CardStackAdapter(createSpots())
-                cardStackView.adapter = adapter            }
+                cardStackView.adapter = adapter
+            }
         }
     }
 
@@ -83,8 +85,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val priceCents = adapter.getSpots()[position].priceCents
         val size = adapter.getSpots()[position].sizeInternational
 
-        binding.tvPrice.text = "KES  ${priceCents/100}"
-        binding.tvSize.text = "Size  $size"
+        binding.tvPrice.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "KES", MiscUtils.getFormattedAmount((priceCents / 100).toDouble())))
+        binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text,"Size" ,size))
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
@@ -113,7 +115,6 @@ class HomeFragment : BaseFragment(), CardStackListener {
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
         cardStackView.layoutManager = manager
-        //cardStackView.adapter = adapter
         cardStackView.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
                 supportsChangeAnimations = false
@@ -235,7 +236,16 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val spots = ArrayList<Spot>()
         homeViewModel.itemsLiveData.value?.let {
             for (item in it) {
-            spots.add(Spot(url = item.imageUrl!!, priceCents = item.price!!, sizeInternational = item.sizeInternational!!, sizeNumber = item.sizeNumber , itemId = item.id!!, description = item.description!!))
+                spots.add(
+                    Spot(
+                        url = item.imageUrl!!,
+                        priceCents = item.price!!,
+                        sizeInternational = item.sizeInternational!!,
+                        sizeNumber = item.sizeNumber,
+                        itemId = item.id!!,
+                        description = item.description!!
+                    )
+                )
             }
         }
         return spots

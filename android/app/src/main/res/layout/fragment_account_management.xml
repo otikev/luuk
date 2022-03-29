@@ -61,7 +61,7 @@
                 android:id="@+id/item_inventory_management"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:image="@drawable/ic_setting"
+                app:image="@drawable/ic_inventory_management"
                 app:title="Inventory Management" />
 
             <views.SimpleItemView

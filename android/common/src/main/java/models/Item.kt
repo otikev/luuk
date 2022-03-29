@@ -24,6 +24,6 @@ data class Item(
 )
 
 fun Item.isSet(): Boolean {
-    return price != null && !imageUrl.isNullOrEmpty() && !sizeInternational.isNullOrEmpty() &&
-            !description.isNullOrBlank() && description.isNullOrBlank() && sizeNumber !=null
+    return this.price != null && !this.imageUrl.isNullOrEmpty() && !this.sizeInternational.isNullOrEmpty() &&
+            !this.description.isNullOrBlank() && this.description.isNullOrBlank() && this.sizeNumber !=null
 }

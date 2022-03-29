@@ -21,10 +21,6 @@ class MainActivity : AuthenticatedActivity(),
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBottomNavView()
-    }
-
-    override fun onStart() {
-        super.onStart()
         startHomeFragment()
     }
 
