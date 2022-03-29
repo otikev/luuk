@@ -126,7 +126,8 @@ public class AuthController {
     private String createSession(User user) {
         user.setAuthToken(UUID.randomUUID().toString());
         userRepository.save(user);
-        String sessionKey = UUID.fromString(DateTime.now().toString())+":"+user.getUsername()+":"+user.getAuthToken();
+
+        String sessionKey = UUID.randomUUID().toString().replace("-", "")+":"+user.getUsername()+":"+user.getAuthToken();
         return Base64.getEncoder().encodeToString(sessionKey.getBytes(StandardCharsets.UTF_8));
     }
 }

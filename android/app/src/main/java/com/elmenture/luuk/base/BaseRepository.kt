@@ -68,12 +68,12 @@ object BaseRepository {
     }
 
     fun fetchItems(): BaseApiState {
-        val call = RestClient.service(EndPoints::class.java).fetchItems()
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchItems()
         return processRequest(call)
     }
 
     fun createNewItem(request: Item): BaseApiState {
-        val call = RestClient.service(EndPoints::class.java).createNewItem(request)
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).createNewItem(request)
         return processRequest(call)
     }
 
