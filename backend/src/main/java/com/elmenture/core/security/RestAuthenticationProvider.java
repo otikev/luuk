@@ -2,7 +2,7 @@ package com.elmenture.core.security;
 
 import com.elmenture.core.model.User;
 import com.elmenture.core.repository.UserRepository;
-import com.elmenture.core.service.UserDetailsServiceImpl;
+import com.elmenture.core.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

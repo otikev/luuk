@@ -1,4 +1,4 @@
-package com.elmenture.core;
+package com.elmenture.core.payload;
 
 import com.elmenture.core.model.BodyMeasurements;
 import lombok.Data;

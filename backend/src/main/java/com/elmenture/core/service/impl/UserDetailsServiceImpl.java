@@ -1,4 +1,4 @@
-package com.elmenture.core.service;
+package com.elmenture.core.service.impl;
 
 import com.elmenture.core.model.User;
 import com.elmenture.core.repository.UserRepository;

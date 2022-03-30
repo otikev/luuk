@@ -1,6 +1,6 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.SignInResponse;
+import com.elmenture.core.payload.SignInResponse;
 import com.elmenture.core.model.User;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.utils.Properties;
@@ -10,7 +10,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.UUID;
 
-import static com.elmenture.core.SocialAccountType.FACEBOOK;
-import static com.elmenture.core.SocialAccountType.GOOGLE;
+import static com.elmenture.core.utils.SocialAccountType.FACEBOOK;
+import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
 
 @RestController
 @RequestMapping("/auth")
@@ -128,6 +127,7 @@ public class AuthController {
         userRepository.save(user);
 
         String sessionKey = UUID.randomUUID().toString().replace("-", "")+":"+user.getUsername()+":"+user.getAuthToken();
-        return Base64.getEncoder().encodeToString(sessionKey.getBytes(StandardCharsets.UTF_8));
+        String base64String = Base64.getEncoder().encodeToString(sessionKey.getBytes(StandardCharsets.UTF_8));
+        return base64String;
     }
 }

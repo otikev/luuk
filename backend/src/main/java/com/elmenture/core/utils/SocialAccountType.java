@@ -1,4 +1,4 @@
-package com.elmenture.core;
+package com.elmenture.core.utils;
 
 public enum SocialAccountType {
     FACEBOOK("facebook"),
