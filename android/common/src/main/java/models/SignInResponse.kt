@@ -17,4 +17,10 @@ class SignInResponse {
 
     @field:SerializedName("measurements")
     var bodyMeasurements: BodyMeasurements? = null
+
+    @field:SerializedName("s3AccessKeyId")
+    var s3AccessKeyId: String? = null
+
+    @field:SerializedName("s3SecretKeyId")
+    var s3SecretKeyId: String? = null
 }

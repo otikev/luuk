@@ -10,4 +10,6 @@ public class SignInResponse {
     private String sessionKey;
     private String email;
     private BodyMeasurements measurements;
+    private String s3AccessKeyId;
+    private String s3SecretKeyId;
 }

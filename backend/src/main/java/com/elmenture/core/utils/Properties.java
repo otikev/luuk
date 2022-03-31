@@ -9,4 +9,6 @@ public class Properties {
     public static String facebookAppSecret = System.getenv("FACEBOOK_APP_SECRET");
     public static String googleClientId = System.getenv("GOOGLE_SERVER_CLIENT_ID");
     public static String googleClientSecret = System.getenv("GOOGLE_SERVER_CLIENT_SECRET");
+    public static String amazonS3AccessKeyId = System.getenv("S3_ACCESS_KEY_ID");
+    public static String amazonS3SecretKeyId = System.getenv("S3_SECRET_KEY_ID");
 }
