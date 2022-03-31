@@ -22,6 +22,7 @@ import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 import models.Item
+import userdata.User
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -37,7 +38,10 @@ class CreateNewItemFragment : BaseFragment() {
     val spinnerArray = ArrayList<String>()
 
     private var creds: BasicAWSCredentials =
-        BasicAWSCredentials(ACCESS_ID, SECRET_KEY)
+        BasicAWSCredentials(
+            User.getCurrent().userDetails.s3AccessKeyId,
+            User.getCurrent().userDetails.s3SecretKeyId
+        )
     private var s3Client: AmazonS3Client = AmazonS3Client(creds)
     private val PICK_IMAGE_REQUEST = 100
     private lateinit var filePath: Uri
@@ -45,11 +49,7 @@ class CreateNewItemFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = CreateNewItemFragment()
-
-
-        val ACCESS_ID = ""
-        val SECRET_KEY = ""
-        val BUCKET_NAME = ""
+        val BUCKET_NAME = "" //TODO: set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
@@ -154,11 +154,17 @@ class CreateNewItemFragment : BaseFragment() {
     private fun uploadImage() {
 
         val trans = TransferUtility.builder().context(requireContext()).s3Client(s3Client).build()
-        val observer: TransferObserver = trans.upload(BUCKET_NAME, filePath.lastPathSegment, file)//manual storage permission
+        val observer: TransferObserver =
+            trans.upload(BUCKET_NAME, filePath.lastPathSegment, file)//manual storage permission
         observer.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED) {
-                    val url = s3Client.generatePresignedUrl(GeneratePresignedUrlRequest(BUCKET_NAME, observer.key)).toString()
+                    val url = s3Client.generatePresignedUrl(
+                        GeneratePresignedUrlRequest(
+                            BUCKET_NAME,
+                            observer.key
+                        )
+                    ).toString()
 
                     Log.d("S3-TAG", "success")
                     Log.d("S3-TAG", url)
