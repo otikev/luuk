@@ -2,6 +2,7 @@ package network.service
 
 import models.BodyMeasurements
 import models.Item
+import models.ItemResponse
 import models.SignInResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -23,6 +24,9 @@ interface EndPoints {
 
     @GET("items/all")
     fun fetchItems(): Call<List<Item>>
+
+    @GET("items/paginated")
+    fun fetchItemsPaginated(@Query("page") page: Int, @Query("size") size: Int): Call<ItemResponse>
 
     @POST("items/new")
     fun createNewItem(@Body request: Item): Call<ResponseBody>

@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import models.Item
+import models.ItemResponse
 
 class HomeViewModel : ViewModel() {
     var itemsLiveData = MutableLiveData(ArrayList<Item>())
@@ -21,7 +22,8 @@ class HomeViewModel : ViewModel() {
             val response = HomeRepository.fetchItems()
             withContext(Dispatchers.Main) {
               if(response.isSuccessful){
-                  itemsLiveData.value = response.data as ArrayList<Item>
+                  val list = response.data as ItemResponse
+                  itemsLiveData.value = list.content as ArrayList<Item>
               }
             }
         }

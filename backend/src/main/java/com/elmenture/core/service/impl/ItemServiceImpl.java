@@ -68,7 +68,12 @@ public class ItemServiceImpl implements ItemService {
         itemDto.setSizeInternational(item.getSizeInternational());
         itemDto.setSizeNumber(item.getSizeNumber());
         itemDto.setPrice(item.getPrice());
-        itemDto.setImageUrl(item.getImageUrl());
+        if(item.getImageUrl()==null || item.getImageUrl().isEmpty()){
+            itemDto.setImageUrl("https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png");//Default image
+        }else{
+            itemDto.setImageUrl(item.getImageUrl());
+        }
+
         return itemDto;
     }
 

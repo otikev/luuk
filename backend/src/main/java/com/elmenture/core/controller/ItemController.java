@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 /**
  * Created by otikev on 17-Mar-2022
  */
@@ -46,10 +48,11 @@ public class ItemController {
     }
 
     @GetMapping("/paginated")
-    public ItemResponse getItemsPaginated(@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+    public ResponseEntity<ItemResponse>  getItemsPaginated(@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
                                           @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
         //First page is 0
-        return itemService.getAllItems(pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
+        ItemResponse response = itemService.getAllItems(pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping("/open")

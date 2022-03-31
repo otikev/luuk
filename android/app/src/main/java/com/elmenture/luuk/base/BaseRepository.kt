@@ -1,20 +1,19 @@
 package com.elmenture.luuk.base
 
 import androidx.lifecycle.MutableLiveData
-import network.service.EndPoints
 import models.BodyMeasurements
 import models.Item
 import network.RestClient
 import network.interceptors.ConnectivityInterceptor
+import network.service.EndPoints
+import retrofit2.Call
 import utils.LogUtils
 import utils.NetUtils
-import retrofit2.Call
-import java.util.HashMap
 
 object BaseRepository {
     val responseErrorCode = MutableLiveData<Int>()
     val blockUserInteraction = MutableLiveData(false)
-    val TAG="BaseRepository"
+    val TAG = "BaseRepository"
 
     private fun processRequest(call: Call<*>): BaseApiState {
         var viewState: BaseApiState
@@ -49,11 +48,14 @@ object BaseRepository {
     }
 
     fun doPostUserBodyMeasurements(request: BodyMeasurements): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).postUserBodyMeasurements(request)
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .postUserBodyMeasurements(request)
         return processRequest(call)
     }
+
     fun getUserBodyMeasurements(): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).getUserBodyMeasurements()
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .getUserBodyMeasurements()
         return processRequest(call)
     }
 
@@ -72,8 +74,15 @@ object BaseRepository {
         return processRequest(call)
     }
 
+    fun fetchItemsPaginated(page: Int, size: Int): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .fetchItemsPaginated(page, size)
+        return processRequest(call)
+    }
+
     fun createNewItem(request: Item): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).createNewItem(request)
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).createNewItem(request)
         return processRequest(call)
     }
 
