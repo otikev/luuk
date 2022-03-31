@@ -47,9 +47,9 @@ class CreateNewItemFragment : BaseFragment() {
         fun newInstance() = CreateNewItemFragment()
 
 
-        val ACCESS_ID = "AKIAVKGR4LJBKJLX3Z6N"
-        val SECRET_KEY = "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"
-        val BUCKET_NAME = "luukatme-dev"
+        val ACCESS_ID = ""
+        val SECRET_KEY = ""
+        val BUCKET_NAME = ""
     }
 
     override fun onCreateView(
