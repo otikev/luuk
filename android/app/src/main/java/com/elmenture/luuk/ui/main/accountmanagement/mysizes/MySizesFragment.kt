@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
@@ -37,25 +39,9 @@ class MySizesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         setUpEventListeners()
-        observeViewModelLiveData()
+        setUpSizesSpinner()
     }
 
-    private fun observeViewModelLiveData() {
-        mySizesViewModel.bodyMeasurementsLiveData.observe(viewLifecycleOwner) { bodyMeasurements ->
-            bodyMeasurements?.let {
-                updateView(it)
-            }
-        }
-    }
-
-    private fun updateView(bodyMeasurements: BodyMeasurements) {
-        binding.tvOverallSize.text = "Overall Size: ${bodyMeasurements.sizeNumber}"
-        binding.tvInternationalSize.text =
-            "International Size: ${bodyMeasurements.sizeInternational}"
-        binding.tvChest.text = "Chest: ${bodyMeasurements.chest} \""
-        binding.tvWaist.text = "Waist: ${bodyMeasurements.waist} \""
-        binding.tvHips.text = "Hips: ${bodyMeasurements.hips} \""
-    }
 
     private fun initView() {
         activityView = requireActivity() as MainActivityView
@@ -63,8 +49,38 @@ class MySizesFragment : BaseFragment() {
     }
 
     private fun setUpEventListeners() {
-        binding.btnUpdateMeasurements.setOnClickListener {
-            showUpdateMeasurementsDialog()
+        binding.rgOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_size -> {
+                    binding.llSizes.visibility = View.VISIBLE
+                    binding.llDimensions.visibility = View.GONE
+                }
+                R.id.rb_dimensions -> {
+                    binding.llSizes.visibility = View.GONE
+                    binding.llDimensions.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        binding.rgSizes.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_int -> {
+                    binding.llInternationalContainer.visibility = View.VISIBLE
+                    binding.tiEnterSize.visibility = View.GONE
+
+                }
+                else -> {
+                    binding.llInternationalContainer.visibility = View.GONE
+                    binding.tiEnterSize.visibility = View.VISIBLE
+                }
+            }
+        }
+
+
+        binding.btnAccept.setOnClickListener {
+            getMeasurementsData()?.let {
+                mySizesViewModel.updateBodyMeasurements(it)
+            }
         }
 
         binding.toolBar.setNavClickListener {
@@ -73,8 +89,38 @@ class MySizesFragment : BaseFragment() {
 
     }
 
-    private fun showUpdateMeasurementsDialog() {
-        val dialog = UpdateMeasurementsDialog.newInstance()
-        dialog.show(requireActivity().supportFragmentManager)
+    private fun getMeasurementsData(): BodyMeasurements? {
+        if (binding.rbDimensions.isSelected) {
+            return BodyMeasurements(chest = binding.etChest.text.toString().toInt())
+        }
+        if (binding.rbInt.isSelected) {
+            return BodyMeasurements(sizeInternational = binding.spnInternational.selectedItem.toString())
+        }
+        when (binding.rgSizes.checkedRadioButtonId) {
+            R.id.rb_us -> {
+                return BodyMeasurements(sizeUs = binding.etEnterSize.text.toString().toInt())
+            }
+            R.id.rb_uk -> {
+                return BodyMeasurements(sizeUk = binding.etEnterSize.text.toString().toInt())
+            }
+            R.id.rb_eu -> {
+                return BodyMeasurements(sizeEu = binding.etEnterSize.text.toString().toInt())
+            }
+        }
+        return null
+    }
+
+    private fun setUpSizesSpinner() {
+        for (size in InternationalSizes.values()) {
+            spinnerArray.add(size.sizeName)
+        }
+
+        val spinnerAdapter = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            spinnerArray
+        )
+
+        binding.spnInternational.adapter = spinnerAdapter
     }
 }

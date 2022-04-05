@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/rectangle_outlined"
+                android:background="@drawable/rectangle_outlined_no_radius"
                 android:layout_gravity="center_horizontal"
                 android:text="Cancel"/>
 

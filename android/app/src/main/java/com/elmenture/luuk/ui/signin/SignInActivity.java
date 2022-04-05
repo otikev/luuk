@@ -38,7 +38,6 @@ public class SignInActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 10001;
 
     private LinearLayoutCompat socialLayout;
-    private LinearLayoutCompat progressLayout;
     private SignInViewModel signInViewModel;
 
     @Override
@@ -54,9 +53,7 @@ public class SignInActivity extends BaseActivity {
 
     private void initView() {
         socialLayout = findViewById(R.id.socialLayout);
-        progressLayout = findViewById(R.id.progressLayout);
         socialLayout.setVisibility(View.VISIBLE);
-        progressLayout.setVisibility(View.GONE);
         btnFacebook = findViewById(R.id.btnFacebook);
         btnGoogle = findViewById(R.id.btnGoogle);
 
@@ -174,13 +171,11 @@ public class SignInActivity extends BaseActivity {
     private void signinFailed() {
         //Notify the user
         socialLayout.setVisibility(View.VISIBLE);
-        progressLayout.setVisibility(View.GONE);
     }
 
     private void showLoadingScreen() {
         //Notify the user
         socialLayout.setVisibility(View.GONE);
-        progressLayout.setVisibility(View.VISIBLE);
     }
 
 }

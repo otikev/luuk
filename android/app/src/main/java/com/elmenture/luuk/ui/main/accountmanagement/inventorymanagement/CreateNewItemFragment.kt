@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 import models.Item
 import userdata.User
+import views.CustomProgressBar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -35,6 +37,7 @@ class CreateNewItemFragment : BaseFragment() {
     lateinit var binding: FragmentCreateNewItemBinding
     lateinit var activityView: MainActivityView
     lateinit var createNewItemViewModel: CreateNewItemViewModel
+    lateinit var progressBar: CustomProgressBar
     val spinnerArray = ArrayList<String>()
 
     private var creds: BasicAWSCredentials =
@@ -49,7 +52,7 @@ class CreateNewItemFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = CreateNewItemFragment()
-        val BUCKET_NAME = "" //TODO: set dev or prod bucket depending on the APK build type
+        val BUCKET_NAME = "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
@@ -152,6 +155,8 @@ class CreateNewItemFragment : BaseFragment() {
     }
 
     private fun uploadImage() {
+        progressBar = CustomProgressBar.newInstance()
+        progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar" )
 
         val trans = TransferUtility.builder().context(requireContext()).s3Client(s3Client).build()
         val observer: TransferObserver =
@@ -168,6 +173,7 @@ class CreateNewItemFragment : BaseFragment() {
 
                     Log.d("S3-TAG", "success")
                     Log.d("S3-TAG", url)
+                    progressBar.dismissAllowingStateLoss()
                 } else if (state == TransferState.FAILED) {
                     Log.d("S3-TAG", "fail")
                 }
@@ -175,10 +181,8 @@ class CreateNewItemFragment : BaseFragment() {
 
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
                 Log.d("S3-TAG", "Uploading $bytesCurrent / $bytesTotal")
-
-                if (bytesCurrent == bytesTotal) {
-                    //imageView!!.setImageResource(R.drawable.upload_image_with_round)
-                }
+                val progress = (bytesCurrent/bytesTotal)*100
+                progressBar.setProgress(progress.toInt())
             }
 
             override fun onError(id: Int, ex: Exception) {

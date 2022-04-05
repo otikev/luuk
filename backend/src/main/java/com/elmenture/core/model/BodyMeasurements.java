@@ -23,9 +23,12 @@ public class BodyMeasurements extends BaseEntity {
 
     @Column(name = "size_international")
     private String sizeInternational;
-
-    @Column(name = "size_number")
-    private int sizeNumber;
+    @Column(name = "size_us")
+    private int sizeUs;
+    @Column(name = "size_uk")
+    private int sizeUk;
+    @Column(name = "size_eu")
+    private int sizeEu;
     @Column(name = "chest")
     private int chest;
     @Column(name = "waist")

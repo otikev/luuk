@@ -2,6 +2,7 @@ package com.elmenture.luuk.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
 import com.elmenture.luuk.utils.LogUtils
@@ -14,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kokonetworks.kokosasa.base.BaseFragment
 import userdata.User
+import views.ProgressDialog
 
 abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
@@ -24,10 +26,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
 
     @JvmField
     protected var callbackManager: CallbackManager? = null
+    private var loader: DialogFragment? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configureGoogleSignIn()
         configureFacebookSignin()
+        observeGlobalEvents()
     }
 
     private fun configureFacebookSignin() {
@@ -80,6 +86,34 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
                 mGoogleSignInClient!!.signOut()
             }
         }
+    }
+
+    private fun observeGlobalEvents() {
+        BaseRepository.blockUserInteraction.observe(this) { blockUser ->
+            handleProgressDialog(blockUser)
+        }
+    }
+
+    private fun handleProgressDialog(blockUser: Boolean) {
+        if (blockUser) {
+            showProgressDialog()
+        } else {
+            hideProgressDialog()
+        }
+
+    }
+
+    private fun showProgressDialog() {
+        if (loader == null)
+            loader = ProgressDialog.newInstance()
+        if (loader!!.isAdded) {
+            loader?.dismissAllowingStateLoss()
+        }
+        loader?.show(supportFragmentManager, ProgressDialog.TAG)
+    }
+
+    private fun hideProgressDialog() {
+        loader?.dismissAllowingStateLoss()
     }
 
     override fun onBackPressed() {

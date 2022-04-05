@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers, @Valid @RequestBody BodyMeasurements request) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        String token = headers.get("luuk-x-authorization").get(0);
         User user = userRepository.findByAuthToken(token);
         if (user == null) {
             return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
@@ -40,7 +40,9 @@ public class UserController {
             measurements = new BodyMeasurements();
         }
         measurements.setSizeInternational(request.getSizeInternational());
-        measurements.setSizeNumber(request.getSizeNumber());
+        measurements.setSizeUs(request.getSizeUs());
+        measurements.setSizeUk(request.getSizeUk());
+        measurements.setSizeEu(request.getSizeEu());
         measurements.setChest(request.getChest());
         measurements.setWaist(request.getWaist());
         measurements.setHips(request.getHips());
