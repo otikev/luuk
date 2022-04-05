@@ -18,6 +18,9 @@ class SignInResponse {
     @field:SerializedName("measurements")
     var bodyMeasurements: BodyMeasurements? = null
 
+    @field:SerializedName("isStaff")
+    var isStaff : Boolean = false
+
     @field:SerializedName("s3AccessKeyId")
     var s3AccessKeyId: String? = null
 
