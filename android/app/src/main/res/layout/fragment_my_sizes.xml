@@ -13,69 +13,33 @@
         android:layout_height="wrap_content"
         app:nav_visible="true"
         app:toolbar_title="My Sizes" />
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="I know my"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <RadioGroup
-            android:id="@+id/rg_options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            android:background="@drawable/rectangle_outlined_dark"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_size"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_chip_bg"
-                android:button="@android:color/transparent"
-                android:checked="true"
-                android:gravity="center"
-                android:text="Size"
-                android:textColor="@color/selector_chip_text" />
-
-            <RadioButton
-                android:id="@+id/rb_dimensions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_chip_bg"
-                android:button="@android:color/transparent"
-                android:gravity="center"
-                android:text="Dimensions"
-                android:textColor="@color/selector_chip_text" />
-
-
-        </RadioGroup>
-
+        android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/ll_sizes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/rg_sizes"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="I know my"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
                 android:background="@drawable/rectangle_outlined_dark"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rb_us"
+                    android:id="@+id/rb_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -83,179 +47,220 @@
                     android:button="@android:color/transparent"
                     android:checked="true"
                     android:gravity="center"
-                    android:text="US"
+                    android:text="Size"
                     android:textColor="@color/selector_chip_text" />
 
                 <RadioButton
-                    android:id="@+id/rb_uk"
+                    android:id="@+id/rb_dimensions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/selector_chip_bg"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:text="UK"
-                    android:textColor="@color/selector_chip_text" />
-
-                <RadioButton
-                    android:id="@+id/rb_eu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_chip_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="EU"
-                    android:textColor="@color/selector_chip_text" />
-
-                <RadioButton
-                    android:id="@+id/rb_int"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_chip_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="Int"
+                    android:text="Dimensions"
                     android:textColor="@color/selector_chip_text" />
 
 
             </RadioGroup>
 
             <LinearLayout
-                android:id="@+id/ll_international_container"
+                android:id="@+id/ll_sizes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                android:visibility="gone"
-                android:background="@drawable/rectangle_outlined_dark"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="6dp">
+                android:orientation="vertical">
 
-
-                <Spinner
-                    android:id="@+id/spn_international"
+                <RadioGroup
+                    android:id="@+id/rg_sizes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="0"
+                    android:background="@drawable/rectangle_outlined_dark"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_us"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="US"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_uk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="UK"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_eu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="EU"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_int"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Int"
+                        android:textColor="@color/selector_chip_text" />
+
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/ll_international_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:visibility="gone"
+                    android:background="@drawable/rectangle_outlined_dark"
                     android:gravity="center"
-                    android:textSize="16dp" />
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+
+
+                    <Spinner
+                        android:id="@+id/spn_international"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="0"
+                        android:gravity="center"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_enter_size"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_enter_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Size"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_enter_size"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+            <LinearLayout
+                android:id="@+id/ll_dimensions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_enter_size"
+                <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Size"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginVertical="16dp"
+                    android:background="@drawable/rectangle_outlined_dark"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_centimeters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="Centimeters"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_inches"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Inches"
+                        android:textColor="@color/selector_chip_text" />
+
+
+                </RadioGroup>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_chest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chest/Bust"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_waist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Waist"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimens_large_size">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_hips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Hips"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_accept"
+                style="@style/buttonStylePrimary"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="Save Details" />
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/ll_dimensions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/rectangle_outlined_dark"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_centimeters"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_chip_bg"
-                    android:button="@android:color/transparent"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="Centimeters"
-                    android:textColor="@color/selector_chip_text" />
-
-                <RadioButton
-                    android:id="@+id/rb_inches"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_chip_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="Inches"
-                    android:textColor="@color/selector_chip_text" />
-
-
-            </RadioGroup>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_chest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Chest/Bust"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_waist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Waist"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_large_size">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_hips"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Hips"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_accept"
-            style="@style/buttonStylePrimary"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Save Details" />
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

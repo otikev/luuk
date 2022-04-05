@@ -9,15 +9,16 @@ import models.BodyMeasurements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import models.UserMeasurements
 import userdata.User
 import java.net.CacheRequest
 
 class MySizesViewModel : ViewModel() {
-    var bodyMeasurementsLiveData = MutableLiveData(User.getCurrent().userDetails.bodyMeasurements)
+    //var bodyMeasurementsLiveData = MutableLiveData(User.getCurrent().userDetails.bodyMeasurements)
     var postBodyMeasurementsApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
 
-    fun updateBodyMeasurements(request: BodyMeasurements) {
-        bodyMeasurementsLiveData.value = request
+    fun updateUserMeasurements(request: UserMeasurements) {
+       // bodyMeasurementsLiveData.value = request
         viewModelScope.launch(Dispatchers.IO) {
             val response = AccountManagementRepository.postBodyMeasurements(request)
             withContext(Dispatchers.Main) {

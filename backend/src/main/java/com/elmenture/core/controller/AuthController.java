@@ -69,7 +69,6 @@ public class AuthController {
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setSuccess(true);
-            response.setMeasurements(user.getBodyMeasurements());
             //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
             response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
             response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
@@ -115,7 +114,6 @@ public class AuthController {
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setSuccess(true);
-            response.setMeasurements(user.getBodyMeasurements());
             //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
             response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
             response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);

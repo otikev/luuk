@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +18,6 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
@@ -30,6 +29,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
+
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
@@ -39,7 +39,7 @@ class CreateNewItemFragment : BaseFragment() {
     lateinit var createNewItemViewModel: CreateNewItemViewModel
     lateinit var progressBar: CustomProgressBar
     val spinnerArray = ArrayList<String>()
-
+    val item  = Item()
     private var creds: BasicAWSCredentials =
         BasicAWSCredentials(
             User.getCurrent().userDetails.s3AccessKeyId,
@@ -81,6 +81,7 @@ class CreateNewItemFragment : BaseFragment() {
                     Toast.makeText(requireContext(), "Failed To Create Item ", Toast.LENGTH_LONG)
                         .show()
                 }
+                progressBar.dismissAllowingStateLoss()
             }
         }
 
@@ -94,18 +95,7 @@ class CreateNewItemFragment : BaseFragment() {
 
     private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener {
-//            try {
-//                createNewItemViewModel.createNewItem(getItemDetails())
-//            } catch (ex: NumberFormatException) {
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Please set all the required fields",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//
-//            }
-
-            uploadImage()
+                uploadData()
         }
 
         binding.toolBar.setNavClickListener {
@@ -116,13 +106,11 @@ class CreateNewItemFragment : BaseFragment() {
     }
 
     private fun getItemDetails(): Item {
-        return Item().apply {
-            sizeInternational = binding.etSizeInternational.text.toString()
-            sizeNumber = binding.etSizeNumber.text.toString().toInt()
-            description = binding.etDescription.text.toString()
-            imageUrl = binding.etImageUrl.text.toString()
-            price = binding.etItemPrice.text.toString().toLong()
-        }
+        item.sizeInternational = binding.etSizeInternational.text.toString()
+        item.sizeNumber = binding.etSizeNumber.text.toString().toInt()
+        item.description = binding.etDescription.text.toString()
+        item.price = binding.etItemPrice.text.toString().toLong()
+        return item
     }
 
 
@@ -138,42 +126,32 @@ class CreateNewItemFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data!!.data != null) {
-
             // Get the Uri of data
             filePath = data.data!!
-
             binding.ivS3image.setImageURI(filePath)
 
-            val inputStream: InputStream? =
-                requireContext().contentResolver.openInputStream(filePath) //to read a file from content path
-
-            file = File.createTempFile("image", filePath.lastPathSegment)
-            val outStream: OutputStream =
-                FileOutputStream(file)//creating stream pipeline to the file
+            val inputStream: InputStream? = requireContext().contentResolver.openInputStream(filePath) //to read a file from content path
+            file = File.createTempFile("img", ".jpg")
+            val outStream: OutputStream = FileOutputStream(file)//creating stream pipeline to the file
             outStream.write(inputStream?.readBytes())//passing bytes of data to the fi
         }
     }
 
-    private fun uploadImage() {
+    private fun uploadData() {
         progressBar = CustomProgressBar.newInstance()
         progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar" )
-
+        //val file = File(filePath.path)
         val trans = TransferUtility.builder().context(requireContext()).s3Client(s3Client).build()
-        val observer: TransferObserver =
-            trans.upload(BUCKET_NAME, filePath.lastPathSegment, file)//manual storage permission
+        val observer: TransferObserver = trans.upload(BUCKET_NAME, file.name, file)
         observer.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED) {
-                    val url = s3Client.generatePresignedUrl(
-                        GeneratePresignedUrlRequest(
-                            BUCKET_NAME,
-                            observer.key
-                        )
-                    ).toString()
+                    val url = s3Client.getResourceUrl(BUCKET_NAME, file.name)
 
+                    item.imageUrl = url
                     Log.d("S3-TAG", "success")
                     Log.d("S3-TAG", url)
-                    progressBar.dismissAllowingStateLoss()
+                    postItemData()
                 } else if (state == TransferState.FAILED) {
                     Log.d("S3-TAG", "fail")
                 }
@@ -191,4 +169,31 @@ class CreateNewItemFragment : BaseFragment() {
         })
     }
 
+    private fun postItemData() {
+        try {
+            createNewItemViewModel.createNewItem(getItemDetails())
+        } catch (ex: NumberFormatException) {
+            Toast.makeText(
+                requireContext(),
+                "Please set all the required fields",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+    }
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+
+        // can post image
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor =requireActivity().contentResolver.query(
+            contentUri!!,
+            proj,  // Which columns to return
+            null,  // WHERE clause; which rows to return (all rows)
+            null,  // WHERE clause selection arguments (none)
+            null
+        ) // Order-by clause (ascending by name)
+        val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(column_index)
+    }
 }
