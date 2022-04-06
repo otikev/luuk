@@ -1,6 +1,6 @@
 package com.elmenture.core.payload;
 
-import com.elmenture.core.service.impl.ItemDto;
+import com.elmenture.core.service.impl.data.ItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

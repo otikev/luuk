@@ -49,8 +49,13 @@ public class User extends BaseEntity implements UserDetails {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "measurements_id", referencedColumnName = "id")
-    private BodyMeasurements bodyMeasurements;
+    @JoinColumn(name = "body_measurements_id", referencedColumnName = "id")
+    private BodyMeasurement bodyMeasurement;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "clothing_size_id", referencedColumnName = "id")
+    private ClothingSize clothingSize;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

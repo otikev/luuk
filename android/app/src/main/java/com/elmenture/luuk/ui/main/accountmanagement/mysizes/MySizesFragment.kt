@@ -12,6 +12,8 @@ import com.elmenture.luuk.databinding.FragmentMySizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
 import models.BodyMeasurements
+import models.ClothingSizes
+import models.UserMeasurements
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -79,7 +81,7 @@ class MySizesFragment : BaseFragment() {
 
         binding.btnAccept.setOnClickListener {
             getMeasurementsData()?.let {
-                mySizesViewModel.updateBodyMeasurements(it)
+                mySizesViewModel.updateUserMeasurements(it)
             }
         }
 
@@ -89,25 +91,51 @@ class MySizesFragment : BaseFragment() {
 
     }
 
-    private fun getMeasurementsData(): BodyMeasurements? {
-        if (binding.rbDimensions.isSelected) {
-            return BodyMeasurements(chest = binding.etChest.text.toString().toInt())
+    private fun getMeasurementsData(): UserMeasurements? {
+        if (binding.rbDimensions.isChecked) {
+            return UserMeasurements(
+                bodyMeasurements = BodyMeasurements(
+                    chest = getIntegerFromString(binding.etChest.text.toString()),
+                    waist = getIntegerFromString(binding.etWaist.text.toString()),
+                    hips = getIntegerFromString(binding.etHips.text.toString())
+                )
+            )
         }
-        if (binding.rbInt.isSelected) {
-            return BodyMeasurements(sizeInternational = binding.spnInternational.selectedItem.toString())
+        if (binding.rbInt.isChecked) {
+            return UserMeasurements(clothingSizes = ClothingSizes(international = binding.spnInternational.selectedItem.toString()))
         }
         when (binding.rgSizes.checkedRadioButtonId) {
             R.id.rb_us -> {
-                return BodyMeasurements(sizeUs = binding.etEnterSize.text.toString().toInt())
+                return UserMeasurements(
+                    clothingSizes = ClothingSizes(
+                        us = binding.etEnterSize.text.toString().toInt()
+                    )
+                )
             }
             R.id.rb_uk -> {
-                return BodyMeasurements(sizeUk = binding.etEnterSize.text.toString().toInt())
+                return UserMeasurements(
+                    clothingSizes = ClothingSizes(
+                        uk = binding.etEnterSize.text.toString().toInt()
+                    )
+                )
             }
             R.id.rb_eu -> {
-                return BodyMeasurements(sizeEu = binding.etEnterSize.text.toString().toInt())
+                return UserMeasurements(
+                    clothingSizes = ClothingSizes(
+                        eu = binding.etEnterSize.text.toString().toInt()
+                    )
+                )
             }
         }
         return null
+    }
+
+    private fun getIntegerFromString(value: String?): Int {
+        return try {
+            value!!.toInt()
+        } catch (e: Exception) {
+            0
+        }
     }
 
     private fun setUpSizesSpinner() {
@@ -115,7 +143,7 @@ class MySizesFragment : BaseFragment() {
             spinnerArray.add(size.sizeName)
         }
 
-        val spinnerAdapter = ArrayAdapter<String>(
+        val spinnerAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_list_item_1,
             spinnerArray

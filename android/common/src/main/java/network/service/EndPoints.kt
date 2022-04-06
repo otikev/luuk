@@ -1,16 +1,13 @@
 package network.service
 
-import models.BodyMeasurements
-import models.Item
-import models.ItemResponse
-import models.SignInResponse
+import models.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface EndPoints {
     @POST("user/measurements/update")
-    fun postUserBodyMeasurements(@Body request: BodyMeasurements): Call<ResponseBody>
+    fun postUserBodyMeasurements(@Body request: UserMeasurements): Call<ResponseBody>
 
     @GET("user/measurements")
     fun getUserBodyMeasurements(): Call<BodyMeasurements>

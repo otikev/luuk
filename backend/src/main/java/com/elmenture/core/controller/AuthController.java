@@ -72,12 +72,14 @@ public class AuthController {
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setSuccess(true);
-            response.setMeasurements(user.getBodyMeasurements());
+
+            response.setMeasurements(user.getBodyMeasurement());
             if(isStaff(user)){
                 response.setStaff(true);
                 response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
                 response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
             }
+
         } else {
             System.out.println("Invalid user token.");
             response.setSuccess(false) ;
@@ -120,12 +122,14 @@ public class AuthController {
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setSuccess(true);
-            response.setMeasurements(user.getBodyMeasurements());
+
+            response.setMeasurements(user.getBodyMeasurement());
             if(isStaff(user)){
                 response.setStaff(true);
                 response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
                 response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
             }
+
         } else {
             System.out.println("Invalid ID token.");
             response.setSuccess(false) ;

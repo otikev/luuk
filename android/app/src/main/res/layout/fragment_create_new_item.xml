@@ -11,18 +11,15 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
         app:toolbar_title="Create New Item" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="ScrollViewCount">
-
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/dimens_large_size">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimens_large_size"
             android:orientation="vertical">
 
 
@@ -81,42 +78,27 @@
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_image_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Image URL" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
             <ImageView
                 android:id="@+id/iv_s3image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_upload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/buttonStyleSecondary"
                 android:layout_marginBottom="12dp"
-                android:background="@drawable/rectangle_outlined_dark"
                 android:text="Pick Image" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept"
                 style="@style/buttonStylePrimary"
                 android:layout_gravity="center_horizontal"
                 android:text="Post Item" />
 
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </LinearLayout>

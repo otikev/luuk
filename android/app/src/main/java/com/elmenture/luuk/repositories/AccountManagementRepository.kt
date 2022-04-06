@@ -4,10 +4,11 @@ import com.elmenture.luuk.base.BaseApiState
 import com.elmenture.luuk.base.BaseRepository
 import models.BodyMeasurements
 import models.Item
+import models.UserMeasurements
 
 object AccountManagementRepository {
 
-    fun postBodyMeasurements(request: BodyMeasurements): BaseApiState {
+    fun postBodyMeasurements(request: UserMeasurements): BaseApiState {
         return BaseRepository.doPostUserBodyMeasurements(request)
     }
 
