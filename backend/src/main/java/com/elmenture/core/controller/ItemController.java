@@ -49,7 +49,8 @@ public class ItemController {
 
     @GetMapping("/paginated")
     public ResponseEntity<ItemResponse>  getItemsPaginated(@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
+                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                           @RequestParam(value = "target", defaultValue = "female", required = false) String target) {
         //First page is 0
         ItemResponse response = itemService.getAllItems(pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
         return new ResponseEntity<>(response, HttpStatus.OK);

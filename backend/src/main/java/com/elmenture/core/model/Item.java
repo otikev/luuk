@@ -2,15 +2,12 @@ package com.elmenture.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -31,7 +28,7 @@ public class Item extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    //XXS	XS	S	M	L	XL	XXL	3XL	4XL	5XL	6XL	7XL
+    //XXS XS S M L XL XXL 3XL 4XL 5XL 6XL 7XL
     @Column(name = "size_international")
     private String sizeInternational;
 
@@ -44,7 +41,11 @@ public class Item extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "target") //male,female,child
+    private String target;
+
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     //TODO: @JsonManagedReference
     @JsonIgnore //Ignore serializing this for now. Facing issue with infinite recursion
     private Set<ItemProperty> itemProperties;
