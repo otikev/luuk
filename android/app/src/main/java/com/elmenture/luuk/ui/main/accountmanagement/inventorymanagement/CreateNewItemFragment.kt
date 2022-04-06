@@ -109,7 +109,8 @@ class CreateNewItemFragment : BaseFragment() {
         item.sizeInternational = binding.etSizeInternational.text.toString()
         item.sizeNumber = binding.etSizeNumber.text.toString().toInt()
         item.description = binding.etDescription.text.toString()
-        item.price = binding.etItemPrice.text.toString().toLong()
+        val ksh = binding.etItemPrice.text.toString().toLong()
+        item.price = ksh*100 //convert to cents for transmission to the server
         return item
     }
 

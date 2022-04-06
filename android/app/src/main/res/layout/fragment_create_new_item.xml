@@ -74,7 +74,7 @@
                     android:id="@+id/et_item_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item price"
+                    android:hint="Item price (KES)"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
