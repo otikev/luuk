@@ -36,9 +36,9 @@ public class AuthController {
     //FIXME: Hardcoding for now. This will eventually be replaced with user roles functionality
     private String[] STAFF = {
             "oti.kevin@gmail.com",
-            "kellen@elmenture.com",
+            "njihiamuchai@gmail.com",
             "aycewhispero@gmail.com",
-            "timothy@elmenture.com"
+            "kellen.kinyua@gmail.com"
     };
 
     @Autowired
