@@ -33,9 +33,12 @@ import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
 @RequestMapping("/auth")
 public class AuthController {
 
-
+    //FIXME: Hardcoding for now. This will eventually be replaced with user roles functionality
     private String[] STAFF = {
-            "oti.kevin@gmail.com"
+            "oti.kevin@gmail.com",
+            "kellen@elmenture.com",
+            "aycewhispero@gmail.com",
+            "timothy@elmenture.com"
     };
 
     @Autowired

@@ -3,11 +3,13 @@ package com.elmenture.luuk.ui.main.accountmanagement
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.databinding.FragmentAccountManagementBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
+import userdata.User
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -31,6 +33,10 @@ class AccountManagementFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(!User.getCurrent().userDetails.isStaff!!){
+            binding.itemInventoryManagement.visibility = GONE
+        }
         setUpEventListeners()
     }
 

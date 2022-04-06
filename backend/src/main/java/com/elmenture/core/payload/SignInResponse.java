@@ -12,5 +12,5 @@ public class SignInResponse {
     private BodyMeasurement measurements;
     private String s3AccessKeyId;
     private String s3SecretKeyId;
-    private boolean isStaff;
+    private boolean staff;
 }
