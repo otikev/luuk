@@ -14,6 +14,7 @@ public class SignInResponse {
     private String s3AccessKeyId;
     private String s3SecretKeyId;
 
+    private boolean staff;
     @Data
     public static class UserMeasurements {
         BodyMeasurement bodyMeasurement;

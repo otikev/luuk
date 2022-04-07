@@ -104,7 +104,7 @@ object MiscUtils {
 
     @JvmStatic
     fun getFormattedAmount(number: Double?): String {
-        val formatter = DecimalFormat("#,###.00")
+        val formatter = DecimalFormat("#,###")
         return formatter.format(number)
     }
 

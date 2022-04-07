@@ -24,9 +24,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
 import static com.elmenture.core.utils.SocialAccountType.FACEBOOK;
 import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
@@ -34,6 +32,14 @@ import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    //FIXME: Hardcoding for now. This will eventually be replaced with user roles functionality
+    private String[] STAFF = {
+            "oti.kevin@gmail.com",
+            "njihiamuchai@gmail.com",
+            "aycewhispero@gmail.com",
+            "kellen.kinyua@gmail.com"
+    };
 
     @Autowired
     private UserRepository userRepository;
@@ -73,9 +79,14 @@ public class AuthController {
             response.setSessionKey(auth);
             response.setUserMeasurements(userMeasurements);
             response.setSuccess(true);
-            //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
-            response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
-            response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+
+            response.setMeasurements(user.getBodyMeasurement());
+            if(isStaff(user)){
+                response.setStaff(true);
+                response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
+                response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+            }
+
         } else {
             System.out.println("Invalid user token.");
             response.setSuccess(false) ;
@@ -135,6 +146,10 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    private boolean isStaff(User user){
+        List<String> staffList = new ArrayList<>(Arrays.asList(STAFF));
+        return staffList.contains(user.getEmail());
+    }
     private String createSession(User user) {
         user.setAuthToken(UUID.randomUUID().toString());
         userRepository.save(user);
