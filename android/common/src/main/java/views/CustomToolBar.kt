@@ -9,13 +9,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.luuk.common.R
+import com.luuk.common.databinding.CustomToolbarBinding
 
 /**
  * Created by Isaac.
  */
 class CustomToolBar : LinearLayout {
     private var tvTitle: TextView? = null
+    private var tvSave: TextView? = null
     private var ivImage: ImageView? = null
+    private var binding: CustomToolbarBinding? = null
+
 
     constructor(context: Context) : super(context) {
         initializeViews(context)
@@ -27,6 +31,7 @@ class CustomToolBar : LinearLayout {
             try {
                 tvTitle?.text = getString(R.styleable.CustomToolBar_toolbar_title)
                 ivImage?.visibility = if (getBoolean(R.styleable.CustomToolBar_nav_visible, true)) View.VISIBLE else View.GONE
+                tvSave?.visibility = if (getBoolean(R.styleable.CustomToolBar_helperText_visible, true)) View.VISIBLE else View.GONE
             } finally {
                 recycle()
             }
@@ -36,11 +41,16 @@ class CustomToolBar : LinearLayout {
     fun setNavClickListener(onClickListener: OnClickListener){
         ivImage?.setOnClickListener(onClickListener)
     }
+
+    fun setHelperTextClickListener(onClickListener: OnClickListener){
+        tvSave?.setOnClickListener(onClickListener)
+    }
     private fun initializeViews(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.custom_toolbar, this, true)
         ivImage = findViewById(R.id.image_view)
         tvTitle = findViewById(R.id.tv_title)
+        tvSave = findViewById(R.id.tv_save)
     }
 
 

@@ -20,6 +20,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.kokonetworks.kokosasa.base.BaseFragment
 import models.Item
 import userdata.User

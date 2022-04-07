@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="top"
     android:orientation="horizontal">
 
@@ -11,24 +11,35 @@
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:paddingVertical="@dimen/dimens_mid_size"
         android:paddingStart="@dimen/dimens_large_size"
         android:paddingEnd="8dp"
-        android:layout_gravity="center_vertical"
         android:src="@drawable/ic_left_arrow" />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:paddingStart="@dimen/dimens_large_size"
-                android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/frame"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="My Sizes" />
-
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimens_large_size"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/frame"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="My Sizes" />
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="24dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="#17BAA1"
+        android:textStyle="bold"
+        android:text="SAVE"/>
 </LinearLayout>

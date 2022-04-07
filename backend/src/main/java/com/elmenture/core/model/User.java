@@ -47,6 +47,18 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "auth_token")
     private String authToken;
 
+    @Column(name = "contact_phone_number")
+    private String contactPhoneNumber;
+
+    @Column(name = "mobile_money_number")
+    private String mobileMoneyNumber;
+
+    @Column(name = "physical_address")
+    private String physicalAddress;
+
+    @Column(name = "gender")
+    private String gender;
+
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "body_measurements_id", referencedColumnName = "id")

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:clickable="true">
+    android:background="@color/white">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/layout_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clickable="true">
 
     </androidx.fragment.app.FragmentContainerView>
     <com.google.android.material.bottomnavigation.BottomNavigationView

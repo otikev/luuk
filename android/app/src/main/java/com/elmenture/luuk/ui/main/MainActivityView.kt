@@ -10,4 +10,5 @@ interface MainActivityView: BaseActivityView {
     fun logout()
     fun resetBottomNavigation()
     fun startCreateItemFragment()
+    fun startProfileSettingsFragment()
 }

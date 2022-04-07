@@ -29,4 +29,16 @@ class SignInResponse {
 
     @field:SerializedName("userMeasurements")
     var userMeasurements: UserMeasurements? = null
+
+    @field:SerializedName("contactPhoneNumber")
+    var contactPhoneNumber: String? = null
+
+    @field:SerializedName("gender")
+    var gender: String? = null
+
+    @field:SerializedName("physicalAddress")
+    var physicalAddress: String? = null
+
+    @field:SerializedName("name")
+    var name: String? = null
 }

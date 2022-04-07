@@ -78,9 +78,13 @@ public class AuthController {
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setUserMeasurements(userMeasurements);
+            response.setContactPhoneNumber(user.getContactPhoneNumber());
+            response.setPhysicalAddress(user.getPhysicalAddress());
+            response.setGender(user.getGender());
+            response.setName(user.getFirstName()+" "+user.getLastName());
             response.setSuccess(true);
 
-            response.setMeasurements(user.getBodyMeasurement());
+            response.setUserMeasurements(userMeasurements);
             if(isStaff(user)){
                 response.setStaff(true);
                 response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
@@ -135,9 +139,16 @@ public class AuthController {
             response.setSessionKey(auth);
             response.setSuccess(true);
             response.setUserMeasurements(userMeasurements);
-            //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
-            response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
-            response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+            response.setContactPhoneNumber(user.getContactPhoneNumber());
+            response.setPhysicalAddress(user.getPhysicalAddress());
+            response.setGender(user.getGender());
+            response.setName(user.getFirstName()+" "+user.getLastName());
+            response.setEmail(user.getEmail());
+            if(isStaff(user)){
+                response.setStaff(true);
+                response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
+                response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+            }
         } else {
             System.out.println("Invalid ID token.");
             response.setSuccess(false) ;
