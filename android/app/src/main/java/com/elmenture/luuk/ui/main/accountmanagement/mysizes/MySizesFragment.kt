@@ -42,12 +42,43 @@ class MySizesFragment : BaseFragment() {
         initView()
         setUpEventListeners()
         setUpSizesSpinner()
+        prepopulateFields()
     }
 
 
     private fun initView() {
         activityView = requireActivity() as MainActivityView
         mySizesViewModel = ViewModelProvider(requireActivity()).get(MySizesViewModel::class.java);
+    }
+
+    private fun prepopulateFields() {
+        mySizesViewModel.userMeasurements.let { userMeasurements ->
+            userMeasurements.value?.bodyMeasurements?.let {
+                binding.etChest.setText(it.chest.toString())
+                binding.etWaist.setText(it.waist.toString())
+                binding.etHips.setText(it.hips.toString())
+            }
+            userMeasurements.value?.clothingSizes?.let { clothingSize ->
+                binding.rbSize.isChecked = true
+
+                clothingSize.international?.let {
+                    binding.etEnterSize.setText(it)
+                    binding.rbInt.isChecked = true
+                }
+                clothingSize.us?.let {
+                    binding.etEnterSize.setText(it.toString())
+                    binding.rbUs.isChecked = true
+                }
+                clothingSize.uk?.let {
+                    binding.etEnterSize.setText(it.toString())
+                    binding.rbUk.isChecked = true
+                }
+                clothingSize.eu?.let {
+                    binding.etEnterSize.setText(it.toString())
+                    binding.rbEu.isChecked = true
+                }
+            }
+        }
     }
 
     private fun setUpEventListeners() {

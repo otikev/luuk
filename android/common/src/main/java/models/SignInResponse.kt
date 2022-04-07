@@ -15,12 +15,12 @@ class SignInResponse {
     @field:SerializedName("email")
     var email: String? = null
 
-    @field:SerializedName("measurements")
-    var bodyMeasurements: BodyMeasurements? = null
-
     @field:SerializedName("s3AccessKeyId")
     var s3AccessKeyId: String? = null
 
     @field:SerializedName("s3SecretKeyId")
     var s3SecretKeyId: String? = null
+
+    @field:SerializedName("userMeasurements")
+    var userMeasurements: UserMeasurements? = null
 }

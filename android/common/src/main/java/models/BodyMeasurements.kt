@@ -3,18 +3,18 @@ package models
 import com.google.gson.annotations.SerializedName
 
 data class UserMeasurements(
-    @field:SerializedName("bodyMeasurements")
+    @field:SerializedName("bodyMeasurement")
     var bodyMeasurements: BodyMeasurements? = null,
-    @field:SerializedName("clothingSizes")
+    @field:SerializedName("clothingSize")
     var clothingSizes: ClothingSizes? = null
 )
 
 data class BodyMeasurements(
-    @field:SerializedName("chest")
+    @field:SerializedName("chest_cm")
     var chest: Int = 0,
-    @field:SerializedName("waist")
+    @field:SerializedName("waist_cm")
     var waist: Int = 0,
-    @field:SerializedName("hips")
+    @field:SerializedName("hips_cm")
     var hips: Int = 0,
 )
 

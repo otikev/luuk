@@ -3,7 +3,6 @@ package com.elmenture.core.controller;
 import com.elmenture.core.model.BodyMeasurement;
 import com.elmenture.core.model.ClothingSize;
 import com.elmenture.core.model.User;
-import com.elmenture.core.repository.BodyMeasurementsRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.impl.data.UserMeasurementsDto;
 import com.elmenture.core.utils.MiscUtils;
@@ -26,9 +25,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private BodyMeasurementsRepository bodyMeasurementsRepository;
-
     @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserMeasurementsDto request) {
         String token = MiscUtils.getUserTokenFromHeader(headers.get("luuk-x-authorization").get(0));
@@ -36,26 +32,26 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
         }
-        if(request.getBodyMeasurements()!=null){
+        if(request.getBodyMeasurement()!=null){
             BodyMeasurement measurements = user.getBodyMeasurement();
             if (measurements == null) {
                 measurements = new BodyMeasurement();
             }
-            measurements.setChest_cm(request.getBodyMeasurements().getChest());
-            measurements.setWaist_cm(request.getBodyMeasurements().getWaist());
-            measurements.setHips_cm(request.getBodyMeasurements().getHips());
+            measurements.setChest_cm(request.getBodyMeasurement().getChest_cm());
+            measurements.setWaist_cm(request.getBodyMeasurement().getWaist_cm());
+            measurements.setHips_cm(request.getBodyMeasurement().getHips_cm());
 
             user.setBodyMeasurement(measurements);
             userRepository.save(user);
-        }else if (request.getClothingSizes()!=null){
+        }else if (request.getClothingSize()!=null){
             ClothingSize clothingSize = user.getClothingSize();
             if (clothingSize == null) {
                 clothingSize = new ClothingSize();
             }
-            clothingSize.setInternational(request.getClothingSizes().getInternational());
-            clothingSize.setEu(request.getClothingSizes().getEu());
-            clothingSize.setUk(request.getClothingSizes().getUk());
-            clothingSize.setUs(request.getClothingSizes().getUs());
+            clothingSize.setInternational(request.getClothingSize().getInternational());
+            clothingSize.setEu(request.getClothingSize().getEu());
+            clothingSize.setUk(request.getClothingSize().getUk());
+            clothingSize.setUs(request.getClothingSize().getUs());
 
             user.setClothingSize(clothingSize);
             userRepository.save(user);

@@ -15,16 +15,29 @@ import java.net.CacheRequest
 
 class MySizesViewModel : ViewModel() {
     //var bodyMeasurementsLiveData = MutableLiveData(User.getCurrent().userDetails.bodyMeasurements)
-    var postBodyMeasurementsApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
+    var userMeasurements = MutableLiveData<UserMeasurements>(User.getCurrent().userDetails.userMeasurements)
 
     fun updateUserMeasurements(request: UserMeasurements) {
        // bodyMeasurementsLiveData.value = request
         viewModelScope.launch(Dispatchers.IO) {
             val response = AccountManagementRepository.postBodyMeasurements(request)
             withContext(Dispatchers.Main) {
-              postBodyMeasurementsApiState.value = response
+              if(response.isSuccessful){
+                  handleUpdateSuccess(request)
+              }
             }
         }
+    }
+
+    private fun handleUpdateSuccess(measurements: UserMeasurements) {
+        val userMeasurements = User.getCurrent().userDetails.userMeasurements
+        measurements.bodyMeasurements?.let {
+            userMeasurements?.bodyMeasurements = it
+        }
+        measurements.clothingSizes?.let {
+            userMeasurements?.clothingSizes = it
+        }
+
     }
 
 }

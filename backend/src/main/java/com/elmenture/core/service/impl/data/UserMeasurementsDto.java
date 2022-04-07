@@ -7,14 +7,14 @@ import lombok.Data;
  */
 @Data
 public class UserMeasurementsDto {
-    BodyMeasurementDto bodyMeasurements;
-    ClothingSizeDto clothingSizes;
+    BodyMeasurementDto bodyMeasurement;
+    ClothingSizeDto clothingSize;
 
     @Data
     public class BodyMeasurementDto {
-        private int chest;
-        private int waist;
-        private int hips;
+        private int chest_cm;
+        private int waist_cm;
+        private int hips_cm;
     }
 
     @Data

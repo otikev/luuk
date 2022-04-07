@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/design_primary_btn_disabled.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/design_primary_btn_pressed.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/design_yellow_btn.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/home.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/ic_girl.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/ic_info_square.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/ic_inventory_management.xml" value="0.161" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/selector_chip_bg.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/selector_chip_text.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/selector_primary_btn.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/selector_secondary_btn.xml" value="0.246" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="app/src/main/res/layout/activity_main_dummy.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />

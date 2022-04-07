@@ -65,9 +65,13 @@ public class AuthController {
                 user.setSocialAccountType(FACEBOOK.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
+            SignInResponse.UserMeasurements userMeasurements = new SignInResponse.UserMeasurements();
+            userMeasurements.setBodyMeasurement(user.getBodyMeasurement());
+            userMeasurements.setClothingSize(user.getClothingSize());
 
             String auth = createSession(user);
             response.setSessionKey(auth);
+            response.setUserMeasurements(userMeasurements);
             response.setSuccess(true);
             //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
             response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
@@ -111,9 +115,15 @@ public class AuthController {
                 //boolean emailVerified = payload.getEmailVerified();
             }
 
+            SignInResponse.UserMeasurements userMeasurements = new SignInResponse.UserMeasurements();
+            userMeasurements.setBodyMeasurement(user.getBodyMeasurement());
+            userMeasurements.setClothingSize(user.getClothingSize());
+
+
             String auth = createSession(user);
             response.setSessionKey(auth);
             response.setSuccess(true);
+            response.setUserMeasurements(userMeasurements);
             //TODO: only return these secrets for "admin" users to enable them to upload images to the s3 buckets
             response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
             response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
