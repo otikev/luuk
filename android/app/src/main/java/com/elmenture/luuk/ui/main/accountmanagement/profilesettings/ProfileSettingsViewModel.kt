@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
+package com.elmenture.luuk.ui.main.accountmanagement.profilesettings
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

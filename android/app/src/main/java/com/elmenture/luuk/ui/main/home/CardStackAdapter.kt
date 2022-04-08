@@ -9,10 +9,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
+import models.Spot
 
 class CardStackAdapter(
     private var spots: List<Spot> = emptyList()
 ) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
+
+    lateinit var spot: Spot
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -20,8 +23,8 @@ class CardStackAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val spot = spots[position]
-        val description : String = spot.description
+        spot = spots[position]
+        val description: String = spot.description
 
         holder.description.text = description
         Glide.with(holder.image)
@@ -42,6 +45,10 @@ class CardStackAdapter(
 
     fun getSpots(): List<Spot> {
         return spots
+    }
+
+    fun getTopItem(): Spot {
+        return spot
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

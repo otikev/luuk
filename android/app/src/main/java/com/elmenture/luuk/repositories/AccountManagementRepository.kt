@@ -1,8 +1,7 @@
 package com.elmenture.luuk.repositories
 
 import com.elmenture.luuk.base.BaseApiState
-import com.elmenture.luuk.base.BaseRepository
-import models.BodyMeasurements
+import com.elmenture.luuk.base.repositories.RemoteRepository
 import models.Item
 import models.UpdateUserDetailsRequest
 import models.UserMeasurements
@@ -10,18 +9,18 @@ import models.UserMeasurements
 object AccountManagementRepository {
 
     fun postBodyMeasurements(request: UserMeasurements): BaseApiState {
-        return BaseRepository.doPostUserBodyMeasurements(request)
+        return RemoteRepository.doPostUserBodyMeasurements(request)
     }
 
     fun getUserBodyMeasurements(): BaseApiState {
-        return BaseRepository.getUserBodyMeasurements()
+        return RemoteRepository.getUserBodyMeasurements()
     }
 
     fun createNewItem(request: Item): BaseApiState {
-        return BaseRepository.createNewItem(request)
+        return RemoteRepository.createNewItem(request)
     }
 
     fun updateUserDetails(request: UpdateUserDetailsRequest): BaseApiState {
-        return BaseRepository.updateUserDetails(request)
+        return RemoteRepository.updateUserDetails(request)
     }
 }

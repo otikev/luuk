@@ -5,20 +5,36 @@
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.23177083333333334" />
         <entry key="app/src/main/res/drawable-v24/gradation_black.xml" value="0.211" />
+        <entry key="app/src/main/res/drawable/cart.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/design_primary_btn.xml" value="0.1475" />
         <entry key="app/src/main/res/drawable/design_primary_btn_disabled.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/design_primary_btn_pressed.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/design_yellow_btn.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/home.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_buy.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_cart_full.xml" value="0.176" />
+        <entry key="app/src/main/res/drawable/ic_cart_full_selected.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_cart_loaded.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_cart_selected.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_cart_selector_full.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_cart_selector_no_item.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/ic_girl.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/ic_home_selected.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_home_selector.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/ic_info_square.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/ic_inventory_management.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/ic_measurements_bg.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_profile_selected.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_profile_selector.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_search_selector.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/luuk_logo.xml" value="0.3195" />
+        <entry key="app/src/main/res/drawable/profile.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/rectangle_fill.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/rectangle_outlined.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/ring.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/search.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/selector_chip_bg.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/selector_chip_text.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/selector_primary_btn.xml" value="0.24" />

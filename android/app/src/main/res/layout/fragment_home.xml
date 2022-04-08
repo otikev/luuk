@@ -15,7 +15,7 @@
         app:defaultQueryHint="Search Here"
         app:queryBackground="@null"
         app:iconifiedByDefault="false"
-        app:searchIcon="@drawable/search" />
+        app:searchIcon="@drawable/ic_search_unselected" />
 
     <views.cardstackview.CardStackView
         android:id="@+id/card_stack_view"

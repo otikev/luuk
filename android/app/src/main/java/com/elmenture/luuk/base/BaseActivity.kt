@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
+import com.elmenture.luuk.base.repositories.RemoteRepository
 import com.elmenture.luuk.utils.LogUtils
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -89,7 +90,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     }
 
     private fun observeGlobalEvents() {
-        BaseRepository.blockUserInteraction.observe(this) { blockUser ->
+        RemoteRepository.blockUserInteraction.observe(this) { blockUser ->
             handleProgressDialog(blockUser)
         }
     }

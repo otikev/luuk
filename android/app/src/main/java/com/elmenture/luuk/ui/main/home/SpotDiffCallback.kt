@@ -1,6 +1,7 @@
 package com.elmenture.luuk.ui.main.home
 
 import androidx.recyclerview.widget.DiffUtil
+import models.Spot
 
 class SpotDiffCallback(
     private val old: List<Spot>,

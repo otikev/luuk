@@ -1,7 +1,7 @@
-package com.elmenture.luuk.base
+package com.elmenture.luuk.base.repositories
 
 import androidx.lifecycle.MutableLiveData
-import models.BodyMeasurements
+import com.elmenture.luuk.base.BaseApiState
 import models.Item
 import models.UpdateUserDetailsRequest
 import models.UserMeasurements
@@ -12,7 +12,7 @@ import retrofit2.Call
 import utils.LogUtils
 import utils.NetUtils
 
-object BaseRepository {
+object RemoteRepository {
     val responseErrorCode = MutableLiveData<Int>()
     val blockUserInteraction = MutableLiveData(false)
     val TAG = "BaseRepository"

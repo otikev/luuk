@@ -14,6 +14,7 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.kokonetworks.kokosasa.base.BaseFragment
+import models.Spot
 import utils.MiscUtils
 import views.cardstackview.*
 
@@ -68,6 +69,11 @@ class HomeFragment : BaseFragment(), CardStackListener {
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
         }
+
+        when (direction) {
+            Direction.Left -> homeViewModel.updateSwipesData(dislike = adapter.getTopItem())
+            Direction.Right -> homeViewModel.updateSwipesData(like = adapter.getTopItem())
+        }
     }
 
     override fun onCardRewound() {
@@ -85,8 +91,15 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val priceCents = adapter.getSpots()[position].priceCents
         val size = adapter.getSpots()[position].sizeInternational
 
-        binding.tvPrice.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "KES", MiscUtils.getFormattedAmount((priceCents / 100).toDouble())))
-        binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text,"Size" ,size))
+        binding.tvPrice.text = MiscUtils.getSpannedText(
+            getString(
+                R.string.contrast_text,
+                "KES",
+                MiscUtils.getFormattedAmount((priceCents / 100).toDouble())
+            )
+        )
+        binding.tvSize.text =
+            MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", size))
     }
 
     override fun onCardDisappeared(view: View, position: Int) {

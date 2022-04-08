@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.home
+package models
 
 data class Spot(
     val id: Long = counter++,
