@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.FragmentHomeBinding
-import com.elmenture.luuk.ui.main.MainActivityView
-import com.kokonetworks.kokosasa.base.BaseFragment
+import com.elmenture.luuk.base.BaseFragment
 import models.Spot
 import utils.MiscUtils
 import views.cardstackview.*
@@ -28,7 +27,6 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private val cardStackView by lazy { binding.cardStackView }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
     lateinit var homeViewModel: HomeViewModel
-    private val activityView by lazy { activity as MainActivityView }
 
     companion object {
         fun newInstance() = HomeFragment()

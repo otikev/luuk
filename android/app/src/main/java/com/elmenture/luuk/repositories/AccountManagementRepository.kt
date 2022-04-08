@@ -1,6 +1,7 @@
 package com.elmenture.luuk.repositories
 
 import com.elmenture.luuk.base.BaseApiState
+import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.base.repositories.RemoteRepository
 import models.Item
 import models.UpdateUserDetailsRequest
@@ -9,7 +10,10 @@ import models.UserMeasurements
 object AccountManagementRepository {
 
     fun postBodyMeasurements(request: UserMeasurements): BaseApiState {
-        return RemoteRepository.doPostUserBodyMeasurements(request)
+        val response = RemoteRepository.doPostUserBodyMeasurements(request)
+        if (response.isSuccessful)
+            handlePostBodyMeasurementSuccess(request)
+        return response
     }
 
     fun getUserBodyMeasurements(): BaseApiState {
@@ -21,6 +25,34 @@ object AccountManagementRepository {
     }
 
     fun updateUserDetails(request: UpdateUserDetailsRequest): BaseApiState {
-        return RemoteRepository.updateUserDetails(request)
+        val response = RemoteRepository.updateUserDetails(request)
+        if (response.isSuccessful)
+            handleUpdateUserDetailsSuccess(request)
+        return response
+    }
+
+    private fun handleUpdateUserDetailsSuccess(updateDetails: UpdateUserDetailsRequest) {
+        val userDetails = LocalRepository.userDetailsLiveData.value
+
+        updateDetails.name?.let { userDetails?.name = it }
+        updateDetails.email?.let { userDetails?.email = it }
+        updateDetails.contactPhoneNumber?.let { userDetails?.contactPhoneNumber = it }
+        updateDetails.gender?.let { userDetails?.gender = it }
+        updateDetails.physicalAddress?.let { userDetails?.physicalAddress = it }
+
+        userDetails?.let { LocalRepository.updateUserDetails(it) }
+    }
+
+
+    private fun handlePostBodyMeasurementSuccess(measurements: UserMeasurements) {
+        val userDetails =
+            LocalRepository.userDetailsLiveData.value//User.getCurrent().userDetails.userMeasurements
+        measurements.bodyMeasurements?.let {
+            userDetails?.userMeasurements?.bodyMeasurements = it
+        }
+        measurements.clothingSizes?.let {
+            userDetails?.userMeasurements?.clothingSizes = it
+        }
+        userDetails?.let { LocalRepository.updateUserDetails(it) }
     }
 }

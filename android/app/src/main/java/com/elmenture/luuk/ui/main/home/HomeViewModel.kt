@@ -2,7 +2,6 @@ package com.elmenture.luuk.ui.main.home
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elmenture.luuk.base.BaseApiState
@@ -22,16 +21,16 @@ class HomeViewModel : ViewModel() {
     var liveDataMerger = MediatorLiveData<SwipeRecords>()
 
     init {
-        liveDataMerger.addSource(LocalRepository.swipeDetails) { value ->
+        liveDataMerger.addSource(LocalRepository.swipeDetailsLiveData) { value ->
             liveDataMerger.setValue(value)
         }
     }
 
     fun updateSwipesData(like: Spot? = null, dislike: Spot? = null) {
-        val swipeData = if (LocalRepository.swipeDetails.value == null) SwipeRecords() else LocalRepository.swipeDetails.value
+        val swipeData = if (LocalRepository.swipeDetailsLiveData.value == null) SwipeRecords() else LocalRepository.swipeDetailsLiveData.value
         like?.let { swipeData!!.likes.add(it) }
         dislike?.let { swipeData!!.dislikes.add(it) }
-        LocalRepository.swipeDetails.postValue(swipeData)
+        LocalRepository.swipeDetailsLiveData.postValue(swipeData)
     }
 
     fun fetchItems() {

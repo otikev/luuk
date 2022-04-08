@@ -108,8 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:textSize="16sp"
-                android:text="I want to see "/>
+                android:textSize="18sp"
+                android:text="I want to see"/>
 
             <RadioGroup
                 android:id="@+id/rg_gender"

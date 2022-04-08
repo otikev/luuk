@@ -9,7 +9,7 @@ class MainActivityViewModel : ViewModel() {
     var swipeRecordsLiveData = MediatorLiveData<SwipeRecords>()
 
     init {
-        swipeRecordsLiveData.addSource(LocalRepository.swipeDetails) { swipeRecordsLiveData.setValue(it)}
+        swipeRecordsLiveData.addSource(LocalRepository.swipeDetailsLiveData) { swipeRecordsLiveData.setValue(it)}
     }
 
 }

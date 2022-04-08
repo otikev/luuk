@@ -17,9 +17,10 @@ object RemoteRepository {
     val blockUserInteraction = MutableLiveData(false)
     val TAG = "BaseRepository"
 
-    private fun processRequest(call: Call<*>): BaseApiState {
+    private fun processRequest(call: Call<*>, blockUi:Boolean = true): BaseApiState {
         var viewState: BaseApiState
-        blockUserInteraction.postValue(true)
+        if(blockUi)
+            this.blockUserInteraction.postValue(true)
         try {
             val response = call.execute()
             if (response.isSuccessful) {
@@ -45,7 +46,8 @@ object RemoteRepository {
 
         }
         viewState.errorCode?.let { responseErrorCode.postValue(it) }
-        blockUserInteraction.postValue(false)
+        if(blockUi)
+            this.blockUserInteraction.postValue(false)
         return viewState
     }
 
@@ -79,13 +81,13 @@ object RemoteRepository {
     fun fetchItemsPaginated(page: Int, size: Int): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
             .fetchItemsPaginated(page, size)
-        return processRequest(call)
+        return processRequest(call, false)
     }
 
     fun createNewItem(request: Item): BaseApiState {
         val call =
             RestClient.serviceWithUserAuthentication(EndPoints::class.java).createNewItem(request)
-        return processRequest(call)
+        return processRequest(call, blockUi = false)
     }
 
     fun updateUserDetails(request: UpdateUserDetailsRequest): BaseApiState {

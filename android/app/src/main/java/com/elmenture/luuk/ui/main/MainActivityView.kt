@@ -11,4 +11,5 @@ interface MainActivityView: BaseActivityView {
     fun resetBottomNavigation()
     fun startCreateItemFragment()
     fun startProfileSettingsFragment()
+    fun showMessage(message: String? = null, isSuccessful: Boolean = true)
 }

@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.databinding.FragmentProfileSettingsBinding
-import com.kokonetworks.kokosasa.base.BaseFragment
+
+import com.elmenture.luuk.base.BaseFragment
+import models.SignInResponse
 import models.UpdateUserDetailsRequest
 import utils.MiscUtils
 
@@ -19,7 +21,6 @@ import utils.MiscUtils
 class ProfileSettingsFragment : BaseFragment() {
     private lateinit var profileSettingsViewModel: ProfileSettingsViewModel
     lateinit var binding: FragmentProfileSettingsBinding
-
     companion object {
         fun newInstance() = ProfileSettingsFragment()
     }
@@ -37,7 +38,22 @@ class ProfileSettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         setEventListeners()
-        presetFields()
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        profileSettingsViewModel.updateUserApiState.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isSuccessful) {
+                    activityView.showMessage("Details Updated Successfully")
+                } else {
+                    activityView.showMessage("Failed To Update Details", false)
+                }
+            }
+        }
+        profileSettingsViewModel.userDetails.observe(viewLifecycleOwner){
+            updateFields(it)
+        }
     }
 
     private fun setEventListeners() {
@@ -62,8 +78,8 @@ class ProfileSettingsFragment : BaseFragment() {
         return userDetailsRequest
     }
 
-    private fun presetFields() {
-        profileSettingsViewModel.userDetails.value?.let { details ->
+    private fun updateFields(details: SignInResponse?) {
+        details?.let { details ->
             binding.etName.setText(details.name)
             binding.etAddress.setText(details.physicalAddress)
             binding.etEmail.setText(details.email)
@@ -78,8 +94,7 @@ class ProfileSettingsFragment : BaseFragment() {
     }
 
     private fun initView() {
-        profileSettingsViewModel =
-            ViewModelProvider(requireActivity()).get(ProfileSettingsViewModel::class.java);
+        profileSettingsViewModel = ViewModelProvider(this).get(ProfileSettingsViewModel::class.java);
     }
     private fun Editable?.getStringValue(): String?{
         return if (this.isNullOrBlank()) null else this.toString()

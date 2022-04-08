@@ -8,9 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.R
+import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
-import com.elmenture.luuk.ui.main.MainActivityView
-import com.kokonetworks.kokosasa.base.BaseFragment
 import models.BodyMeasurements
 import models.ClothingSizes
 import models.UserMeasurements
@@ -20,7 +19,6 @@ import models.UserMeasurements
  */
 class MySizesFragment : BaseFragment() {
     lateinit var binding: FragmentMySizesBinding
-    lateinit var activityView: MainActivityView
     lateinit var mySizesViewModel: MySizesViewModel
     val spinnerArray = ArrayList<String>()
 
@@ -42,23 +40,22 @@ class MySizesFragment : BaseFragment() {
         initView()
         setUpEventListeners()
         setUpSizesSpinner()
-        prepopulateFields()
+        observeLivedata()
     }
 
 
     private fun initView() {
-        activityView = requireActivity() as MainActivityView
-        mySizesViewModel = ViewModelProvider(requireActivity()).get(MySizesViewModel::class.java);
+        mySizesViewModel = ViewModelProvider(this).get(MySizesViewModel::class.java);
     }
 
-    private fun prepopulateFields() {
-        mySizesViewModel.userMeasurements.let { userMeasurements ->
-            userMeasurements.value?.bodyMeasurements?.let {
+    private fun updateFields(userMeasurements: UserMeasurements?) {
+        userMeasurements.let { userMeasurements ->
+            userMeasurements?.bodyMeasurements?.let {
                 binding.etChest.setText(it.chest.toString())
                 binding.etWaist.setText(it.waist.toString())
                 binding.etHips.setText(it.hips.toString())
             }
-            userMeasurements.value?.clothingSizes?.let { clothingSize ->
+            userMeasurements?.clothingSizes?.let { clothingSize ->
                 binding.rbSize.isChecked = true
 
                 clothingSize.international?.let {
@@ -79,6 +76,23 @@ class MySizesFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun observeLivedata() {
+        mySizesViewModel.updateUserMeasurementsApiState.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isSuccessful) {
+                    activityView.showMessage("Item Created Successfully")
+                } else {
+                    activityView.showMessage("Failed To Create Item", false)
+                }
+            }
+        }
+
+        mySizesViewModel.userMeasurements.observe(viewLifecycleOwner) {
+            updateFields(it)
+        }
+
     }
 
     private fun setUpEventListeners() {
@@ -119,7 +133,6 @@ class MySizesFragment : BaseFragment() {
         binding.toolBar.setNavClickListener {
             requireActivity().onBackPressed()
         }
-
     }
 
     private fun getMeasurementsData(): UserMeasurements? {

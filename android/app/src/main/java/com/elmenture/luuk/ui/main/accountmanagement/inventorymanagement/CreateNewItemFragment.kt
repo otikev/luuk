@@ -19,9 +19,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
-import com.elmenture.luuk.ui.main.MainActivityView
-import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
-import com.kokonetworks.kokosasa.base.BaseFragment
+
+import com.elmenture.luuk.base.BaseFragment
 import models.Item
 import userdata.User
 import views.CustomProgressBar
@@ -36,11 +35,10 @@ import java.io.OutputStream
  */
 class CreateNewItemFragment : BaseFragment() {
     lateinit var binding: FragmentCreateNewItemBinding
-    lateinit var activityView: MainActivityView
     lateinit var createNewItemViewModel: CreateNewItemViewModel
     lateinit var progressBar: CustomProgressBar
     val spinnerArray = ArrayList<String>()
-    val item  = Item()
+    val item = Item()
     private var creds: BasicAWSCredentials =
         BasicAWSCredentials(
             User.getCurrent().userDetails.s3AccessKeyId,
@@ -53,7 +51,8 @@ class CreateNewItemFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = CreateNewItemFragment()
-        val BUCKET_NAME = "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
+        val BUCKET_NAME =
+            "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
@@ -76,11 +75,9 @@ class CreateNewItemFragment : BaseFragment() {
         createNewItemViewModel.createNewItemApiState.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isSuccessful) {
-                    Toast.makeText(requireContext(), "Item Created Successfully", Toast.LENGTH_LONG)
-                        .show()
+                    activityView.showMessage("Item Created Successfully")
                 } else {
-                    Toast.makeText(requireContext(), "Failed To Create Item ", Toast.LENGTH_LONG)
-                        .show()
+                    activityView.showMessage("Failed To Create Item", false)
                 }
                 progressBar.dismissAllowingStateLoss()
             }
@@ -90,13 +87,12 @@ class CreateNewItemFragment : BaseFragment() {
 
 
     private fun initView() {
-        activityView = requireActivity() as MainActivityView
         createNewItemViewModel = ViewModelProvider(this).get(CreateNewItemViewModel::class.java);
     }
 
     private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener {
-                uploadData()
+            uploadData()
         }
 
         binding.toolBar.setNavClickListener {
@@ -111,7 +107,7 @@ class CreateNewItemFragment : BaseFragment() {
         item.sizeNumber = binding.etSizeNumber.text.toString().toInt()
         item.description = binding.etDescription.text.toString()
         val ksh = binding.etItemPrice.text.toString().toLong()
-        item.price = ksh*100 //convert to cents for transmission to the server
+        item.price = ksh * 100 //convert to cents for transmission to the server
         return item
     }
 
@@ -132,16 +128,18 @@ class CreateNewItemFragment : BaseFragment() {
             filePath = data.data!!
             binding.ivS3image.setImageURI(filePath)
 
-            val inputStream: InputStream? = requireContext().contentResolver.openInputStream(filePath) //to read a file from content path
+            val inputStream: InputStream? =
+                requireContext().contentResolver.openInputStream(filePath) //to read a file from content path
             file = File.createTempFile("img", ".jpg")
-            val outStream: OutputStream = FileOutputStream(file)//creating stream pipeline to the file
+            val outStream: OutputStream =
+                FileOutputStream(file)//creating stream pipeline to the file
             outStream.write(inputStream?.readBytes())//passing bytes of data to the fi
         }
     }
 
     private fun uploadData() {
         progressBar = CustomProgressBar.newInstance()
-        progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar" )
+        progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar")
         //val file = File(filePath.path)
         val trans = TransferUtility.builder().context(requireContext()).s3Client(s3Client).build()
         val observer: TransferObserver = trans.upload(BUCKET_NAME, file.name, file)
@@ -161,7 +159,7 @@ class CreateNewItemFragment : BaseFragment() {
 
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
                 Log.d("S3-TAG", "Uploading $bytesCurrent / $bytesTotal")
-                val progress = (bytesCurrent/bytesTotal)*100
+                val progress = (bytesCurrent / bytesTotal) * 100
                 progressBar.setProgress(progress.toInt())
             }
 
@@ -183,11 +181,12 @@ class CreateNewItemFragment : BaseFragment() {
         }
 
     }
+
     fun getRealPathFromURI(contentUri: Uri?): String? {
 
         // can post image
         val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor =requireActivity().contentResolver.query(
+        val cursor = requireActivity().contentResolver.query(
             contentUri!!,
             proj,  // Which columns to return
             null,  // WHERE clause; which rows to return (all rows)

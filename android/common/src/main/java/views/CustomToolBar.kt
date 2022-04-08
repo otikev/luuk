@@ -31,7 +31,7 @@ class CustomToolBar : LinearLayout {
             try {
                 tvTitle?.text = getString(R.styleable.CustomToolBar_toolbar_title)
                 ivImage?.visibility = if (getBoolean(R.styleable.CustomToolBar_nav_visible, true)) View.VISIBLE else View.GONE
-                tvSave?.visibility = if (getBoolean(R.styleable.CustomToolBar_helperText_visible, true)) View.VISIBLE else View.GONE
+                tvSave?.visibility = if (getBoolean(R.styleable.CustomToolBar_helperText_visible, false)) View.VISIBLE else View.GONE
             } finally {
                 recycle()
             }

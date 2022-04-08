@@ -110,4 +110,9 @@ class MainActivity : AuthenticatedActivity(),
     override fun resetBottomNavigation() {
         binding.bottomNavigation.menu.findItem(R.id.navHome).isChecked =  true
     }
+
+    override fun showMessage(message: String?, isSuccessful: Boolean) {
+        super.showMessage(binding.root, isSuccessful,message)
+    }
+
 }

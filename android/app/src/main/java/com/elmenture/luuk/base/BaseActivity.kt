@@ -1,6 +1,9 @@
 package com.elmenture.luuk.base
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -14,9 +17,10 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.kokonetworks.kokosasa.base.BaseFragment
+import com.google.android.material.snackbar.Snackbar
 import userdata.User
 import views.ProgressDialog
+
 
 abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
@@ -28,6 +32,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
     protected var callbackManager: CallbackManager? = null
     private var loader: DialogFragment? = null
+    private var snackbar: Snackbar? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +121,26 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     private fun hideProgressDialog() {
         loader?.dismissAllowingStateLoss()
     }
+
+    fun showMessage(view: View, isSuccessFullAction: Boolean, message: String? = null) {
+        snackbar?.dismiss()
+        var snackMsg = message
+        if(snackMsg.isNullOrEmpty()){
+            snackMsg = "Action Failed. Try Again"
+            if (isSuccessFullAction) {
+                snackMsg = "Action Completed Successfully"
+            }
+        }
+
+        snackbar = Snackbar.make(view, snackMsg, Snackbar.LENGTH_INDEFINITE)
+        val textView = snackbar?.view?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView?.gravity = Gravity.CENTER
+        textView?.setLines(2);
+        textView?.setTextColor(resources.getColor(R.color.luuk_yellow))
+        snackbar?.setAction("OK") { snackbar?.dismiss() }
+        snackbar?.show()
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

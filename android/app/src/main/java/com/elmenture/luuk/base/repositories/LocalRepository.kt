@@ -5,8 +5,8 @@ import models.SignInResponse
 import models.SwipeRecords
 
 object LocalRepository {
-    var userDetails = MutableLiveData<SignInResponse>()
-    var swipeDetails = MutableLiveData<SwipeRecords>()
+    var userDetailsLiveData = MutableLiveData<SignInResponse>()
+    var swipeDetailsLiveData = MutableLiveData<SwipeRecords>()
         get() {
             if (field.value == null) {
                 field = MutableLiveData(SwipeRecords())
@@ -14,5 +14,7 @@ object LocalRepository {
             return field
         }
 
-
+    fun updateUserDetails(userDetails: SignInResponse?){
+        userDetailsLiveData.postValue(userDetails)
+    }
 }
