@@ -3,6 +3,7 @@ package com.elmenture.core.controller;
 import com.elmenture.core.model.BodyMeasurement;
 import com.elmenture.core.model.ClothingSize;
 import com.elmenture.core.model.User;
+import com.elmenture.core.payload.request.UserDetails;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.impl.data.UserMeasurementsDto;
 import com.elmenture.core.utils.MiscUtils;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * Created by otikev on 06-Mar-2022
@@ -32,7 +34,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
         }
-        if(request.getBodyMeasurement()!=null){
+        if (request.getBodyMeasurement() != null) {
             BodyMeasurement measurements = user.getBodyMeasurement();
             if (measurements == null) {
                 measurements = new BodyMeasurement();
@@ -43,7 +45,7 @@ public class UserController {
 
             user.setBodyMeasurement(measurements);
             userRepository.save(user);
-        }else if (request.getClothingSize()!=null){
+        } else if (request.getClothingSize() != null) {
             ClothingSize clothingSize = user.getClothingSize();
             if (clothingSize == null) {
                 clothingSize = new ClothingSize();
@@ -56,6 +58,26 @@ public class UserController {
             user.setClothingSize(clothingSize);
             userRepository.save(user);
         }
+
+        return ResponseEntity.ok("Updated Successfully");
+    }
+
+    @PostMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateUserDetails(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDetails request) {
+        String token = MiscUtils.getUserTokenFromHeader(headers.get("luuk-x-authorization").get(0));
+        User user = userRepository.findByAuthToken(token);
+        if (user == null || request == null) {
+            return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+        }
+
+        if (request.getName() != null) user.setFirstName(request.getName());
+        if (request.getEmail() != null) user.setEmail(request.getEmail());
+        if (request.getContactPhoneNumber() != null)user.setContactPhoneNumber(request.getContactPhoneNumber());
+        if (request.getMpesaPhoneNumber() != null) user.setMobileMoneyNumber(request.getMpesaPhoneNumber());
+        if (request.getGender() != null) user.setGender(request.getGender());
+        if (request.getPhysicalAddress() != null) user.setPhysicalAddress(request.getPhysicalAddress());
+
+        userRepository.save(user);
 
         return ResponseEntity.ok("Updated Successfully");
     }

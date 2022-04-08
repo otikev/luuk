@@ -3,6 +3,7 @@ package com.elmenture.luuk.base
 import androidx.lifecycle.MutableLiveData
 import models.BodyMeasurements
 import models.Item
+import models.UpdateUserDetailsRequest
 import models.UserMeasurements
 import network.RestClient
 import network.interceptors.ConnectivityInterceptor
@@ -84,6 +85,12 @@ object BaseRepository {
     fun createNewItem(request: Item): BaseApiState {
         val call =
             RestClient.serviceWithUserAuthentication(EndPoints::class.java).createNewItem(request)
+        return processRequest(call)
+    }
+
+    fun updateUserDetails(request: UpdateUserDetailsRequest): BaseApiState {
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateUserDetails(request)
         return processRequest(call)
     }
 

@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <views.CustomToolBar
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -30,7 +31,7 @@
             android:gravity="center"
             android:text="DM"
             android:textColor="@color/luuk_mint_green"
-            android:textSize="36sp" />
+            android:textSize="48sp" />
     </views.SquareContainer>
 
     <ScrollView
@@ -56,22 +57,9 @@
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"/>
+                    android:hint="Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Gender"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -102,20 +90,72 @@
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_large_size">
+                android:layout_marginBottom="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:hint="Address"
+                    android:hint="Physical Address"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textSize="16sp"
+                android:text="I want to see "/>
+
+            <RadioGroup
+                android:id="@+id/rg_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rectangle_outlined_dark"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/rb_female"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_chip_bg"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="Female Clothes"
+                    android:textColor="@color/selector_chip_text" />
+
+                <RadioButton
+                    android:id="@+id/rb_male"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_chip_bg"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="Male Clothes"
+                    android:textColor="@color/selector_chip_text" />
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_chip_bg"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="All Clothes"
+                    android:textColor="@color/selector_chip_text" />
+
+
+            </RadioGroup>
 
         </LinearLayout>
 
