@@ -8,12 +8,6 @@ import com.elmenture.luuk.ui.main.MainActivityView
 
 
 abstract class BaseFragment : Fragment() {
-    protected val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     open fun onResumeFromBackstack() {
     }

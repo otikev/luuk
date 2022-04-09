@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.ui.main.MainActivityView
 import models.Spot
 import utils.MiscUtils
 import views.cardstackview.*
@@ -21,7 +22,7 @@ import views.cardstackview.*
 class HomeFragment : BaseFragment(), CardStackListener {
 
     private var _binding: FragmentHomeBinding? = null
-
+    private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private val binding get() = _binding!!
     private lateinit var adapter: CardStackAdapter
     private val cardStackView by lazy { binding.cardStackView }

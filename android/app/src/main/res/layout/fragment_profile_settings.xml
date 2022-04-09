@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        app:helperText_visible="true"
         app:toolbar_title="Profile Settings" />
 
     <views.SquareContainer
@@ -156,7 +155,12 @@
 
 
             </RadioGroup>
-
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_undo_changes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/buttonStyleSecondary"
+            android:text="Undo Changes"/>
         </LinearLayout>
 
     </ScrollView>

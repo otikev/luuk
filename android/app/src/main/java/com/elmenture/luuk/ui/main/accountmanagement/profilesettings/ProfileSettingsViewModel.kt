@@ -15,14 +15,53 @@ import models.UpdateUserDetailsRequest
 class ProfileSettingsViewModel : ViewModel() {
     var userDetails = MediatorLiveData<SignInResponse>()
     var updateUserApiState = MutableLiveData<BaseApiState>()
+    var isChangeSavable = MutableLiveData<Boolean>(false)
 
     init {
-        userDetails.addSource(LocalRepository.userDetailsLiveData){userDetails.postValue(it)}
+        userDetails.addSource(LocalRepository.userDetailsLiveData) { userDetails.postValue(it) }
     }
 
-    fun updateUserData(updateUserDetailsRequest: UpdateUserDetailsRequest){
+    fun updateUserData(updateUserDetailsRequest: UpdateUserDetailsRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            updateUserApiState.postValue(AccountManagementRepository.updateUserDetails(updateUserDetailsRequest))
+            updateUserApiState.postValue(
+                AccountManagementRepository.updateUserDetails(
+                    updateUserDetailsRequest
+                )
+            )
         }
+    }
+
+    fun onCurrentDetailsChanged(uiUserDetails: UpdateUserDetailsRequest) {
+        val persistedUserDetails = userDetails.value
+        if (!uiUserDetails.contactPhoneNumber.comparesTo(persistedUserDetails?.contactPhoneNumber)) {
+            isChangeSavable.value = true
+            return
+        }
+        if (!uiUserDetails.email.comparesTo(persistedUserDetails?.email)) {
+            isChangeSavable.value = true
+            return
+        }
+        if (!uiUserDetails.physicalAddress.comparesTo(persistedUserDetails?.physicalAddress)) {
+            isChangeSavable.value = true
+            return
+        }
+        if (!uiUserDetails.name.comparesTo(persistedUserDetails?.name)) {
+            isChangeSavable.value = true
+            return
+        }
+        if (!uiUserDetails.gender.comparesTo(persistedUserDetails?.gender)) {
+            isChangeSavable.value = true
+            return
+        }
+
+        isChangeSavable.value = false
+    }
+
+    private fun String?.comparesTo(compare: String?): Boolean {
+        var str = this
+        if (str == null) {
+            str = ""
+        }
+        return str == compare
     }
 }

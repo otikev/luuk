@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -18,9 +17,9 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
-import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
-
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
+import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
 import userdata.User
 import views.CustomProgressBar
@@ -34,6 +33,7 @@ import java.io.OutputStream
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class CreateNewItemFragment : BaseFragment() {
+    private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     lateinit var binding: FragmentCreateNewItemBinding
     lateinit var createNewItemViewModel: CreateNewItemViewModel
     lateinit var progressBar: CustomProgressBar
@@ -92,7 +92,14 @@ class CreateNewItemFragment : BaseFragment() {
 
     private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener {
-            uploadData()
+            if (verifyFields(
+                    binding.etDescription,
+                    binding.etItemPrice,
+                    binding.etSizeInternational,
+                    binding.etSizeNumber
+                )
+            )
+                uploadData()
         }
 
         binding.toolBar.setNavClickListener {
@@ -140,7 +147,6 @@ class CreateNewItemFragment : BaseFragment() {
     private fun uploadData() {
         progressBar = CustomProgressBar.newInstance()
         progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar")
-        //val file = File(filePath.path)
         val trans = TransferUtility.builder().context(requireContext()).s3Client(s3Client).build()
         val observer: TransferObserver = trans.upload(BUCKET_NAME, file.name, file)
         observer.setTransferListener(object : TransferListener {
@@ -172,29 +178,25 @@ class CreateNewItemFragment : BaseFragment() {
     private fun postItemData() {
         try {
             createNewItemViewModel.createNewItem(getItemDetails())
-        } catch (ex: NumberFormatException) {
-            Toast.makeText(
-                requireContext(),
-                "Please set all the required fields",
-                Toast.LENGTH_LONG
-            ).show()
+        } catch (ex: java.lang.Exception) {
+            activityView.showMessage("Please set all required fields")
         }
 
     }
 
-    fun getRealPathFromURI(contentUri: Uri?): String? {
+    private fun verifyFields(vararg editTexts: EditText): Boolean {
+        for (edit in editTexts) {
+            if (edit.text.isNullOrEmpty()) {
+                val hint = edit.hint.toString()
+                activityView.showMessage("Please add $hint")
+                return false
+            }
 
-        // can post image
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = requireActivity().contentResolver.query(
-            contentUri!!,
-            proj,  // Which columns to return
-            null,  // WHERE clause; which rows to return (all rows)
-            null,  // WHERE clause selection arguments (none)
-            null
-        ) // Order-by clause (ascending by name)
-        val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        return cursor.getString(column_index)
+        }
+        if (item.imageUrl.isNullOrEmpty()) {
+            activityView.showMessage("Please add image")
+            return false
+        }
+        return true
     }
 }

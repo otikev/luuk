@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.elmenture.luuk.databinding.FragmentAccountManagementBinding
 
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.ui.main.MainActivityView
 import userdata.User
 
 /**
@@ -16,6 +17,7 @@ import userdata.User
  */
 class AccountManagementFragment : BaseFragment() {
     lateinit var binding: FragmentAccountManagementBinding
+    private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
 
     companion object {
         fun newInstance() = AccountManagementFragment()

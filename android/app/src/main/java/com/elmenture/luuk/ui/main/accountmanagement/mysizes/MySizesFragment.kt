@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
+import com.elmenture.luuk.ui.main.MainActivityView
 import models.BodyMeasurements
 import models.ClothingSizes
 import models.UserMeasurements
@@ -20,6 +21,7 @@ import models.UserMeasurements
 class MySizesFragment : BaseFragment() {
     lateinit var binding: FragmentMySizesBinding
     lateinit var mySizesViewModel: MySizesViewModel
+    private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     val spinnerArray = ArrayList<String>()
 
     companion object {
@@ -61,6 +63,9 @@ class MySizesFragment : BaseFragment() {
                 clothingSize.international?.let {
                     binding.etEnterSize.setText(it)
                     binding.rbInt.isChecked = true
+
+                    val pos = spinnerArray.indexOf(it)
+                    binding.spnInternational.setSelection(pos)
                 }
                 clothingSize.us?.let {
                     binding.etEnterSize.setText(it.toString())

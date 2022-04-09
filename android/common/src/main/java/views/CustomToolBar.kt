@@ -45,6 +45,10 @@ class CustomToolBar : LinearLayout {
     fun setHelperTextClickListener(onClickListener: OnClickListener){
         tvSave?.setOnClickListener(onClickListener)
     }
+
+    fun setHelperTextVisible(setVisible: Boolean){
+        tvSave?.visibility = if(setVisible) View.VISIBLE else View.GONE
+    }
     private fun initializeViews(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.custom_toolbar, this, true)
