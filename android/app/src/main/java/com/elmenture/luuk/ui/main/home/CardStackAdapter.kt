@@ -12,7 +12,7 @@ import com.elmenture.luuk.R
 import models.Spot
 
 class CardStackAdapter(
-    private var spots: List<Spot> = emptyList()
+    private var spots: ArrayList<Spot> = arrayListOf()
 ) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
 
     lateinit var spot: Spot
@@ -40,7 +40,7 @@ class CardStackAdapter(
     }
 
     fun setSpots(spots: List<Spot>) {
-        this.spots = spots
+        this.spots = spots as ArrayList<Spot>
     }
 
     fun getSpots(): List<Spot> {
@@ -49,6 +49,12 @@ class CardStackAdapter(
 
     fun getTopItem(): Spot {
         return spot
+    }
+
+    fun updateContent(spots: List<Spot>) {
+        this.spots.clear()
+        this.spots.addAll(spots)
+        this.notifyItemRangeChanged(0, spots.count())
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

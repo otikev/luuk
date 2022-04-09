@@ -11,9 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
-import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import models.Item
 import models.Spot
 import utils.MiscUtils
 import views.cardstackview.*
@@ -24,10 +25,12 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private var _binding: FragmentHomeBinding? = null
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private val binding get() = _binding!!
-    private lateinit var adapter: CardStackAdapter
     private val cardStackView by lazy { binding.cardStackView }
+    private var spots: ArrayList<Spot> = arrayListOf()
+    private val adapter = CardStackAdapter(spots)
     private val manager by lazy { CardStackLayoutManager(activity, this) }
-    lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
+    private val itemList by lazy { homeViewModel.itemsLiveData.value }
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -53,8 +56,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) { items ->
             items?.let {
-                adapter = CardStackAdapter(createSpots())
-                cardStackView.adapter = adapter
+                adapter.updateContent(createSpots(it))
             }
         }
     }
@@ -128,6 +130,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
         cardStackView.layoutManager = manager
+        cardStackView.adapter = adapter
         cardStackView.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
                 supportsChangeAnimations = false
@@ -137,7 +140,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun paginate() {
         val old = adapter.getSpots()
-        val new = old.plus(createSpots())
+        val new = old.plus(createSpots(itemList))
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
         adapter.setSpots(new)
@@ -146,7 +149,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun reload() {
         val old = adapter.getSpots()
-        val new = createSpots()
+        val new = createSpots(itemList)
         val callback = SpotDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
         adapter.setSpots(new)
@@ -242,12 +245,13 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     private fun createSpot(): Spot {
-        return createSpots()[0]
+        val spots = ArrayList<Spot>()
+        return spots[0]
     }
 
-    private fun createSpots(): List<Spot> {
+    private fun createSpots(itemList: ArrayList<Item>?): List<Spot> {
         val spots = ArrayList<Spot>()
-        homeViewModel.itemsLiveData.value?.let {
+        itemList?.let {
             for (item in it) {
                 spots.add(
                     Spot(
