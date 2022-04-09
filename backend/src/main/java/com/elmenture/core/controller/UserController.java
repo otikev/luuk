@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 /**
  * Created by otikev on 06-Mar-2022
@@ -64,15 +63,25 @@ public class UserController {
 
     @PostMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateUserDetails(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDetails request) {
+        //to extract to service
         String token = MiscUtils.getUserTokenFromHeader(headers.get("luuk-x-authorization").get(0));
         User user = userRepository.findByAuthToken(token);
         if (user == null || request == null) {
             return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        if (request.getName() != null) user.setFirstName(request.getName());
+        if (request.getName() != null) {
+            String name = request.getName().trim();
+            String[] names = name.split(" ");
+            if (names.length > 0) {
+                user.setFirstName(names[0]);
+            }
+            if (names.length > 1) {
+                user.setLastName(names[1]);
+            }
+        }
         if (request.getEmail() != null) user.setEmail(request.getEmail());
-        if (request.getContactPhoneNumber() != null)user.setContactPhoneNumber(request.getContactPhoneNumber());
+        if (request.getContactPhoneNumber() != null) user.setContactPhoneNumber(request.getContactPhoneNumber());
         if (request.getMpesaPhoneNumber() != null) user.setMobileMoneyNumber(request.getMpesaPhoneNumber());
         if (request.getGender() != null) user.setGender(request.getGender());
         if (request.getPhysicalAddress() != null) user.setPhysicalAddress(request.getPhysicalAddress());
