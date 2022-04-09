@@ -1,14 +1,23 @@
 package com.elmenture.luuk.repositories
 
 import com.elmenture.luuk.base.BaseApiState
+import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.base.repositories.RemoteRepository
+import models.ItemResponse
 
 object HomeRepository {
+    private var currentPage: Int = 0
 
-    fun fetchItems(): BaseApiState {
-        //TODO: currently only fetching first page with 100 items. Will implement
-        // background requests to fetch next pages as user swipes items
-        return RemoteRepository.fetchItemsPaginated(0,100)
+    fun fetchItems(page: Int = currentPage, size: Int = 100): BaseApiState {
+        val response = RemoteRepository.fetchItemsPaginated(page, size)
+        if (response.isSuccessful) {
+            val item = response.data as ItemResponse
+            if (!item.last) {
+                LocalRepository.updateItemList(item.content)
+                currentPage++
+            }
+        }
+        return response
     }
 
 }

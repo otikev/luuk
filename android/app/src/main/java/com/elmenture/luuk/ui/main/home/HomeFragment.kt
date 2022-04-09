@@ -67,6 +67,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
+            homeViewModel.fetchItems()
         }
 
         when (direction) {

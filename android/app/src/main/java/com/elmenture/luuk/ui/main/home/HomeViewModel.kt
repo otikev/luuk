@@ -16,13 +16,12 @@ import models.Spot
 import models.SwipeRecords
 
 class HomeViewModel : ViewModel() {
-    var itemsLiveData = MutableLiveData(ArrayList<Item>())
     var itemsApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
-    var liveDataMerger = MediatorLiveData<SwipeRecords>()
+    var itemsLiveData = MediatorLiveData<ArrayList<Item>>()
 
     init {
-        liveDataMerger.addSource(LocalRepository.swipeDetailsLiveData) { value ->
-            liveDataMerger.setValue(value)
+        itemsLiveData.addSource(LocalRepository.itemListLiveData) { value ->
+            itemsLiveData.setValue(value)
         }
     }
 
@@ -33,15 +32,9 @@ class HomeViewModel : ViewModel() {
         LocalRepository.swipeDetailsLiveData.postValue(swipeData)
     }
 
-    fun fetchItems() {
+    fun fetchItems(size: Int=15) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = HomeRepository.fetchItems()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val list = response.data as ItemResponse
-                    itemsLiveData.value = list.content as ArrayList<Item>
-                }
-            }
+            itemsApiState.postValue(HomeRepository.fetchItems(size = size))
         }
     }
 }
