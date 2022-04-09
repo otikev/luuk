@@ -13,11 +13,13 @@
         android:layout_height="wrap_content"
         app:nav_visible="true"
         app:toolbar_title="My Sizes" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_margin="24dp"
+        android:layout_height="match_parent"
 
-        android:layout_height="match_parent">
+        android:layout_margin="24dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,8 +37,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="16dp"
-                android:background="@drawable/rectangle_outlined_dark"
-                android:orientation="horizontal">
+                android:background="@drawable/radio_group_bg"
+                android:orientation="horizontal"
+                android:padding="2dp">
 
                 <RadioButton
                     android:id="@+id/rb_size"
@@ -74,7 +77,8 @@
                     android:id="@+id/rg_sizes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_outlined_dark"
+                    android:padding="2dp"
+                    android:background="@drawable/radio_group_bg"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -130,11 +134,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="16dp"
-                    android:visibility="gone"
                     android:background="@drawable/rectangle_outlined_dark"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="6dp">
+                    android:padding="6dp"
+                    android:visibility="gone">
 
 
                     <Spinner

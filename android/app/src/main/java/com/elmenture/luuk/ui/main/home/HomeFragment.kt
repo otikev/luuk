@@ -54,10 +54,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     private fun observeViewModelLiveData() {
-        homeViewModel.itemsLiveData.observe(viewLifecycleOwner) { items ->
-            items?.let {
+        homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
                 adapter.updateContent(createSpots(it))
-            }
         }
     }
 

@@ -193,10 +193,6 @@ class CreateNewItemFragment : BaseFragment() {
             }
 
         }
-        if (item.imageUrl.isNullOrEmpty()) {
-            activityView.showMessage("Please add image")
-            return false
-        }
         return true
     }
 }
