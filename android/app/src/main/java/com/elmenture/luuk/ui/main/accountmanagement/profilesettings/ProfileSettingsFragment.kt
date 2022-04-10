@@ -86,6 +86,7 @@ class ProfileSettingsFragment : BaseFragment() {
         when (binding.rgGender.checkedRadioButtonId) {
             binding.rbMale.id -> userDetailsRequest.gender = "M"
             binding.rbFemale.id -> userDetailsRequest.gender = "F"
+            binding.rbAll.id -> userDetailsRequest.gender = "A"
         }
         return userDetailsRequest
     }
@@ -100,7 +101,7 @@ class ProfileSettingsFragment : BaseFragment() {
             when (details.gender) {
                 "F" -> binding.rbFemale.isChecked = true
                 "M" -> binding.rbMale.isChecked = true
-                else -> binding.rbAll.isChecked = true
+                "A" -> binding.rbAll.isChecked = true
             }
         }
 

@@ -34,8 +34,7 @@ class MainActivity : AuthenticatedActivity(),
     private fun observeLiveData() {
         mainActivityViewModel.swipeRecordsLiveData.observe(this) { swipeRecords ->
             swipeRecords.likes.let {
-                if (it.size > 0) {
-                    Toast.makeText(this,"in cart", Toast.LENGTH_LONG).show()
+                if (it.isNotEmpty()) {
                     binding.bottomNavigation.menu.getItem(2).icon = ContextCompat.getDrawable(this, R.drawable.ic_cart_selector_full)
                 }else{
                     binding.bottomNavigation.menu.getItem(2).icon = ContextCompat.getDrawable(this, R.drawable.ic_cart_selector_no_item)
