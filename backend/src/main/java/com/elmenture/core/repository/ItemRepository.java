@@ -1,7 +1,8 @@
 package com.elmenture.core.repository;
 
 import com.elmenture.core.model.Item;
-import com.elmenture.core.model.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +12,8 @@ import java.util.List;
  */
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findByTarget(String target);
+    List<Item> findByTargetIn(List<String> targets);
+    Page<Item> findByTargetIn(List<String> targets, Pageable pageable);
+    List<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational);
+    Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by otikev on 06-Mar-2022
@@ -58,6 +59,30 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "gender")
     private String gender;
+
+    /**
+     * Contains a comma separated text for the type of clothing the user
+     * wants to see e.g.
+     * m,f,c -> see male, female and child clothes
+     */
+    @Column(name = "clothing_recommendations")
+    private String clothingRecommendations;
+
+    public List<String> preferredRecommendations() {
+        List<String> recommendations = new ArrayList<>();
+        if (clothingRecommendations == null) {
+            recommendations.add("m");
+            recommendations.add("f");
+            recommendations.add("c");
+        } else {
+            String[] exploded = clothingRecommendations.split(",");
+            for (String str : exploded) {
+                recommendations.add(str);
+            }
+        }
+
+        return recommendations;
+    }
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
