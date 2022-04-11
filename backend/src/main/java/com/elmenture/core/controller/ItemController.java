@@ -31,14 +31,7 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping("/new")
-    public ResponseEntity<ItemDto> createItem(@Valid @RequestBody Item _item) {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setDescription(String.valueOf(_item.getDescription()));
-        itemDto.setSizeInternational(String.valueOf(_item.getSizeInternational()));
-        itemDto.setSizeNumber(Long.parseLong(String.valueOf(_item.getSizeNumber())));
-        itemDto.setPrice(Long.parseLong(String.valueOf(_item.getPrice())));
-        itemDto.setImageUrl(String.valueOf(_item.getImageUrl()));
-
+    public ResponseEntity<ItemDto> createItem(@Valid @RequestBody ItemDto itemDto) {
         return new ResponseEntity<>(itemService.createItem(itemDto), HttpStatus.CREATED);
     }
 

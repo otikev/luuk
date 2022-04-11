@@ -20,10 +20,13 @@ data class Item(
     var id: Long? = null,
 
     @field:SerializedName("sizeNumber")
-    var sizeNumber: Int? = null
+    var sizeNumber: Int? = null,
+
+    @field:SerializedName("target")
+    var target: String? = null
 )
 
 fun Item.isSet(): Boolean {
     return this.price != null && !this.imageUrl.isNullOrEmpty() && !this.sizeInternational.isNullOrEmpty() &&
-            !this.description.isNullOrBlank() && this.description.isNullOrBlank() && this.sizeNumber !=null
+            !this.description.isNullOrBlank() && this.description.isNullOrBlank() && this.sizeNumber != null
 }

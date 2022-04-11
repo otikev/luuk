@@ -47,7 +47,7 @@
         <entry key="app/src/main/res/layout/content_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_body_measurements.xml" value="0.72" />
         <entry key="app/src/main/res/layout/fragment_account_management.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_create_new_item.xml" value="0.72" />
+        <entry key="app/src/main/res/layout/fragment_create_new_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.6462264150943396" />
         <entry key="app/src/main/res/layout/fragment_manage_inventory.xml" value="0.711943793911007" />

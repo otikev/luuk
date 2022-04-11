@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,6 +37,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         if (tagRepository.count() == 0) {
             tagRepository.save(new Tag("color"));
             tagRepository.save(new Tag("cut"));
@@ -190,5 +192,14 @@ public class DataLoader implements CommandLineRunner {
         }
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
+
+        /*
+        List<Item> itemsWithoutTarget = itemRepository.findByTarget(null);
+
+        for(Item item : itemsWithoutTarget){
+            item.setTarget("female");
+            itemRepository.save(item);
+        }
+         */
     }
 }

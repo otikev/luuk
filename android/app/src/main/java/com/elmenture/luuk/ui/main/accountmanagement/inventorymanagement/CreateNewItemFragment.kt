@@ -1,14 +1,18 @@
 package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
 
+import android.R
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -37,7 +41,7 @@ class CreateNewItemFragment : BaseFragment() {
     lateinit var binding: FragmentCreateNewItemBinding
     lateinit var createNewItemViewModel: CreateNewItemViewModel
     lateinit var progressBar: CustomProgressBar
-    val spinnerArray = ArrayList<String>()
+    val targets = arrayOf("Select target...", "Female", "Male", "Child")
     val item = Item()
     private var creds: BasicAWSCredentials =
         BasicAWSCredentials(
@@ -87,19 +91,58 @@ class CreateNewItemFragment : BaseFragment() {
 
 
     private fun initView() {
-        createNewItemViewModel = ViewModelProvider(this).get(CreateNewItemViewModel::class.java);
+        createNewItemViewModel = ViewModelProvider(this).get(CreateNewItemViewModel::class.java)
+
+        val spinnerAdapter = object :
+            ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, targets) {
+
+            override fun isEnabled(position: Int): Boolean {
+                // Disable the first item from Spinner
+                // First item will be used for hint
+                return position != 0
+            }
+
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view: TextView =
+                    super.getDropDownView(position, convertView, parent) as TextView
+                //set the color of first item in the drop down list to gray
+                if (position == 0) {
+                    view.setTextColor(Color.GRAY)
+                } else {
+                    //here it is possible to define color for other items by
+                    //view.setTextColor(Color.RED)
+                }
+                return view
+            }
+        }
+
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        binding.spinnerTarget.setAdapter(spinnerAdapter)
+        //binding.spinnerTarget.setOnItemSelectedListener(this)
     }
+
 
     private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener {
-            if (verifyFields(
-                    binding.etDescription,
-                    binding.etItemPrice,
-                    binding.etSizeInternational,
-                    binding.etSizeNumber
-                )
+            if (binding.spinnerTarget.selectedItemPosition == 0) {
+                activityView.showMessage("Please select a target")
+                return@setOnClickListener
+            }
+
+            val success = verifyFields(
+                binding.etDescription,
+                binding.etItemPrice,
+                binding.etSizeInternational,
+                binding.etSizeNumber
             )
+
+            if (success) {
                 uploadData()
+            }
         }
 
         binding.toolBar.setNavClickListener {
@@ -113,6 +156,7 @@ class CreateNewItemFragment : BaseFragment() {
         item.sizeInternational = binding.etSizeInternational.text.toString()
         item.sizeNumber = binding.etSizeNumber.text.toString().toInt()
         item.description = binding.etDescription.text.toString()
+        item.target = binding.spinnerTarget.selectedItem.toString()
         val ksh = binding.etItemPrice.text.toString().toLong()
         item.price = ksh * 100 //convert to cents for transmission to the server
         return item
@@ -181,7 +225,6 @@ class CreateNewItemFragment : BaseFragment() {
         } catch (ex: java.lang.Exception) {
             activityView.showMessage("Please set all required fields")
         }
-
     }
 
     private fun verifyFields(vararg editTexts: EditText): Boolean {
@@ -191,7 +234,6 @@ class CreateNewItemFragment : BaseFragment() {
                 activityView.showMessage("Please add $hint")
                 return false
             }
-
         }
         return true
     }
