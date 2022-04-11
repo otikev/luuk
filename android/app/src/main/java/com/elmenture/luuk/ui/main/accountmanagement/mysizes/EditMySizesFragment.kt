@@ -18,14 +18,14 @@ import models.UserMeasurements
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class MySizesFragment : BaseFragment() {
+class EditMySizesFragment : BaseFragment() {
     lateinit var binding: FragmentMySizesBinding
     lateinit var mySizesViewModel: MySizesViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     val spinnerArray = ArrayList<String>()
 
     companion object {
-        fun newInstance() = MySizesFragment()
+        fun newInstance() = EditMySizesFragment()
     }
 
     override fun onCreateView(
@@ -68,16 +68,23 @@ class MySizesFragment : BaseFragment() {
                     binding.spnInternational.setSelection(pos)
                 }
                 clothingSize.us?.let {
-                    binding.etEnterSize.setText(it.toString())
-                    binding.rbUs.isChecked = true
+                    if (it > 0) {
+                        binding.etEnterSize.setText(clothingSize.us.toString())
+                        binding.rbUs.isChecked = true
+                    }
                 }
                 clothingSize.uk?.let {
-                    binding.etEnterSize.setText(it.toString())
-                    binding.rbUk.isChecked = true
+
+                    if (it > 0) {
+                        binding.etEnterSize.setText(it.toString())
+                        binding.rbUk.isChecked = true
+                    }
                 }
                 clothingSize.eu?.let {
-                    binding.etEnterSize.setText(it.toString())
-                    binding.rbEu.isChecked = true
+                    if (it > 0) {
+                        binding.etEnterSize.setText(it.toString())
+                        binding.rbEu.isChecked = true
+                    }
                 }
             }
         }

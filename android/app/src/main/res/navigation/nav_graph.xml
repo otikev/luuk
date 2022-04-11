@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment"
+        android:name="com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_account_management">
 

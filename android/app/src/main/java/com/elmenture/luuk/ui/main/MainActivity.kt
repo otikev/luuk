@@ -2,7 +2,6 @@ package com.elmenture.luuk.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.AuthenticatedActivity
@@ -11,9 +10,12 @@ import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
-import com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesFragment
+import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
+import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
+import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.google.android.material.navigation.NavigationBarView
+import models.Spot
 
 class MainActivity : AuthenticatedActivity(),
     NavigationBarView.OnItemSelectedListener, MainActivityView {
@@ -63,8 +65,16 @@ class MainActivity : AuthenticatedActivity(),
         super.logout()
     }
 
-    override fun startMySizesFragment() {
-        addFragment(MySizesFragment.newInstance(), MySizesFragment::class.java.canonicalName)
+    override fun startEditMySizesFragment() {
+        addFragment(EditMySizesFragment.newInstance(), EditMySizesFragment::class.java.canonicalName)
+    }
+
+    override fun startViewItemFragment(activeSpot: Spot?)  {
+        addFragment(ViewItemFragment.newInstance(activeSpot), ViewItemFragment::class.java.canonicalName)
+    }
+
+    override fun startViewMySizesFragment()  {
+        addFragment(ViewMySizesFragment.newInstance(), ViewMySizesFragment::class.java.canonicalName)
     }
 
 
