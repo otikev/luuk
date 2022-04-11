@@ -71,8 +71,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
         }
 
         when (direction) {
-            Direction.Left -> homeViewModel.updateSwipesData(dislike = adapter.getTopItem())
-            Direction.Right -> homeViewModel.updateSwipesData(like = adapter.getTopItem())
+            Direction.Left -> homeViewModel.updateSwipesData(dislike = adapter.getItem(manager.topPosition))
+            Direction.Right -> homeViewModel.updateSwipesData(like = adapter.getItem(manager.topPosition))
         }
     }
 
@@ -113,7 +113,9 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun initView() {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java);
+        adapter.setItemClickListener { activityView.startViewItemFragment(adapter.getItem(manager.topPosition)) }
     }
+
 
     private fun initialize() {
         manager.setStackFrom(StackFrom.None)

@@ -37,9 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="16dp"
-                android:background="@drawable/radio_group_bg"
-                android:orientation="horizontal"
-                android:padding="2dp">
+                android:background="@drawable/rectangle_fill"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rb_size"
@@ -77,8 +76,7 @@
                     android:id="@+id/rg_sizes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:background="@drawable/radio_group_bg"
+                    android:background="@drawable/rectangle_fill"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -181,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="16dp"
-                    android:background="@drawable/rectangle_outlined_dark"
+                    android:background="@drawable/rectangle_fill"
                     android:orientation="horizontal">
 
                     <RadioButton

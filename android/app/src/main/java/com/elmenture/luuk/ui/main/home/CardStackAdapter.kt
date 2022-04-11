@@ -15,23 +15,27 @@ class CardStackAdapter(
     private var spots: ArrayList<Spot> = arrayListOf()
 ) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
 
-    lateinit var spot: Spot
+    private var itemClickListener: View.OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(inflater.inflate(R.layout.item_spot, parent, false))
     }
 
+    fun setItemClickListener(listener:View.OnClickListener){
+        this.itemClickListener = listener
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        spot = spots[position]
+        val spot = spots[position]
         val description: String = spot.description
 
         holder.description.text = description
         Glide.with(holder.image)
             .load(spot.url)
             .into(holder.image)
-        holder.itemView.setOnClickListener { v ->
-            Toast.makeText(v.context, description, Toast.LENGTH_SHORT).show()
+
+        this.itemClickListener?.let {
+            holder.itemView.setOnClickListener(it)
         }
     }
 
@@ -47,8 +51,8 @@ class CardStackAdapter(
         return spots
     }
 
-    fun getTopItem(): Spot {
-        return spot
+    fun getItem(position:Int): Spot {
+        return spots[position]
     }
 
     fun updateContent(spots: List<Spot>) {
