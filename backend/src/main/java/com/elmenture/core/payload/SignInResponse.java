@@ -5,6 +5,7 @@ import com.elmenture.core.model.ClothingSize;
 import lombok.Data;
 
 import javax.persistence.Column;
+import java.util.Map;
 
 @Data
 public class SignInResponse {
@@ -25,5 +26,10 @@ public class SignInResponse {
     public static class UserMeasurements {
         BodyMeasurement bodyMeasurement;
         ClothingSize clothingSize;
+
+        /**
+         * Sizes that have been translated from what the user entered
+         */
+        Map<String,String> mappedSizes;
     }
 }

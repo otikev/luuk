@@ -32,8 +32,17 @@ public class Item extends BaseEntity {
     @Column(name = "size_international")
     private String sizeInternational;
 
+    /**
+     * The number corresponding to the size_type
+     */
     @Column(name = "size_number")
     private Long sizeNumber;
+
+    /**
+     * One of US, UK, EU
+     */
+    @Column(name = "size_type")
+    private String sizeType;
 
     @Column(name = "price")
     private long price;
