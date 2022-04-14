@@ -13,17 +13,24 @@ import javax.persistence.*;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "body_measurement")
+@Table(name = "body_measurements")
 public class BodyMeasurement extends BaseEntity {
 
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "chest_cm")
     private Integer chest_cm;
+
     @Column(name = "waist_cm")
     private Integer waist_cm;
+
     @Column(name = "hips_cm")
     private Integer hips_cm;
+
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

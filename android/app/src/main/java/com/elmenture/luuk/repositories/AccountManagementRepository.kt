@@ -5,11 +5,11 @@ import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.base.repositories.RemoteRepository
 import models.Item
 import models.UpdateUserDetailsRequest
-import models.UserMeasurements
+import models.ActualMeasurements
 
 object AccountManagementRepository {
 
-    fun postBodyMeasurements(request: UserMeasurements): BaseApiState {
+    fun postBodyMeasurements(request: ActualMeasurements): BaseApiState {
         val response = RemoteRepository.doPostUserBodyMeasurements(request)
         if (response.isSuccessful)
             handlePostBodyMeasurementSuccess(request)
@@ -44,14 +44,14 @@ object AccountManagementRepository {
     }
 
 
-    private fun handlePostBodyMeasurementSuccess(measurements: UserMeasurements) {
+    private fun handlePostBodyMeasurementSuccess(measurements: ActualMeasurements) {
         val userDetails =
             LocalRepository.userDetailsLiveData.value//User.getCurrent().userDetails.userMeasurements
         measurements.bodyMeasurements?.let {
-            userDetails?.userMeasurements?.bodyMeasurements = it
+            userDetails?.actualMeasurements?.bodyMeasurements = it
         }
         measurements.clothingSizes?.let {
-            userDetails?.userMeasurements?.clothingSizes = it
+            userDetails?.actualMeasurements?.clothingSizes = it
         }
         userDetails?.let { LocalRepository.updateUserDetails(it) }
     }

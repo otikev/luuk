@@ -1,6 +1,6 @@
 package com.elmenture.core.service;
 
-import com.elmenture.core.service.impl.data.ItemDto;
+import com.elmenture.core.payload.ItemDto;
 
 public interface UserService {
     ItemDto updateMeasurements(ItemDto postDto);

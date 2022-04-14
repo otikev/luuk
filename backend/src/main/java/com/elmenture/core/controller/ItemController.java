@@ -1,18 +1,15 @@
 package com.elmenture.core.controller;
 
 import com.elmenture.core.model.Item;
-import com.elmenture.core.model.User;
+import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.ItemService;
-import com.elmenture.core.service.impl.data.ItemDto;
 import com.elmenture.core.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/items")
-public class ItemController {
+public class ItemController extends BaseController {
 
     @Autowired
     private ItemRepository itemRepository;
@@ -49,12 +46,8 @@ public class ItemController {
     public ResponseEntity<ItemResponse> getItemsPaginated(@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
                                                           @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        User user = userRepository.findByUsername(currentPrincipalName);
-
         //First page is 0
-        ItemResponse response = itemService.getAllItems(user.preferredRecommendations(), pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
+        ItemResponse response = itemService.getAllItems(getLoggedInUser().preferredRecommendations(), pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

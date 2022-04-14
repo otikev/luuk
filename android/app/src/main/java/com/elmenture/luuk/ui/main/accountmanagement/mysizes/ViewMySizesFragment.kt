@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentViewSizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import models.UserMeasurements
+import models.ActualMeasurements
 
 
 class ViewMySizesFragment : BaseFragment() {
@@ -44,7 +44,7 @@ class ViewMySizesFragment : BaseFragment() {
         }
     }
 
-    private fun updateFields(measurements: UserMeasurements?) {
+    private fun updateFields(measurements: ActualMeasurements?) {
         measurements?.let {
             if (!measurements.clothingSizes?.international.isNullOrEmpty())
                 binding.tvSize.text =

@@ -1,4 +1,4 @@
-package com.elmenture.core.service.impl.data;
+package com.elmenture.core.payload;
 
 import lombok.Data;
 

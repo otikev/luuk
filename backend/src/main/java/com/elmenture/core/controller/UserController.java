@@ -3,9 +3,9 @@ package com.elmenture.core.controller;
 import com.elmenture.core.model.BodyMeasurement;
 import com.elmenture.core.model.ClothingSize;
 import com.elmenture.core.model.User;
-import com.elmenture.core.payload.request.UserDetails;
+import com.elmenture.core.payload.UserDetailsDto;
+import com.elmenture.core.payload.UserMeasurementsDto;
 import com.elmenture.core.repository.UserRepository;
-import com.elmenture.core.service.impl.data.UserMeasurementsDto;
 import com.elmenture.core.utils.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,38 +21,37 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserRepository userRepository;
 
     @PostMapping(value = "measurements/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postBodyMeasurements(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserMeasurementsDto request) {
-        String token = MiscUtils.getUserTokenFromHeader(headers.get("luuk-x-authorization").get(0));
-        User user = userRepository.findByAuthToken(token);
-        if (user == null) {
-            return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
-        }
-        if (request.getBodyMeasurement() != null) {
+        User user = getLoggedInUser();
+
+        if (request.getBodyMeasurements() != null) {
             BodyMeasurement measurements = user.getBodyMeasurement();
             if (measurements == null) {
                 measurements = new BodyMeasurement();
             }
-            measurements.setChest_cm(request.getBodyMeasurement().getChest_cm());
-            measurements.setWaist_cm(request.getBodyMeasurement().getWaist_cm());
-            measurements.setHips_cm(request.getBodyMeasurement().getHips_cm());
+            measurements.setChest_cm(request.getBodyMeasurements().getChest_cm());
+            measurements.setWaist_cm(request.getBodyMeasurements().getWaist_cm());
+            measurements.setHips_cm(request.getBodyMeasurements().getHips_cm());
+            measurements.setUser(user);
 
             user.setBodyMeasurement(measurements);
             userRepository.save(user);
-        } else if (request.getClothingSize() != null) {
+        } else if (request.getClothingSizes() != null) {
             ClothingSize clothingSize = user.getClothingSize();
             if (clothingSize == null) {
                 clothingSize = new ClothingSize();
             }
-            clothingSize.setInternational(request.getClothingSize().getInternational());
-            clothingSize.setEu(request.getClothingSize().getEu());
-            clothingSize.setUk(request.getClothingSize().getUk());
-            clothingSize.setUs(request.getClothingSize().getUs());
+            clothingSize.setInternational(request.getClothingSizes().getInternational());
+            clothingSize.setEu(request.getClothingSizes().getEu());
+            clothingSize.setUk(request.getClothingSizes().getUk());
+            clothingSize.setUs(request.getClothingSizes().getUs());
+            clothingSize.setUser(user);
 
             user.setClothingSize(clothingSize);
             userRepository.save(user);
@@ -62,13 +61,8 @@ public class UserController {
     }
 
     @PostMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateUserDetails(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDetails request) {
-        //to extract to service
-        String token = MiscUtils.getUserTokenFromHeader(headers.get("luuk-x-authorization").get(0));
-        User user = userRepository.findByAuthToken(token);
-        if (user == null || request == null) {
-            return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> updateUserDetails(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDetailsDto request) {
+        User user = getLoggedInUser();
 
         if (request.getName() != null) {
             String name = request.getName().trim();

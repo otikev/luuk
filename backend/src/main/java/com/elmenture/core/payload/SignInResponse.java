@@ -1,11 +1,6 @@
 package com.elmenture.core.payload;
 
-import com.elmenture.core.model.BodyMeasurement;
-import com.elmenture.core.model.ClothingSize;
 import lombok.Data;
-
-import javax.persistence.Column;
-import java.util.Map;
 
 @Data
 public class SignInResponse {
@@ -13,7 +8,8 @@ public class SignInResponse {
     private boolean isNewAccount = false;
     private String sessionKey;
     private String email;
-    private UserMeasurements userMeasurements;
+    private UserMeasurementsDto actualMeasurements;
+    private FemaleSize femaleSize;
     private String s3AccessKeyId;
     private String s3SecretKeyId;
     private String contactPhoneNumber;
@@ -22,14 +18,13 @@ public class SignInResponse {
     private String gender;
     private String name;
     private boolean staff;
-    @Data
-    public static class UserMeasurements {
-        BodyMeasurement bodyMeasurement;
-        ClothingSize clothingSize;
 
-        /**
-         * Sizes that have been translated from what the user entered
-         */
-        Map<String,String> mappedSizes;
+
+    /**
+     * Sizes that have been translated from what the user entered
+     */
+    @Data
+    public static class FemaleSize {
+        SizeDto dress;
     }
 }

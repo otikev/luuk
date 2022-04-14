@@ -1,9 +1,9 @@
-package com.elmenture.core.payload.request;
+package com.elmenture.core.payload;
 
 import lombok.Data;
 
 @Data
-public class UserDetails {
+public class UserDetailsDto {
     private String name;
     private String email;
     private String contactPhoneNumber;

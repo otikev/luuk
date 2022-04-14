@@ -1,7 +1,7 @@
 package com.elmenture.core.service;
 
 import com.elmenture.core.payload.ItemResponse;
-import com.elmenture.core.service.impl.data.ItemDto;
+import com.elmenture.core.payload.ItemDto;
 
 import java.util.List;
 

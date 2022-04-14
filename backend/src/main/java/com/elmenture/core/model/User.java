@@ -1,6 +1,5 @@
 package com.elmenture.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -68,6 +67,12 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "clothing_recommendations")
     private String clothingRecommendations;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private BodyMeasurement bodyMeasurement;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private ClothingSize clothingSize;
+
     public List<String> preferredRecommendations() {
         List<String> recommendations = new ArrayList<>();
         if (clothingRecommendations == null) {
@@ -83,16 +88,6 @@ public class User extends BaseEntity implements UserDetails {
 
         return recommendations;
     }
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "body_measurements_id", referencedColumnName = "id")
-    private BodyMeasurement bodyMeasurement;
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "clothing_size_id", referencedColumnName = "id")
-    private ClothingSize clothingSize;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
