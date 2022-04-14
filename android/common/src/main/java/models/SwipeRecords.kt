@@ -1,6 +1,8 @@
 package models
 
+import androidx.lifecycle.MutableLiveData
+
 class SwipeRecords {
-    var likes: ArrayList<Spot> = ArrayList()
-    var dislikes: ArrayList<Spot> = ArrayList()
+    val likes: MutableLiveData<MutableSet<Spot>> = MutableLiveData(mutableSetOf())
+    val dislikes: MutableLiveData<MutableSet<Spot>>  = MutableLiveData(mutableSetOf())
 }

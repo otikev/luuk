@@ -3,13 +3,13 @@ package com.elmenture.luuk.ui.main
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.elmenture.luuk.base.repositories.LocalRepository
-import models.SwipeRecords
+import models.Spot
 
 class MainActivityViewModel : ViewModel() {
-    var swipeRecordsLiveData = MediatorLiveData<SwipeRecords>()
+    var cartItemsLiveData = MediatorLiveData<MutableSet<Spot>>()
 
     init {
-        swipeRecordsLiveData.addSource(LocalRepository.swipeDetailsLiveData) { swipeRecordsLiveData.setValue(it)}
+        cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) { cartItemsLiveData.setValue(it)}
     }
 
 }

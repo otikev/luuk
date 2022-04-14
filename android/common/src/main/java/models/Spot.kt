@@ -1,7 +1,7 @@
 package models
 
 data class Spot(
-    val id: Long = counter++,
+//    val id: Long = counter++,
     val url: String,
     val priceCents: Long,
     val sizeInternational: String,

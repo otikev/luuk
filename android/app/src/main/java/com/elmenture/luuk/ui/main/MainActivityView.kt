@@ -15,4 +15,5 @@ interface MainActivityView: BaseActivityView {
     fun showMessage(message: String? = null, isSuccessful: Boolean = true)
     fun startViewItemFragment(activeSpot: Spot?)
     fun startViewMySizesFragment()
+    fun startViewCartFragment()
 }

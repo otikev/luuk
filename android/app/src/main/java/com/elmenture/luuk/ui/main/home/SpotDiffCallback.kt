@@ -17,7 +17,7 @@ class SpotDiffCallback(
     }
 
     override fun areItemsTheSame(oldPosition: Int, newPosition: Int): Boolean {
-        return old[oldPosition].id == new[newPosition].id
+        return old[oldPosition] == new[newPosition]
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {
