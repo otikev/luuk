@@ -9,30 +9,33 @@ import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.repositories.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import models.Item
-import models.ItemResponse
 import models.Spot
-import models.SwipeRecords
 
 class HomeViewModel : ViewModel() {
     var itemsApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
     var itemsLiveData = MediatorLiveData<ArrayList<Item>>()
 
     init {
-        itemsLiveData.addSource(LocalRepository.itemListLiveData) { value ->
-            itemsLiveData.setValue(value)
-        }
+        itemsLiveData.addSource(LocalRepository.itemListLiveData) { itemsLiveData.setValue(it) }
     }
 
     fun updateSwipesData(like: Spot? = null, dislike: Spot? = null) {
-        val swipeData = if (LocalRepository.swipeDetailsLiveData.value == null) SwipeRecords() else LocalRepository.swipeDetailsLiveData.value
-        like?.let { swipeData!!.likes.add(it) }
-        dislike?.let { swipeData!!.dislikes.add(it) }
-        LocalRepository.swipeDetailsLiveData.postValue(swipeData)
+        val likeData = LocalRepository.swipeRecords.likes.value
+        val dislikeData = LocalRepository.swipeRecords.dislikes.value
+
+        like?.let {
+            likeData?.add(it)
+            LocalRepository.swipeRecords.likes.postValue(likeData)
+        }
+        dislike?.let {
+            dislikeData?.add(it)
+            LocalRepository.swipeRecords.dislikes.postValue(dislikeData)
+        }
+
     }
 
-    fun fetchItems(size: Int=15) {
+    fun fetchItems(size: Int = 15) {
         viewModelScope.launch(Dispatchers.IO) {
             itemsApiState.postValue(HomeRepository.fetchItems(size = size))
         }

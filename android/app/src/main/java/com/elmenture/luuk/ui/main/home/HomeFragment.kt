@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
@@ -55,8 +56,20 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
-                adapter.updateContent(createSpots(it))
+            val cart = LocalRepository.swipeRecords.likes.value
+            adapter.updateContent(filterListAgainstCart(cart!!))
+            cardStackView.adapter = adapter
         }
+    }
+
+    private fun filterListAgainstCart(cartList: MutableSet<Spot>): List<Spot> {
+        val spotList = createSpots(itemList).toMutableSet()
+        for (i in 0 until cartList.size) {
+            if (spotList.contains(cartList.elementAt(i))) {
+                spotList.remove(cartList.elementAt(i))
+            }
+        }
+        return spotList.toMutableList()
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
@@ -64,15 +77,23 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
-        Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
+        val touchedCardPosition = manager.topPosition - 1
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
             homeViewModel.fetchItems()
         }
 
         when (direction) {
-            Direction.Left -> homeViewModel.updateSwipesData(dislike = adapter.getItem(manager.topPosition))
-            Direction.Right -> homeViewModel.updateSwipesData(like = adapter.getItem(manager.topPosition))
+            Direction.Left -> homeViewModel.updateSwipesData(
+                dislike = adapter.getItem(
+                    touchedCardPosition
+                )
+            )
+            Direction.Right -> homeViewModel.updateSwipesData(
+                like = adapter.getItem(
+                    touchedCardPosition
+                )
+            )
         }
     }
 
@@ -279,3 +300,4 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
 }
+

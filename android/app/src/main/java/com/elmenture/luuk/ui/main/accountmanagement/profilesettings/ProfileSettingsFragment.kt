@@ -92,9 +92,10 @@ class ProfileSettingsFragment : BaseFragment() {
     }
 
     private fun updateFields(details: SignInResponse?) {
-        details?.let { details ->
+        details?.let {
             binding.etName.setText(details.name)
             binding.etAddress.setText(details.physicalAddress)
+            binding.tiEmail.visibility = if(details.email.isNullOrEmpty()) View.VISIBLE else View.GONE
             binding.etEmail.setText(details.email)
             binding.etContactPhone.setText(details.contactPhoneNumber)
             binding.tvProfileInitials.text = MiscUtils.getUserNameInitials(details.name)

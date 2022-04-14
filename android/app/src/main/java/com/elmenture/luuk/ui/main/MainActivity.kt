@@ -12,6 +12,7 @@ import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNe
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
+import com.elmenture.luuk.ui.main.cart.ViewCartFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.google.android.material.navigation.NavigationBarView
@@ -34,8 +35,8 @@ class MainActivity : AuthenticatedActivity(),
     }
 
     private fun observeLiveData() {
-        mainActivityViewModel.swipeRecordsLiveData.observe(this) { swipeRecords ->
-            swipeRecords.likes.let {
+        mainActivityViewModel.cartItemsLiveData.observe(this) { swipeRecords ->
+            swipeRecords.let {
                 if (it.isNotEmpty()) {
                     binding.bottomNavigation.menu.getItem(2).icon = ContextCompat.getDrawable(this, R.drawable.ic_cart_selector_full)
                 }else{
@@ -87,6 +88,10 @@ class MainActivity : AuthenticatedActivity(),
         addFragment(ProfileSettingsFragment.newInstance(), ProfileSettingsFragment::class.java.canonicalName)
     }
 
+    override fun startViewCartFragment() {
+        addFragment(ViewCartFragment.newInstance(), ViewCartFragment::class.java.canonicalName)
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.navHome -> {
@@ -99,7 +104,8 @@ class MainActivity : AuthenticatedActivity(),
                 true
             }
             R.id.navCart -> {
-                // Respond to navigation item 2 click
+                if(!item.isChecked)
+                    startViewCartFragment()
                 true
             }
             R.id.navProfile -> {

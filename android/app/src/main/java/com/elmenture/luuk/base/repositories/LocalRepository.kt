@@ -8,13 +8,7 @@ import models.SwipeRecords
 object LocalRepository {
     var itemListLiveData = MutableLiveData<ArrayList<Item>>(arrayListOf())
     var userDetailsLiveData = MutableLiveData<SignInResponse>()
-    var swipeDetailsLiveData = MutableLiveData<SwipeRecords>()
-        get() {
-            if (field.value == null) {
-                field = MutableLiveData(SwipeRecords())
-            }
-            return field
-        }
+    var swipeRecords = SwipeRecords()
 
     fun updateUserDetails(userDetails: SignInResponse?){
         userDetailsLiveData.postValue(userDetails)
