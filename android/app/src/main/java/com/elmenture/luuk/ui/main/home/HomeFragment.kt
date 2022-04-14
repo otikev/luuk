@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import com.amazonaws.util.StringUtils.upperCase
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.repositories.LocalRepository
@@ -107,11 +108,11 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
+
         Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
 
-        val priceCents = adapter.getSpots()[position].priceCents
-        val size = adapter.getSpots()[position].sizeInternational
-
+        val item = adapter.getSpots()[position]
+        val priceCents = item.priceCents
         binding.tvPrice.text = MiscUtils.getSpannedText(
             getString(
                 R.string.contrast_text,
@@ -119,8 +120,12 @@ class HomeFragment : BaseFragment(), CardStackListener {
                 MiscUtils.getFormattedAmount((priceCents / 100).toDouble())
             )
         )
-        binding.tvSize.text =
-            MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", size))
+
+        if(item.sizeType.equals("INT",true)){
+            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", upperCase(item.sizeInternational)))
+        }else{
+            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", item.sizeNumber.toString()+"("+item.sizeType+")"))
+        }
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
@@ -278,7 +283,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
                     Spot(
                         url = item.imageUrl!!,
                         priceCents = item.price!!,
-                        sizeInternational = item.sizeInternational!!,
+                        sizeType = item.sizeType!!,
+                        sizeInternational = item.sizeInternational,
                         sizeNumber = item.sizeNumber,
                         itemId = item.id!!,
                         description = item.description!!

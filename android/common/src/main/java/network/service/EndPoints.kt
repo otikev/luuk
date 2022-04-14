@@ -19,9 +19,6 @@ interface EndPoints {
     @POST("auth/googlesignin")
     fun googleSignIn(@FieldMap params: Map<String, String>): Call<SignInResponse>
 
-    @GET("items/all")
-    fun fetchItems(): Call<List<Item>>
-
     @GET("items/paginated")
     fun fetchItemsPaginated(@Query("page") page: Int, @Query("size") size: Int): Call<ItemResponse>
 

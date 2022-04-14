@@ -73,11 +73,6 @@ object RemoteRepository {
         return processRequest(call)
     }
 
-    fun fetchItems(): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchItems()
-        return processRequest(call)
-    }
-
     fun fetchItemsPaginated(page: Int, size: Int): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
             .fetchItemsPaginated(page, size)

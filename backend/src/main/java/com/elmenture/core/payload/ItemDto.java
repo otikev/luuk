@@ -10,6 +10,7 @@ public class ItemDto {
     private long id;
     private String description;
     private String sizeInternational;
+    private String sizeType;
     private Long sizeNumber;
     private long price;
     private String imageUrl;
