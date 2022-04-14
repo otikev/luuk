@@ -1,4 +1,4 @@
-package com.elmenture.core.seeds;
+package com.elmenture.core.utils;
 
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.ItemProperty;
@@ -193,13 +193,15 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
 
-        /*
+
         List<Item> itemsWithoutTarget = itemRepository.findByTarget(null);
 
         for(Item item : itemsWithoutTarget){
-            item.setTarget("female");
-            itemRepository.save(item);
+            System.out.println("Saving "+item.getDescription()+" ...");
+            item.setTarget("f");
+            Item it = itemRepository.save(item);
+            System.out.println("Saved item = "+it);
         }
-         */
+
     }
 }

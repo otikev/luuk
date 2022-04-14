@@ -27,12 +27,10 @@ public class ItemProperty extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "item_id", nullable = false)
-    @JsonBackReference
     private Item item;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tag_property_id", nullable = false)
-    @JsonBackReference
     private TagProperty tagProperty;
 
     public ItemProperty(Item item, TagProperty tagProperty) {
