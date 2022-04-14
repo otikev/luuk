@@ -4,7 +4,7 @@ import com.elmenture.core.model.Item;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.service.ItemService;
-import com.elmenture.core.service.impl.data.ItemDto;
+import com.elmenture.core.payload.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

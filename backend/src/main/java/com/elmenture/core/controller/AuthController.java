@@ -1,7 +1,10 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.payload.SignInResponse;
 import com.elmenture.core.model.User;
+import com.elmenture.core.payload.BodyMeasurementsDto;
+import com.elmenture.core.payload.ClothingSizeDto;
+import com.elmenture.core.payload.SignInResponse;
+import com.elmenture.core.payload.UserMeasurementsDto;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.utils.Properties;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -31,7 +34,7 @@ import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController extends BaseController{
 
     //FIXME: Hardcoding for now. This will eventually be replaced with user roles functionality
     private String[] STAFF = {
@@ -71,29 +74,10 @@ public class AuthController {
                 user.setSocialAccountType(FACEBOOK.value());
                 //boolean emailVerified = payload.getEmailVerified();
             }
-            SignInResponse.UserMeasurements userMeasurements = new SignInResponse.UserMeasurements();
-            userMeasurements.setBodyMeasurement(user.getBodyMeasurement());
-            userMeasurements.setClothingSize(user.getClothingSize());
-
-            String auth = createSession(user);
-            response.setSessionKey(auth);
-            response.setUserMeasurements(userMeasurements);
-            response.setContactPhoneNumber(user.getContactPhoneNumber());
-            response.setPhysicalAddress(user.getPhysicalAddress());
-            response.setGender(user.getGender());
-            response.setName(user.getFirstName()+" "+user.getLastName());
-            response.setSuccess(true);
-
-            response.setUserMeasurements(userMeasurements);
-            if(isStaff(user)){
-                response.setStaff(true);
-                response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
-                response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
-            }
-
+            response = createSigninResponse(response, user);
         } else {
             System.out.println("Invalid user token.");
-            response.setSuccess(false) ;
+            response.setSuccess(false);
         }
 
         return ResponseEntity.ok(response);
@@ -130,42 +114,68 @@ public class AuthController {
                 //boolean emailVerified = payload.getEmailVerified();
             }
 
-            SignInResponse.UserMeasurements userMeasurements = new SignInResponse.UserMeasurements();
-            userMeasurements.setBodyMeasurement(user.getBodyMeasurement());
-            userMeasurements.setClothingSize(user.getClothingSize());
-
-
-            String auth = createSession(user);
-            response.setSessionKey(auth);
-            response.setSuccess(true);
-            response.setUserMeasurements(userMeasurements);
-            response.setContactPhoneNumber(user.getContactPhoneNumber());
-            response.setPhysicalAddress(user.getPhysicalAddress());
-            response.setGender(user.getGender());
-            response.setName(user.getFirstName()+" "+user.getLastName());
-            response.setEmail(user.getEmail());
-            if(isStaff(user)){
-                response.setStaff(true);
-                response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
-                response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
-            }
+            response = createSigninResponse(response, user);
         } else {
             System.out.println("Invalid ID token.");
-            response.setSuccess(false) ;
+            response.setSuccess(false);
         }
 
+        System.out.println("Signin success!!");
         return ResponseEntity.ok(response);
     }
 
-    private boolean isStaff(User user){
+    SignInResponse createSigninResponse(SignInResponse response, User user) {
+        UserMeasurementsDto actualMeasurements = new UserMeasurementsDto();
+
+        BodyMeasurementsDto bodyMeasurementsDto = new BodyMeasurementsDto();
+        if(user.getBodyMeasurement() != null){
+            bodyMeasurementsDto.setChest_cm(user.getBodyMeasurement().getChest_cm());
+            bodyMeasurementsDto.setWaist_cm(user.getBodyMeasurement().getWaist_cm());
+            bodyMeasurementsDto.setHips_cm(user.getBodyMeasurement().getHips_cm());
+        }
+        actualMeasurements.setBodyMeasurements(bodyMeasurementsDto);
+
+
+        ClothingSizeDto clothingSizeDto = new ClothingSizeDto();
+        if(user.getClothingSize() != null){
+            clothingSizeDto.setInternational(user.getClothingSize().getInternational());
+            clothingSizeDto.setUs(user.getClothingSize().getUs());
+            clothingSizeDto.setUk(user.getClothingSize().getUk());
+            clothingSizeDto.setEu(user.getClothingSize().getEu());
+        }
+        actualMeasurements.setClothingSizes(clothingSizeDto);
+
+        SignInResponse.FemaleSize femaleSize = new SignInResponse.FemaleSize();
+        femaleSize.setDress(getDressSizesForUser(user));
+
+        String auth = createSession(user);
+        response.setSessionKey(auth);
+        response.setSuccess(true);
+        response.setActualMeasurements(actualMeasurements);
+        response.setFemaleSize(femaleSize);
+        response.setContactPhoneNumber(user.getContactPhoneNumber());
+        response.setPhysicalAddress(user.getPhysicalAddress());
+        response.setGender(user.getGender());
+        response.setName(user.getFirstName() + " " + user.getLastName());
+        response.setEmail(user.getEmail());
+        if (isStaff(user)) {
+            response.setStaff(true);
+            response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
+            response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+        }
+        return response;
+    }
+
+    private boolean isStaff(User user) {
         List<String> staffList = new ArrayList<>(Arrays.asList(STAFF));
         return staffList.contains(user.getEmail());
     }
+
     private String createSession(User user) {
         user.setAuthToken(UUID.randomUUID().toString());
         userRepository.save(user);
 
-        String sessionKey = UUID.randomUUID().toString().replace("-", "")+":"+user.getUsername()+":"+user.getAuthToken();
+        String sessionKey = UUID.randomUUID().toString().replace("-", "") + ":" + user.getUsername() + ":" + user.getAuthToken();
         String base64String = Base64.getEncoder().encodeToString(sessionKey.getBytes(StandardCharsets.UTF_8));
         return base64String;
     }

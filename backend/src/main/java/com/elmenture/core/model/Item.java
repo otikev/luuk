@@ -54,8 +54,6 @@ public class Item extends BaseEntity {
     private String target;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
-    //TODO: @JsonManagedReference
     @JsonIgnore //Ignore serializing this for now. Facing issue with infinite recursion
     private Set<ItemProperty> itemProperties;
 

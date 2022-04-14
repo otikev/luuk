@@ -13,19 +13,27 @@ import javax.persistence.*;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "clothing_size")
+@Table(name = "clothing_sizes")
 public class ClothingSize extends BaseEntity {
 
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "international")
     private String international;
+
     @Column(name = "us")
     private int us;
+
     @Column(name = "uk")
     private int uk;
+
     @Column(name = "eu")
     private int eu;
+
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

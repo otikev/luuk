@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface EndPoints {
     @POST("user/measurements/update")
-    fun postUserBodyMeasurements(@Body request: UserMeasurements): Call<ResponseBody>
+    fun postUserBodyMeasurements(@Body request: ActualMeasurements): Call<ResponseBody>
 
     @GET("user/measurements")
     fun getUserBodyMeasurements(): Call<BodyMeasurements>

@@ -2,10 +2,10 @@ package models
 
 import com.google.gson.annotations.SerializedName
 
-data class UserMeasurements(
-    @field:SerializedName("bodyMeasurement")
+data class ActualMeasurements(
+    @field:SerializedName("bodyMeasurements")
     var bodyMeasurements: BodyMeasurements? = null,
-    @field:SerializedName("clothingSize")
+    @field:SerializedName("clothingSizes")
     var clothingSizes: ClothingSizes? = null
 )
 

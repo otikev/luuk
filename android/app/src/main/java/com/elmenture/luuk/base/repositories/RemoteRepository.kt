@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.elmenture.luuk.base.BaseApiState
 import models.Item
 import models.UpdateUserDetailsRequest
-import models.UserMeasurements
+import models.ActualMeasurements
 import network.RestClient
 import network.interceptors.ConnectivityInterceptor
 import network.service.EndPoints
@@ -51,7 +51,7 @@ object RemoteRepository {
         return viewState
     }
 
-    fun doPostUserBodyMeasurements(request: UserMeasurements): BaseApiState {
+    fun doPostUserBodyMeasurements(request: ActualMeasurements): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
             .postUserBodyMeasurements(request)
         return processRequest(call)

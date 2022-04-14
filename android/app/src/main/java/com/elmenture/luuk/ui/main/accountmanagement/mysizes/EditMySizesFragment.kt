@@ -13,7 +13,7 @@ import com.elmenture.luuk.databinding.FragmentMySizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.BodyMeasurements
 import models.ClothingSizes
-import models.UserMeasurements
+import models.ActualMeasurements
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -50,8 +50,8 @@ class EditMySizesFragment : BaseFragment() {
         mySizesViewModel = ViewModelProvider(this).get(MySizesViewModel::class.java);
     }
 
-    private fun updateFields(userMeasurements: UserMeasurements?) {
-        userMeasurements.let { userMeasurements ->
+    private fun updateFields(actualMeasurements: ActualMeasurements?) {
+        actualMeasurements.let { userMeasurements ->
             userMeasurements?.bodyMeasurements?.let {
                 binding.etChest.setText(it.chest.toString())
                 binding.etWaist.setText(it.waist.toString())
@@ -147,9 +147,9 @@ class EditMySizesFragment : BaseFragment() {
         }
     }
 
-    private fun getMeasurementsData(): UserMeasurements? {
+    private fun getMeasurementsData(): ActualMeasurements? {
         if (binding.rbDimensions.isChecked) {
-            return UserMeasurements(
+            return ActualMeasurements(
                 bodyMeasurements = BodyMeasurements(
                     chest = getIntegerFromString(binding.etChest.text.toString()),
                     waist = getIntegerFromString(binding.etWaist.text.toString()),
@@ -158,25 +158,25 @@ class EditMySizesFragment : BaseFragment() {
             )
         }
         if (binding.rbInt.isChecked) {
-            return UserMeasurements(clothingSizes = ClothingSizes(international = binding.spnInternational.selectedItem.toString()))
+            return ActualMeasurements(clothingSizes = ClothingSizes(international = binding.spnInternational.selectedItem.toString()))
         }
         when (binding.rgSizes.checkedRadioButtonId) {
             R.id.rb_us -> {
-                return UserMeasurements(
+                return ActualMeasurements(
                     clothingSizes = ClothingSizes(
                         us = binding.etEnterSize.text.toString().toInt()
                     )
                 )
             }
             R.id.rb_uk -> {
-                return UserMeasurements(
+                return ActualMeasurements(
                     clothingSizes = ClothingSizes(
                         uk = binding.etEnterSize.text.toString().toInt()
                     )
                 )
             }
             R.id.rb_eu -> {
-                return UserMeasurements(
+                return ActualMeasurements(
                     clothingSizes = ClothingSizes(
                         eu = binding.etEnterSize.text.toString().toInt()
                     )

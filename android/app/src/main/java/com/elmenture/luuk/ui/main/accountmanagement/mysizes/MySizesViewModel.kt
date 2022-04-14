@@ -9,16 +9,16 @@ import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.repositories.AccountManagementRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import models.UserMeasurements
+import models.ActualMeasurements
 
 class MySizesViewModel : ViewModel() {
     var updateUserMeasurementsApiState = MutableLiveData<BaseApiState>(null)
-    var userMeasurements =  MediatorLiveData<UserMeasurements>()
+    var userMeasurements =  MediatorLiveData<ActualMeasurements>()
     init {
-        userMeasurements.addSource(LocalRepository.userDetailsLiveData) { userMeasurements.setValue(it.userMeasurements)}
+        userMeasurements.addSource(LocalRepository.userDetailsLiveData) { userMeasurements.setValue(it.actualMeasurements)}
     }
 
-    fun updateUserMeasurements(request: UserMeasurements) {
+    fun updateUserMeasurements(request: ActualMeasurements) {
         viewModelScope.launch(Dispatchers.IO) {
             updateUserMeasurementsApiState.postValue(AccountManagementRepository.postBodyMeasurements(request))
         }

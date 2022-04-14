@@ -24,8 +24,11 @@ class SignInResponse {
     @field:SerializedName("s3SecretKeyId")
     var s3SecretKeyId: String? = null
 
-    @field:SerializedName("userMeasurements")
-    var userMeasurements: UserMeasurements? = null
+    @field:SerializedName("actualMeasurements")
+    var actualMeasurements: ActualMeasurements? = null
+
+    @field:SerializedName("femaleSize")
+    var femaleSize: FemaleSize? = null
 
     @field:SerializedName("contactPhoneNumber")
     var contactPhoneNumber: String? = null

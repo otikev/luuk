@@ -76,6 +76,7 @@ object RestAdapterBuilderFactory {
             val gson = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Date::class.java, DateDeserializer())
+                .setLenient()
                 .create()
             builder.addConverterFactory(GsonConverterFactory.create(gson))
             return builder
