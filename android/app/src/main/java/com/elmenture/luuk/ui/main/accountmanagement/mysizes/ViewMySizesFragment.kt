@@ -68,17 +68,10 @@ class ViewMySizesFragment : BaseFragment() {
 
     private fun setEventListeners() {
         binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
-        binding.cvSizes.setOnClickListener{ activityView.startEditMySizesFragment()}
+        binding.ivEdit.setOnClickListener{ activityView.startEditMySizesFragment()}
     }
 
     private fun initView() {
         mySizesViewModel = ViewModelProvider(this).get(MySizesViewModel::class.java);
-
-//        activeSpot?.let {
-//            binding.tvDescription.text = it.description
-//            binding.tvPrice.text ="Ksh ${MiscUtils.getFormattedAmount(it.priceCents.toDouble() / 100)}"
-//            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text,"Size : ", it.sizeNumber.toString()))//"Size : ${it.sizeNumber.toString()}"
-//            Glide.with(requireContext()).load(it.url).into(binding.ivImage)
-//        }
     }
 }

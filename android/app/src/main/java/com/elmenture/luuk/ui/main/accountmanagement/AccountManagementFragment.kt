@@ -43,7 +43,11 @@ class AccountManagementFragment : BaseFragment() {
 
     private fun setUpEventListeners() {
         binding.itemMySizes.setOnClickListener {
-            activityView.startViewMySizesFragment()
+            if(User.getCurrent().userDetails.actualMeasurements==null){
+                activityView.startEditMySizesFragment()
+            }else{
+                activityView.startViewMySizesFragment()
+            }
         }
 
         binding.itemLogout.setOnClickListener{

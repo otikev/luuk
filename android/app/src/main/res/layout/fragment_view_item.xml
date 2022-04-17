@@ -24,8 +24,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/dimens_large_size"
-            android:layout_marginBottom="@dimen/dimens_large_size">
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="@dimen/dimens_large_size"
+            app:cardCornerRadius="@dimen/dimens_large_size">
             <ImageView
                 android:id="@+id/iv_image"
                 android:layout_width="match_parent"
@@ -49,7 +50,7 @@
             android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimens_large_size"
+            android:layout_marginBottom="@dimen/dimens_mid_size"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:text="Pin Stripe" />

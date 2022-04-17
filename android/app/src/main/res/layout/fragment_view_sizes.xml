@@ -18,56 +18,73 @@
         android:id="@+id/cv_sizes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/dimens_mid_size"
         android:layout_margin="@dimen/dimens_large_size"
+        android:elevation="@dimen/dimens_mid_size"
         app:cardCornerRadius="@dimen/dimens_large_size">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimens_mid_size"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-
-            <TextView
-                android:id="@+id/tv_size"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_mid_size"
+                android:layout_margin="@dimen/dimens_mid_size"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
+                    android:background="@drawable/rectangle_circled"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:text="Size: 12"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_chest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
+                    android:text="Pin Stripe"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_waist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
+                    android:text="Pin Stripe"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_hips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimens_large_size"
+                    android:text="Pin Stripe"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_edit"
+                android:layout_gravity="center"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/dimens_mid_size"
+                android:src="@drawable/ic_edit"
+                android:padding="12dp"
                 android:background="@drawable/rectangle_circled"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp"
-                android:text="Size: 12"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_chest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_mid_size"
-                android:text="Pin Stripe"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_waist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_mid_size"
-                android:text="Pin Stripe"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_hips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimens_large_size"
-                android:text="Pin Stripe"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
+                android:orientation="vertical" />
 
         </LinearLayout>
 

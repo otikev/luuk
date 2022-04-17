@@ -83,11 +83,11 @@ class ProfileSettingsFragment : BaseFragment() {
             userDetailsRequest.contactPhoneNumber = it.getStringValue()
         }
 
-        when (binding.rgGender.checkedRadioButtonId) {
-            binding.rbMale.id -> userDetailsRequest.gender = "M"
-            binding.rbFemale.id -> userDetailsRequest.gender = "F"
-            binding.rbAll.id -> userDetailsRequest.gender = "A"
-        }
+//        when (binding.rgGender.checkedRadioButtonId) {
+//            binding.rbMale.id -> userDetailsRequest.gender = "M"
+//            binding.rbFemale.id -> userDetailsRequest.gender = "F"
+//            binding.rbAll.id -> userDetailsRequest.gender = "A"
+//        }
         return userDetailsRequest
     }
 
@@ -102,7 +102,7 @@ class ProfileSettingsFragment : BaseFragment() {
             when (details.gender) {
                 "F" -> binding.rbFemale.isChecked = true
                 "M" -> binding.rbMale.isChecked = true
-                "A" -> binding.rbAll.isChecked = true
+                "A" -> binding.rbKids.isChecked = true
             }
         }
 
@@ -129,7 +129,7 @@ class ProfileSettingsFragment : BaseFragment() {
         binding.etEmail.addTextChangedListener(textWatcher)
         binding.etAddress.addTextChangedListener(textWatcher)
         binding.etName.addTextChangedListener(textWatcher)
-        binding.rgGender.setOnCheckedChangeListener(checkedChangeListener)
+//        binding.rgGender.setOnCheckedChangeListener(checkedChangeListener)
 
     }
 
