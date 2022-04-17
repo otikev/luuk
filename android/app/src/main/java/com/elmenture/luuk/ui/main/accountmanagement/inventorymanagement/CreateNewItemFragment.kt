@@ -1,6 +1,5 @@
 package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
 
-import android.R
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -21,9 +20,13 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
+import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.elmenture.luuk.ui.main.accountmanagement.mysizes.InternationalSizes
+import models.ActualMeasurements
+import models.ClothingSizes
 import models.Item
 import userdata.User
 import views.CustomProgressBar
@@ -41,8 +44,8 @@ class CreateNewItemFragment : BaseFragment() {
     lateinit var binding: FragmentCreateNewItemBinding
     lateinit var createNewItemViewModel: CreateNewItemViewModel
     lateinit var progressBar: CustomProgressBar
-    val targets = arrayOf("Select target...", "Female", "Male", "Child")
     val item = Item()
+    val spinnerArray = ArrayList<String>()
     private var creds: BasicAWSCredentials =
         BasicAWSCredentials(
             User.getCurrent().userDetails.s3AccessKeyId,
@@ -92,53 +95,53 @@ class CreateNewItemFragment : BaseFragment() {
 
     private fun initView() {
         createNewItemViewModel = ViewModelProvider(this).get(CreateNewItemViewModel::class.java)
+        setUpSizesSpinner()
+        binding.spnInternational.setSelection(4)
+    }
 
-        val spinnerAdapter = object :
-            ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, targets) {
+    private fun setUpSizesSpinner() {
+        for (size in InternationalSizes.values()) {
+            spinnerArray.add(size.sizeName)
+        }
 
-            override fun isEnabled(position: Int): Boolean {
-                // Disable the first item from Spinner
-                // First item will be used for hint
-                return position != 0
-            }
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            spinnerArray
+        )
 
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view: TextView =
-                    super.getDropDownView(position, convertView, parent) as TextView
-                //set the color of first item in the drop down list to gray
-                if (position == 0) {
-                    view.setTextColor(Color.GRAY)
-                } else {
-                    //here it is possible to define color for other items by
-                    //view.setTextColor(Color.RED)
+        binding.spnInternational.adapter = spinnerAdapter
+    }
+
+    private fun setUpEventListeners() {
+        binding.rgSizes.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_int -> {
+                    binding.llInternationalContainer.visibility = View.VISIBLE
+                    binding.tiEnterSize.visibility = View.GONE
+
                 }
-                return view
+                else -> {
+                    binding.llInternationalContainer.visibility = View.GONE
+                    binding.tiEnterSize.visibility = View.VISIBLE
+                }
             }
         }
 
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        binding.spinnerTarget.setAdapter(spinnerAdapter)
-        //binding.spinnerTarget.setOnItemSelectedListener(this)
-    }
-
-
-    private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener {
-            if (binding.spinnerTarget.selectedItemPosition == 0) {
-                activityView.showMessage("Please select a target")
-                return@setOnClickListener
-            }
-
-            val success = verifyFields(
+            var success = verifyFields(
                 binding.etDescription,
-                binding.etItemPrice,
-                binding.etSizeInternational,
-                binding.etSizeNumber
+                binding.etItemPrice
             )
+
+            when (binding.rgSizes.checkedRadioButtonId) {
+                R.id.rb_us,R.id.rb_uk,R.id.rb_eu -> {
+                    if (binding.etEnterSize.text.isNullOrEmpty()) {
+                        success = false
+                        activityView.showMessage("Please enter a size")
+                    }
+                }
+            }
 
             if (success) {
                 uploadData()
@@ -153,15 +156,34 @@ class CreateNewItemFragment : BaseFragment() {
     }
 
     private fun getItemDetails(): Item {
-        item.sizeInternational = binding.etSizeInternational.text.toString()
-        item.sizeNumber = binding.etSizeNumber.text.toString().toInt()
+        item.sizeInternational = null
+        item.sizeNumber = null
+
+        when (binding.rgSizes.checkedRadioButtonId) {
+            R.id.rb_us -> {
+                item.sizeType = "US"
+                item.sizeNumber = binding.etEnterSize.text.toString().toInt()
+            }
+            R.id.rb_uk -> {
+                item.sizeType = "UK"
+                item.sizeNumber = binding.etEnterSize.text.toString().toInt()
+            }
+            R.id.rb_eu -> {
+                item.sizeType = "EU"
+                item.sizeNumber = binding.etEnterSize.text.toString().toInt()
+            }
+            R.id.rb_int -> {
+                item.sizeType = "INT"
+                item.sizeInternational = binding.spnInternational.selectedItem.toString()
+            }
+        }
+
         item.description = binding.etDescription.text.toString()
-        item.target = binding.spinnerTarget.selectedItem.toString()
+        item.target = "f" //TODO: Only handling female clothing for now
         val ksh = binding.etItemPrice.text.toString().toLong()
         item.price = ksh * 100 //convert to cents for transmission to the server
         return item
     }
-
 
     private fun selectImage() {
         val intent = Intent()

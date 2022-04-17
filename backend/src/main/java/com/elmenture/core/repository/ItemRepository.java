@@ -12,8 +12,13 @@ import java.util.List;
  */
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
+    List<Item> findByTarget(String target);
+
     List<Item> findByTargetIn(List<String> targets);
+
     Page<Item> findByTargetIn(List<String> targets, Pageable pageable);
+
     List<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational);
+
     Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
 }

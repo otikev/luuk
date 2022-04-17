@@ -22,39 +22,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Spinner android:id="@+id/spinnerTarget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_size_international"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Size International (eg XL)" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_size_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Size Number"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -81,6 +48,107 @@
                     android:hint="Item price (KES)"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sizes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/rg_sizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_fill"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_us"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="US"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_uk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="UK"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_eu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="EU"
+                        android:textColor="@color/selector_chip_text" />
+
+                    <RadioButton
+                        android:id="@+id/rb_int"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chip_bg"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Int"
+                        android:textColor="@color/selector_chip_text" />
+
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/ll_international_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:background="@drawable/rectangle_outlined_dark"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:visibility="gone">
+
+
+                    <Spinner
+                        android:id="@+id/spn_international"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="0"
+                        android:gravity="center"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_enter_size"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_enter_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Size"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_s3image"

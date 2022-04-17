@@ -22,6 +22,9 @@ data class Item(
     @field:SerializedName("sizeNumber")
     var sizeNumber: Int? = null,
 
+    @field:SerializedName("sizeType")
+    var sizeType: String? = null,
+
     @field:SerializedName("target")
     var target: String? = null
 )

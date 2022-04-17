@@ -50,12 +50,8 @@ public class Item extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "target") //male,female,child
+    @Column(name = "target") //m or f or c
     private String target;
-
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore //Ignore serializing this for now. Facing issue with infinite recursion
-    private Set<ItemProperty> itemProperties;
 
     public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
         this.description = description;

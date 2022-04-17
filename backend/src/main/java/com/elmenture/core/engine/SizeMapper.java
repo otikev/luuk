@@ -80,9 +80,11 @@ public class SizeMapper {
             if (largest == null) {
                 largest = mapping;
             } else {
-                int _us = Integer.parseInt(largest.get(US.name()));
-                if (Integer.parseInt(mapping.get(US.name())) > _us) {
-                    largest = mapping;
+                if(largest.size()>0){
+                    int _us = Integer.parseInt(largest.get(US.name()));
+                    if (Integer.parseInt(mapping.get(US.name())) > _us) {
+                        largest = mapping;
+                    }
                 }
             }
         }

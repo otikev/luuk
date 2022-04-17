@@ -29,6 +29,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto createItem(ItemDto postDto) {
         // convert DTO to entity
         Item post = mapToEntity(postDto);
+        post.setTarget("f");//FIXME: Targetting only female dresses for now
         Item newItem = itemRepository.save(post);
 
         // convert entity to DTO
@@ -85,6 +86,7 @@ public class ItemServiceImpl implements ItemService {
         itemDto.setSizeNumber(item.getSizeNumber());
         itemDto.setPrice(item.getPrice());
         itemDto.setTarget(item.getTarget());
+        itemDto.setSizeType(item.getSizeType());
         if (item.getImageUrl() == null || item.getImageUrl().isEmpty()) {
             itemDto.setImageUrl("https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png");//Default image
         } else {
@@ -102,7 +104,8 @@ public class ItemServiceImpl implements ItemService {
         item.setSizeNumber(itemDto.getSizeNumber());
         item.setPrice(itemDto.getPrice());
         item.setImageUrl(itemDto.getImageUrl());
-        item.setTarget(itemDto.getTarget());
+        item.setTarget(itemDto.getTarget().toLowerCase());
+        item.setSizeType(itemDto.getSizeType());
         return item;
     }
 }

@@ -1,4 +1,4 @@
-package com.elmenture.core.seeds;
+package com.elmenture.core.utils;
 
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.ItemProperty;
@@ -19,7 +19,7 @@ import java.util.Random;
  * Created by otikev on 16-Mar-2022
  */
 @Component
-public class DataLoader implements CommandLineRunner {
+public class DatabaseSeeder implements CommandLineRunner {
 
     @Autowired
     TagRepository tagRepository;
@@ -193,13 +193,27 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
 
-        /*
-        List<Item> itemsWithoutTarget = itemRepository.findByTarget(null);
+        List<Item>  all = itemRepository.findAll();
 
-        for(Item item : itemsWithoutTarget){
-            item.setTarget("female");
-            itemRepository.save(item);
+        for(Item item : all){
+            System.out.println("Updating "+item.getDescription()+" ...");
+
+            if(item.getTarget() == null){
+                item.setTarget("f");
+            }
+
+            if(item.getSizeInternational() != null){
+                item.setSizeType("INT");
+                item.setSizeNumber(null);
+            }
+
+            if(item.getSizeNumber() != null){
+                item.setSizeType("US");
+                item.setSizeInternational(null);
+            }
+
+            Item it = itemRepository.save(item);
+            System.out.println("Saved item = "+it);
         }
-         */
     }
 }
