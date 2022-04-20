@@ -11,8 +11,8 @@ class UpdateUserDetailsRequest {
     var contactPhoneNumber: String? = null
     @SerializedName("mpesaPhoneNumber")
     var mpesaPhoneNumber: String? = null
-    @SerializedName("gender")
-    var gender: String? = null
+    @SerializedName("targets")
+    var targets: String? = null
     @SerializedName("physicalAddress")
     var physicalAddress: String? = null
 }

@@ -35,17 +35,78 @@
                 android:orientation="vertical">
 
 
-                <TextView
-                    android:id="@+id/tv_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/dimens_mid_size"
-                    android:background="@drawable/rectangle_circled"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:text="Size: 12"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_size_int"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_circled_outlined"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="Size: 12"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_size_uk"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_size_uk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_circled_outlined"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="Size: 12"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_size_us"
+                        app:layout_constraintStart_toEndOf="@id/tv_size_int"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_size_us"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_circled_outlined"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="Size: 12"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_size_eu"
+                        app:layout_constraintStart_toEndOf="@id/tv_size_uk"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_size_eu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_circled_outlined"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="Size: 12"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_size_us"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/tv_chest"
@@ -56,35 +117,41 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
+
                 <TextView
                     android:id="@+id/tv_waist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimens_mid_size"
                     android:text="Pin Stripe"
                     android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tv_hips"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimens_large_size"
-                    android:text="Pin Stripe"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_hips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pin Stripe"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/tv_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Measurements"
+                        android:textColor="@color/com_facebook_blue"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
-            <ImageView
-                android:id="@+id/iv_edit"
-                android:layout_gravity="center"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="@dimen/dimens_mid_size"
-                android:src="@drawable/ic_edit"
-                android:padding="12dp"
-                android:background="@drawable/rectangle_circled"
-                android:orientation="vertical" />
 
         </LinearLayout>
 

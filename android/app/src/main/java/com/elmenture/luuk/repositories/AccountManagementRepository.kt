@@ -31,13 +31,17 @@ object AccountManagementRepository {
         return response
     }
 
+    fun fetchItems(): BaseApiState {
+        return RemoteRepository.fetchAllItems()
+    }
+
     private fun handleUpdateUserDetailsSuccess(updateDetails: UpdateUserDetailsRequest) {
         val userDetails = LocalRepository.userDetailsLiveData.value
 
         updateDetails.name?.let { userDetails?.name = it }
         updateDetails.email?.let { userDetails?.email = it }
         updateDetails.contactPhoneNumber?.let { userDetails?.contactPhoneNumber = it }
-        updateDetails.gender?.let { userDetails?.gender = it }
+        updateDetails.targets?.let { userDetails?.clothingRecommendations = it }
         updateDetails.physicalAddress?.let { userDetails?.physicalAddress = it }
 
         userDetails?.let { LocalRepository.updateUserDetails(it) }

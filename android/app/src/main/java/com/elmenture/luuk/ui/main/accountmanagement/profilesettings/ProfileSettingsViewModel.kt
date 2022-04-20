@@ -33,23 +33,23 @@ class ProfileSettingsViewModel : ViewModel() {
 
     fun onCurrentDetailsChanged(uiUserDetails: UpdateUserDetailsRequest) {
         val persistedUserDetails = userDetails.value
-        if (!uiUserDetails.contactPhoneNumber.comparesTo(persistedUserDetails?.contactPhoneNumber)) {
+        if (uiUserDetails.contactPhoneNumber != persistedUserDetails?.contactPhoneNumber) {
             isChangeSavable.value = true
             return
         }
-        if (!uiUserDetails.email.comparesTo(persistedUserDetails?.email)) {
+        if (uiUserDetails.email != persistedUserDetails?.email) {
             isChangeSavable.value = true
             return
         }
-        if (!uiUserDetails.physicalAddress.comparesTo(persistedUserDetails?.physicalAddress)) {
+        if (uiUserDetails.physicalAddress != persistedUserDetails?.physicalAddress) {
             isChangeSavable.value = true
             return
         }
-        if (!uiUserDetails.name.comparesTo(persistedUserDetails?.name)) {
+        if (uiUserDetails.name !=persistedUserDetails?.name) {
             isChangeSavable.value = true
             return
         }
-        if (!uiUserDetails.gender.comparesTo(persistedUserDetails?.gender)) {
+        if (uiUserDetails.targets != persistedUserDetails?.clothingRecommendations) {
             isChangeSavable.value = true
             return
         }

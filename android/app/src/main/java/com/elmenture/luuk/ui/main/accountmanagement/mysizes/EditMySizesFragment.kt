@@ -14,6 +14,7 @@ import com.elmenture.luuk.ui.main.MainActivityView
 import models.BodyMeasurements
 import models.ClothingSizes
 import models.ActualMeasurements
+import models.enums.InternationalSizes
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -61,9 +62,7 @@ class EditMySizesFragment : BaseFragment() {
                 binding.rbSize.isChecked = true
 
                 clothingSize.international?.let {
-                    binding.etEnterSize.setText(it)
                     binding.rbInt.isChecked = true
-
                     val pos = spinnerArray.indexOf(it)
                     binding.spnInternational.setSelection(pos)
                 }

@@ -8,6 +8,6 @@ public class UserDetailsDto {
     private String email;
     private String contactPhoneNumber;
     private String mpesaPhoneNumber;
-    private String gender;
+    private String targets;
     private String physicalAddress;
 }

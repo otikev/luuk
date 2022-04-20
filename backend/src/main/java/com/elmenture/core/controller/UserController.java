@@ -6,10 +6,8 @@ import com.elmenture.core.model.User;
 import com.elmenture.core.payload.UserDetailsDto;
 import com.elmenture.core.payload.UserMeasurementsDto;
 import com.elmenture.core.repository.UserRepository;
-import com.elmenture.core.utils.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +75,7 @@ public class UserController extends BaseController {
         if (request.getEmail() != null) user.setEmail(request.getEmail());
         if (request.getContactPhoneNumber() != null) user.setContactPhoneNumber(request.getContactPhoneNumber());
         if (request.getMpesaPhoneNumber() != null) user.setMobileMoneyNumber(request.getMpesaPhoneNumber());
-        if (request.getGender() != null) user.setGender(request.getGender());
+        if (request.getTargets() != null) user.setClothingRecommendations(request.getTargets());
         if (request.getPhysicalAddress() != null) user.setPhysicalAddress(request.getPhysicalAddress());
 
         userRepository.save(user);

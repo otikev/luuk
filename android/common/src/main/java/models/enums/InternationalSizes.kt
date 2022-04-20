@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.accountmanagement.mysizes
+package models.enums
 
 enum class InternationalSizes(var sizeName: String) {
     //modified to match backend size chart

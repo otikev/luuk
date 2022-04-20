@@ -17,11 +17,11 @@ import utils.MiscUtils
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ViewCartFragment : BaseFragment(), CartAdapterAdapter.CartActionListener {
+class ViewCartFragment : BaseFragment(), CartAdapter.CartActionListener {
     lateinit var binding: FragmentViewCartBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private var cartList: ArrayList<Spot> = ArrayList()
-    lateinit var cartAdapter: CartAdapterAdapter
+    lateinit var cartAdapter: CartAdapter
     private lateinit var viewModel: CartViewModel
 
 
@@ -75,7 +75,7 @@ class ViewCartFragment : BaseFragment(), CartAdapterAdapter.CartActionListener {
 
     private fun initView() {
         viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        cartAdapter = CartAdapterAdapter(cartList,this)
+        cartAdapter = CartAdapter(cartList,this)
         binding.rvCart.layoutManager = LinearLayoutManager(context)
         binding.rvCart.adapter = cartAdapter
     }

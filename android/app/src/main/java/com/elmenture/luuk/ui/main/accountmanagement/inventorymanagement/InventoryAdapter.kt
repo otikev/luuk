@@ -1,18 +1,19 @@
-package com.elmenture.luuk.ui.main.cart
+package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.elmenture.luuk.databinding.ItemCartBinding
-import models.Spot
+import com.elmenture.luuk.databinding.ItemInventoryBinding
+import models.Item
 import utils.MiscUtils
 
-class CartAdapterAdapter(var list: ArrayList<Spot>, var cartActionListener: CartActionListener) :
-    RecyclerView.Adapter<CartAdapterAdapter.ViewHolder>() {
+class InventoryAdapter(var list: ArrayList<Item>, var cartActionListener: CartActionListener) :
+    RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ItemCartBinding.inflate(
+        val view = ItemInventoryBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -29,24 +30,25 @@ class CartAdapterAdapter(var list: ArrayList<Spot>, var cartActionListener: Cart
         return if (list == null) 0 else list.size
     }
 
-    class ViewHolder(private val view: ItemCartBinding) :
+    class ViewHolder(private val view: ItemInventoryBinding) :
         RecyclerView.ViewHolder(view.root) {
 
-        fun bind(item: Spot, actionListener: CartActionListener) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: Item, actionListener: CartActionListener) {
             val context = view.root.context
             view.tvDescription.text = item.description
             view.tvSize.text = "Size ${item.sizeNumber}"
-            view.tvPrice.text ="ksh ${MiscUtils.getFormattedAmount(item.priceCents.toDouble()/100)}"
-            Glide.with(context).load(item.url).into(view.ivItemImage)
+            view.tvPrice.text ="ksh ${MiscUtils.getFormattedAmount(item.price?.toDouble()?.div(100))}"
+            Glide.with(context).load(item.imageUrl).into(view.ivItemImage)
 
             view.ivDiscard.setOnClickListener { actionListener.onDiscardClicked(item) }
-            view.btnSaveForLater.setOnClickListener { actionListener.onSaveForLaterClicked(item) }
+            view.btnEditItem.setOnClickListener { actionListener.onEditClicked(item) }
         }
     }
 
     interface CartActionListener{
-       fun onSaveForLaterClicked(spot: Spot)
-        fun onDiscardClicked(spot: Spot)
+       fun onEditClicked(item: Item)
+        fun onDiscardClicked(item: Item)
     }
 
 }

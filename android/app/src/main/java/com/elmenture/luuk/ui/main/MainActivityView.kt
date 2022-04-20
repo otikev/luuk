@@ -16,4 +16,5 @@ interface MainActivityView: BaseActivityView {
     fun startViewItemFragment(activeSpot: Spot?)
     fun startViewMySizesFragment()
     fun startViewCartFragment()
+    fun startInventoryManagementFragment()
 }

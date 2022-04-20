@@ -155,7 +155,7 @@ public class AuthController extends BaseController{
         response.setFemaleSize(femaleSize);
         response.setContactPhoneNumber(user.getContactPhoneNumber());
         response.setPhysicalAddress(user.getPhysicalAddress());
-        response.setGender(user.getGender());
+        response.setClothingRecommendations(user.getClothingRecommendations());
         response.setName(user.getFirstName() + " " + user.getLastName());
         response.setEmail(user.getEmail());
         if (isStaff(user)) {

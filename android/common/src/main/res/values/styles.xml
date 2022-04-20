@@ -7,6 +7,7 @@
 
     <declare-styleable name="CustomToolBar">
         <attr name="toolbar_title" format="string" />
+        <attr name="helperText_title" format="string" />
         <attr name="nav_visible" format="boolean" />
         <attr name="helperText_visible" format="boolean" />
     </declare-styleable>

@@ -2,7 +2,6 @@ package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -24,9 +22,7 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import com.elmenture.luuk.ui.main.accountmanagement.mysizes.InternationalSizes
-import models.ActualMeasurements
-import models.ClothingSizes
+import models.enums.InternationalSizes
 import models.Item
 import userdata.User
 import views.CustomProgressBar

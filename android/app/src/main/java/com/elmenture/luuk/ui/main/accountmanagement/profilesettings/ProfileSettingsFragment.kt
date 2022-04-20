@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
+import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.base.BaseFragment
@@ -14,6 +14,7 @@ import com.elmenture.luuk.databinding.FragmentProfileSettingsBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.SignInResponse
 import models.UpdateUserDetailsRequest
+import models.enums.Tags
 import utils.MiscUtils
 
 
@@ -67,14 +68,24 @@ class ProfileSettingsFragment : BaseFragment() {
     }
 
     private fun setEventListeners() {
-        binding.toolBar.setHelperTextClickListener {profileSettingsViewModel.updateUserData(getUserDetails())}
+        binding.toolBar.setHelperTextClickListener {
+            profileSettingsViewModel.updateUserData(
+                getUserDetails()
+            )
+        }
 
-        binding.btnUndoChanges.setOnClickListener {profileSettingsViewModel.userDetails.value?.let {updateFields(it)}}
+        binding.btnUndoChanges.setOnClickListener {
+            profileSettingsViewModel.userDetails.value?.let {
+                updateFields(it)
+            }
+        }
 
-        binding.toolBar.setNavClickListener{requireActivity().onBackPressed()}
+        binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
     }
 
+
     private fun getUserDetails(): UpdateUserDetailsRequest {
+        var targets = ""
         val userDetailsRequest = UpdateUserDetailsRequest()
         binding.etName.text?.let { userDetailsRequest.name = it.getStringValue() }
         binding.etAddress.text?.let { userDetailsRequest.physicalAddress = it.getStringValue() }
@@ -83,11 +94,18 @@ class ProfileSettingsFragment : BaseFragment() {
             userDetailsRequest.contactPhoneNumber = it.getStringValue()
         }
 
-//        when (binding.rgGender.checkedRadioButtonId) {
-//            binding.rbMale.id -> userDetailsRequest.gender = "M"
-//            binding.rbFemale.id -> userDetailsRequest.gender = "F"
-//            binding.rbAll.id -> userDetailsRequest.gender = "A"
-//        }
+        if (binding.rbMale.isChecked)
+            targets += "m,"
+
+        if (binding.rbFemale.isChecked)
+            targets += "f,"
+
+        if (binding.rbKids.isChecked)
+            targets += "c,"
+        targets = targets.trim(',')
+
+        userDetailsRequest.targets = targets
+
         return userDetailsRequest
     }
 
@@ -95,15 +113,14 @@ class ProfileSettingsFragment : BaseFragment() {
         details?.let {
             binding.etName.setText(details.name)
             binding.etAddress.setText(details.physicalAddress)
-            binding.tiEmail.visibility = if(details.email.isNullOrEmpty()) View.VISIBLE else View.GONE
+            binding.tiEmail.visibility = if (details.email.isNullOrEmpty()) View.VISIBLE else View.GONE
             binding.etEmail.setText(details.email)
             binding.etContactPhone.setText(details.contactPhoneNumber)
             binding.tvProfileInitials.text = MiscUtils.getUserNameInitials(details.name)
-            when (details.gender) {
-                "F" -> binding.rbFemale.isChecked = true
-                "M" -> binding.rbMale.isChecked = true
-                "A" -> binding.rbKids.isChecked = true
-            }
+
+            binding.rbMale.isChecked = details.clothingRecommendations!!.contains(Tags.m.name)
+            binding.rbFemale.isChecked = details.clothingRecommendations!!.contains(Tags.f.name)
+            binding.rbKids.isChecked = details.clothingRecommendations!!.contains(Tags.c.name)
         }
 
         setDataChangeListeners()
@@ -118,19 +135,17 @@ class ProfileSettingsFragment : BaseFragment() {
                 profileSettingsViewModel.onCurrentDetailsChanged(getUserDetails())
             }
         }
-
-        val checkedChangeListener: RadioGroup.OnCheckedChangeListener =
-            RadioGroup.OnCheckedChangeListener { _, _ ->
-                profileSettingsViewModel.onCurrentDetailsChanged(getUserDetails())
-            }
-
+        val checkedChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
+            profileSettingsViewModel.onCurrentDetailsChanged(getUserDetails())
+        }
 
         binding.etContactPhone.addTextChangedListener(textWatcher)
         binding.etEmail.addTextChangedListener(textWatcher)
         binding.etAddress.addTextChangedListener(textWatcher)
         binding.etName.addTextChangedListener(textWatcher)
-//        binding.rgGender.setOnCheckedChangeListener(checkedChangeListener)
-
+        binding.rbFemale.setOnCheckedChangeListener(checkedChangeListener)
+        binding.rbMale.setOnCheckedChangeListener(checkedChangeListener)
+        binding.rbKids.setOnCheckedChangeListener(checkedChangeListener)
     }
 
     private fun initView() {

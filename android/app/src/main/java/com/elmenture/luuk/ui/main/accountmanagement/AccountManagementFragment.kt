@@ -55,7 +55,7 @@ class AccountManagementFragment : BaseFragment() {
         }
 
         binding.itemInventoryManagement.setOnClickListener{
-            activityView.startCreateItemFragment()
+            activityView.startInventoryManagementFragment()
         }
 
         binding.itemProfileSettings.setOnClickListener{

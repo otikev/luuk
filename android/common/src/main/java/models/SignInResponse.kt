@@ -33,8 +33,8 @@ class SignInResponse {
     @field:SerializedName("contactPhoneNumber")
     var contactPhoneNumber: String? = null
 
-    @field:SerializedName("gender")
-    var gender: String? = null
+    @field:SerializedName("clothingRecommendations")
+    var clothingRecommendations: String? = null
 
     @field:SerializedName("physicalAddress")
     var physicalAddress: String? = null

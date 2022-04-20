@@ -9,9 +9,10 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
-import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
+import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
+import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.cart.ViewCartFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
@@ -90,6 +91,10 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun startViewCartFragment() {
         addFragment(ViewCartFragment.newInstance(), ViewCartFragment::class.java.canonicalName)
+    }
+
+    override fun startInventoryManagementFragment() {
+        addFragment(InventoryManagementFragment.newInstance(), InventoryManagementFragment::class.java.canonicalName)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -15,7 +15,7 @@ public class SignInResponse {
     private String contactPhoneNumber;
     private String mobileMoneyNumber;
     private String physicalAddress;
-    private String gender;
+    private String clothingRecommendations;
     private String name;
     private boolean staff;
 

@@ -25,6 +25,10 @@ interface EndPoints {
     @POST("items/new")
     fun createNewItem(@Body request: Item): Call<ResponseBody>
 
+
+    @GET("items/all")
+    fun fetchAllItems(): Call<List<Item>>
+
     @POST("user/update")
     fun updateUserDetails(@Body request: UpdateUserDetailsRequest): Call<ResponseBody>
 }

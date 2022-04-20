@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentViewSizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.ActualMeasurements
+import userdata.User
 
 
 class ViewMySizesFragment : BaseFragment() {
@@ -45,30 +47,63 @@ class ViewMySizesFragment : BaseFragment() {
     }
 
     private fun updateFields(measurements: ActualMeasurements?) {
+        var size = ""
+        val dressSize = User.getCurrent().userDetails.femaleSize?.dress
+
         measurements?.let {
-            if (!measurements.clothingSizes?.international.isNullOrEmpty())
-                binding.tvSize.text =
-                    "Size International : ${measurements.clothingSizes?.international}"
-            if (measurements.clothingSizes?.uk!! > 0)
-                binding.tvSize.text = "Size UK : ${measurements.clothingSizes?.uk}"
-            if (measurements.clothingSizes?.us!! > 0)
-                binding.tvSize.text =
-                    "Size US : ${measurements.clothingSizes?.us}"
-            if (measurements.clothingSizes?.uk!! > 0)
-                binding.tvSize.text =
-                    "Size EU : ${measurements.clothingSizes?.eu}"
+            if (!measurements.clothingSizes?.international.isNullOrEmpty()) {
+                size = "Int : ${measurements.clothingSizes?.international}"
+                binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled)
+                binding.tvSizeInt.text = size
+                binding.tvSizeEu.text = "EU : ${dressSize?.eu}"
+                binding.tvSizeUs.text = "US : ${dressSize?.us}"
+                binding.tvSizeUk.text = "UK : ${dressSize?.uk}"
+            }
+            if (measurements.clothingSizes?.uk!! > 0) {
+                size = "UK : ${measurements.clothingSizes?.uk}"
+                binding.tvSizeUk.setBackgroundResource(R.drawable.rectangle_circled)
+                binding.tvSizeUk.text = size
+                binding.tvSizeEu.text = "Int : ${dressSize?.eu}"
+                binding.tvSizeUs.text = "US : ${dressSize?.us}"
+                binding.tvSizeInt.text = "EU : ${dressSize?.international}"
+
+            }
+            if (measurements.clothingSizes?.us!! > 0) {
+                size = "US : ${measurements.clothingSizes?.us}"
+                binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled)
+                binding.tvSizeUs.text = size
+                binding.tvSizeEu.text = "EU : ${dressSize?.eu}"
+                binding.tvSizeUk.text = "UK : ${dressSize?.uk}"
+                binding.tvSizeInt.text = "Int : ${dressSize?.international}"
+
+            }
+
+            if (measurements.clothingSizes?.uk!! > 0) {
+                size = "EU : ${measurements.clothingSizes?.eu}"
+                binding.tvSizeEu.setBackgroundResource(R.drawable.rectangle_circled)
+                binding.tvSizeEu.text = size
+                binding.tvSizeUk.text = "UK : ${dressSize?.uk}"
+                binding.tvSizeUs.text = "US : ${dressSize?.us}"
+                binding.tvSizeInt.text = "Int : ${dressSize?.international}"
+
+            }
+
         }
 
         measurements?.bodyMeasurements?.let {
-            binding.tvChest.text = "Chest : ${it.chest} CM"
-            binding.tvWaist.text = "Waist : ${it.waist} CM"
-            binding.tvHips.text = "Hips : ${it.hips}  CM"
+            val chest = if(it.chest==0) dressSize?.chest else it.chest
+            val waist = if(it.waist == 0) dressSize?.waist else it.waist
+            val hips = if(it.hips == 0)  dressSize?.hips else it.hips
+
+            binding.tvChest.text = "Chest : ${chest} CM"
+            binding.tvWaist.text = "Waist : ${waist} CM"
+            binding.tvHips.text = "Hips : ${hips}  CM"
         }
     }
 
     private fun setEventListeners() {
         binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
-        binding.ivEdit.setOnClickListener{ activityView.startEditMySizesFragment()}
+        binding.tvEdit.setOnClickListener { activityView.startEditMySizesFragment() }
     }
 
     private fun initView() {

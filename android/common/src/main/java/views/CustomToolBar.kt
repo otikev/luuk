@@ -1,7 +1,6 @@
 package views
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.luuk.common.databinding.CustomToolbarBinding
  */
 class CustomToolBar : LinearLayout {
     private var tvTitle: TextView? = null
-    private var tvSave: TextView? = null
+    private var tvHelperText: TextView? = null
     private var ivImage: ImageView? = null
     private var binding: CustomToolbarBinding? = null
 
@@ -30,8 +29,9 @@ class CustomToolBar : LinearLayout {
         context.theme.obtainStyledAttributes(attrs, R.styleable.CustomToolBar, 0, 0).apply {
             try {
                 tvTitle?.text = getString(R.styleable.CustomToolBar_toolbar_title)
+                tvHelperText?.text = getString(R.styleable.CustomToolBar_helperText_title)
                 ivImage?.visibility = if (getBoolean(R.styleable.CustomToolBar_nav_visible, true)) View.VISIBLE else View.GONE
-                tvSave?.visibility = if (getBoolean(R.styleable.CustomToolBar_helperText_visible, false)) View.VISIBLE else View.GONE
+                tvHelperText?.visibility = if (getBoolean(R.styleable.CustomToolBar_helperText_visible, false)) View.VISIBLE else View.GONE
             } finally {
                 recycle()
             }
@@ -43,18 +43,18 @@ class CustomToolBar : LinearLayout {
     }
 
     fun setHelperTextClickListener(onClickListener: OnClickListener){
-        tvSave?.setOnClickListener(onClickListener)
+        tvHelperText?.setOnClickListener(onClickListener)
     }
 
     fun setHelperTextVisible(setVisible: Boolean){
-        tvSave?.visibility = if(setVisible) View.VISIBLE else View.GONE
+        tvHelperText?.visibility = if(setVisible) View.VISIBLE else View.GONE
     }
     private fun initializeViews(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.custom_toolbar, this, true)
         ivImage = findViewById(R.id.image_view)
         tvTitle = findViewById(R.id.tv_title)
-        tvSave = findViewById(R.id.tv_save)
+        tvHelperText = findViewById(R.id.tv_save)
     }
 
 
