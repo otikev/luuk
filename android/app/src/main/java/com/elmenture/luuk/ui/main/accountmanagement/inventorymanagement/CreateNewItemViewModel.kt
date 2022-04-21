@@ -13,12 +13,22 @@ import models.Item
 class CreateNewItemViewModel : ViewModel() {
 
     var createNewItemApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
+    var updateItemApiState: MutableLiveData<BaseApiState> = MutableLiveData(null)
 
     fun createNewItem(item: Item) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = AccountManagementRepository.createNewItem(item)
             withContext(Dispatchers.Main) {
                 createNewItemApiState.value = response
+            }
+        }
+    }
+
+    fun updateItem(item: Item) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = AccountManagementRepository.updateItem(item)
+            withContext(Dispatchers.Main) {
+                updateItemApiState.value = response
             }
         }
     }

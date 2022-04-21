@@ -59,4 +59,8 @@ object AccountManagementRepository {
         }
         userDetails?.let { LocalRepository.updateUserDetails(it) }
     }
+
+    fun updateItem(request: Item): BaseApiState {
+        return RemoteRepository.updateItem(request)
+    }
 }

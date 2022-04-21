@@ -96,4 +96,9 @@ object RemoteRepository {
         return processRequest(call)
     }
 
+    fun updateItem(request: Item): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateItem(request)
+        return processRequest(call)
+    }
+
 }

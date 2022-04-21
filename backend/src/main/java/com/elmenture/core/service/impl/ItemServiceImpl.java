@@ -37,6 +37,18 @@ public class ItemServiceImpl implements ItemService {
         return postResponse;
     }
 
+    @Override
+    public ItemDto updateItem(ItemDto postDto) {
+        Item item  = itemRepository.getById(postDto.getId());
+        if(item!=null){
+            Item post = mapToEntity(postDto);
+            Item newItem = itemRepository.save(post);
+            ItemDto postResponse = mapToDTO(newItem);
+            return postResponse;
+        }
+        return null;
+    }
+
     private ItemResponse buildResponse(Page<Item> items) {
         // get content for page object
         List<Item> listOfItems = items.getContent();

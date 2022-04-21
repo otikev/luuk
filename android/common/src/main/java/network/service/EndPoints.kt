@@ -31,4 +31,7 @@ interface EndPoints {
 
     @POST("user/update")
     fun updateUserDetails(@Body request: UpdateUserDetailsRequest): Call<ResponseBody>
+
+    @POST("items/update")
+    fun updateItem(@Body request: Item): Call<ResponseBody>
 }
