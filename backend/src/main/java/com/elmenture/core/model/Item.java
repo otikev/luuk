@@ -52,8 +52,8 @@ public class Item extends BaseEntity {
     @Column(name = "target") //m or f or c
     private String target;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ItemTag> itemTags;
+    //@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private List<ItemProperty> itemProperties;
 
     public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
         this.description = description;

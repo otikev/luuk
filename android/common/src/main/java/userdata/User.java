@@ -1,6 +1,9 @@
 package userdata;
 
+import java.util.List;
+
 import models.SignInResponse;
+import models.TagProperty;
 
 public class User {
 
@@ -22,5 +25,9 @@ public class User {
 
     public void logout() {
         userDetails = null;
+    }
+
+    public List<TagProperty> getTags(){
+        return userDetails.getTagProperties();
     }
 }
