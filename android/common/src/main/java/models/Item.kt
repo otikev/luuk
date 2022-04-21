@@ -26,7 +26,10 @@ data class Item(
     var sizeType: String? = null,
 
     @field:SerializedName("target")
-    var target: String? = null
+    var target: String? = null,
+
+    @field:SerializedName("tagProperties")
+    var tagProperties: List<Long>? = null
 )
 
 fun Item.isSet(): Boolean {

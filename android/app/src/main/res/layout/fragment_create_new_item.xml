@@ -150,6 +150,18 @@
 
             </LinearLayout>
 
+            <MultiAutoCompleteTextView
+                android:id="@+id/tagsMultiAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Enter tags" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <ImageView
                 android:id="@+id/iv_s3image"
                 android:layout_width="match_parent"

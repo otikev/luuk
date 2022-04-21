@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.MultiAutoCompleteTextView.CommaTokenizer
+import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -23,7 +26,9 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.google.android.material.chip.Chip
 import models.Item
+import models.TagProperty
 import models.enums.InternationalSizes
 import userdata.User
 import views.CustomProgressBar
@@ -61,7 +66,8 @@ class CreateNewItemFragment : BaseFragment() {
             return frag
         }
 
-        val BUCKET_NAME = "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
+        val BUCKET_NAME =
+            "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
@@ -100,21 +106,50 @@ class CreateNewItemFragment : BaseFragment() {
         setUpSizesSpinner()
         binding.spnInternational.setSelection(4)
 
+        binding.tagsMultiAutoCompleteTextView.setTokenizer(CommaTokenizer())
+        binding.tagsMultiAutoCompleteTextView.threshold = 1
+
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            requireActivity(),
+            android.R.layout.simple_dropdown_item_1line, User.getCurrent().tags
+        )
+
+        binding.tagsMultiAutoCompleteTextView.setAdapter( adapter)
+
         editableItem?.let {
             setUpEditableView(it)
         }
     }
 
+    private fun addChipToGroup(tagProperty: TagProperty) {
+        val chip = Chip(context)
+        chip.text = tagProperty.value
+        chip.chipIcon =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_launcher_background)
+        chip.isChipIconVisible = false
+        chip.isCloseIconVisible = true
+        // necessary to get single selection working
+        chip.isClickable = true
+        chip.isCheckable = false
+        chip.tag = tagProperty
+
+        binding.chipGroup.addView(chip as View)
+        chip.setOnCloseIconClickListener {
+            binding.chipGroup.removeView(chip as View)
+        }
+    }
+
     private fun setUpEditableView(it: Item) {
-        val size = if(it.sizeNumber == null) it.sizeInternational else it.sizeNumber.toString()
+        val size = if (it.sizeNumber == null) it.sizeInternational else it.sizeNumber.toString()
+
         binding.etDescription.setText(it.description)
-        binding.etItemPrice.setText((it.price!!/100).toString())
+        binding.etItemPrice.setText((it.price!! / 100).toString())
         binding.etEnterSize.setText(size)
-        when(it.sizeType){
-            "US"-> binding.rbUs.isChecked = true
-            "UK"-> binding.rbUk.isChecked = true
-            "EU"-> binding.rbEu.isChecked = true
-            "INT"-> binding.rbInt.isChecked = true
+        when (it.sizeType) {
+            "US" -> binding.rbUs.isChecked = true
+            "UK" -> binding.rbUk.isChecked = true
+            "EU" -> binding.rbEu.isChecked = true
+            "INT" -> binding.rbInt.isChecked = true
         }
         Glide.with(requireContext()).load(it.imageUrl).into(binding.ivS3image)
     }
@@ -134,6 +169,12 @@ class CreateNewItemFragment : BaseFragment() {
     }
 
     private fun setUpEventListeners() {
+        binding.tagsMultiAutoCompleteTextView.setOnItemClickListener { adapterView, _, i, _ ->
+            val tag: String = adapterView.getItemAtPosition(i) as String
+            addChipToGroup(User.getCurrent().getTagProperty(tag))
+            binding.tagsMultiAutoCompleteTextView.setText("")
+        }
+
         binding.rgSizes.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rb_int -> {
@@ -148,14 +189,14 @@ class CreateNewItemFragment : BaseFragment() {
             }
         }
 
-        val editListener =  View.OnClickListener {
+        val editListener = View.OnClickListener {
             item.imageUrl = editableItem?.imageUrl
             item.id = editableItem?.id
             createNewItemViewModel.updateItem(getItemDetails())
         }
 
-        val newItemListener =  View.OnClickListener {
-            var success = verifyFields(binding.etDescription,binding.etItemPrice)
+        val newItemListener = View.OnClickListener {
+            var success = verifyFields(binding.etDescription, binding.etItemPrice)
 
             when (binding.rgSizes.checkedRadioButtonId) {
                 R.id.rb_us, R.id.rb_uk, R.id.rb_eu -> {
@@ -171,7 +212,7 @@ class CreateNewItemFragment : BaseFragment() {
             }
         }
 
-        val listener = if(editableItem==null) newItemListener else editListener
+        val listener = if (editableItem == null) newItemListener else editListener
 
         binding.btnAccept.setOnClickListener(listener)
 
@@ -209,6 +250,16 @@ class CreateNewItemFragment : BaseFragment() {
         item.target = "f" //TODO: Only handling female clothing for now
         val ksh = binding.etItemPrice.text.toString().toLong()
         item.price = ksh * 100 //convert to cents for transmission to the server
+
+        var tagProperties: MutableList<Long> = ArrayList()
+        binding.chipGroup.children.forEach {
+            val tagProp = (it as Chip).tag as TagProperty
+            tagProp.id?.let {
+                tagProperties.add(it)
+            }
+        }
+
+        item.tagProperties = tagProperties
         return item
     }
 

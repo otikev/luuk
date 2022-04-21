@@ -1,10 +1,14 @@
 package com.elmenture.core.service.impl;
 
 import com.elmenture.core.model.Item;
-import com.elmenture.core.payload.ItemResponse;
-import com.elmenture.core.repository.ItemRepository;
-import com.elmenture.core.service.ItemService;
+import com.elmenture.core.model.ItemProperty;
+import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.payload.ItemDto;
+import com.elmenture.core.payload.ItemResponse;
+import com.elmenture.core.repository.ItemPropertyRepository;
+import com.elmenture.core.repository.ItemRepository;
+import com.elmenture.core.repository.TagPropertyRepository;
+import com.elmenture.core.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,12 +30,26 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private ItemPropertyRepository itemPropertyRepository;
+
+    @Autowired
+    private TagPropertyRepository tagPropertyRepository;
+
     @Override
     public ItemDto createItem(ItemDto postDto) {
         // convert DTO to entity
         Item post = mapToEntity(postDto);
         post.setTarget("f");//FIXME: Targetting only female dresses for now
         Item newItem = itemRepository.save(post);
+
+        for (Long id : postDto.getTagProperties()) {
+            ItemProperty itemProperty = new ItemProperty();
+            itemProperty.setItemId(newItem.getId());
+            itemProperty.setTagPropertyId(id);
+            ItemProperty created = itemPropertyRepository.save(itemProperty);
+            System.out.println("Created item property id "+created.getId());
+        }
 
         // convert entity to DTO
         ItemDto postResponse = mapToDTO(newItem);
@@ -39,10 +58,25 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateItem(ItemDto postDto) {
-        Item item  = itemRepository.getById(postDto.getId());
-        if(item!=null){
+        Item item = itemRepository.getById(postDto.getId());
+        if (item != null) {
             Item post = mapToEntity(postDto);
             Item newItem = itemRepository.save(post);
+
+            List<ItemProperty> deletedProperties = itemPropertyRepository.findByItemIdAndIdNotIn(item.getId(),postDto.getTagProperties());
+            for(ItemProperty property : deletedProperties){
+                itemPropertyRepository.delete(property);
+                System.out.println("Deleted item property id "+property.getId());
+            }
+
+            for (Long id : postDto.getTagProperties()) {
+                ItemProperty itemProperty = new ItemProperty();
+                itemProperty.setItemId(newItem.getId());
+                itemProperty.setTagPropertyId(id);
+                ItemProperty created = itemPropertyRepository.save(itemProperty);
+                System.out.println("Created item property id "+created.getId());
+            }
+
             ItemDto postResponse = mapToDTO(newItem);
             return postResponse;
         }
@@ -73,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
         //List<Item> itemsRaw = itemRepository.findByTargetInAndSizeInternationalIs(targets,sizeInternational);
-        Page<Item> items = itemRepository.findByTargetInAndSizeInternationalIs(targets,sizeInternational, pageable);
+        Page<Item> items = itemRepository.findByTargetInAndSizeInternationalIs(targets, sizeInternational, pageable);
 
         return buildResponse(items);
     }

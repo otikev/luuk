@@ -6,7 +6,7 @@ import models.SignInResponse;
 import models.TagProperty;
 
 public class User {
-
+    String[] tags;
     public SignInResponse userDetails;
 
     private static User user = new User();
@@ -17,6 +17,12 @@ public class User {
 
     public void setUserDetails(SignInResponse userDetails) {
         this.userDetails = userDetails;
+        tags = new String[userDetails.getTagProperties().size()];
+        int i = 0;
+        for (TagProperty tagProperty : userDetails.getTagProperties()) {
+            tags[i] = tagProperty.getValue();
+            i++;
+        }
     }
 
     public static boolean hasSignedInUser() {
@@ -27,7 +33,21 @@ public class User {
         userDetails = null;
     }
 
-    public List<TagProperty> getTags(){
+    public List<TagProperty> getTagProperties() {
         return userDetails.getTagProperties();
+    }
+
+
+    public TagProperty getTagProperty(String s){
+        for (TagProperty tagProperty : userDetails.getTagProperties()) {
+            if(tagProperty.getValue().equalsIgnoreCase(s)){
+                return tagProperty;
+            }
+        }
+        return null;
+    }
+
+    public String[] getTags() {
+        return tags;
     }
 }
