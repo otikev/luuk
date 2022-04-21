@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "body_measurement")
+@Table(name = "body_measurements")
 public class BodyMeasurement extends BaseEntity {
 
     @JsonIgnore
