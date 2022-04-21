@@ -2,6 +2,8 @@ package com.elmenture.core.payload;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SignInResponse {
     private boolean success = false;
@@ -18,6 +20,7 @@ public class SignInResponse {
     private String clothingRecommendations;
     private String name;
     private boolean staff;
+    private List<TagPropertyDto> tagProperties;
 
 
     /**

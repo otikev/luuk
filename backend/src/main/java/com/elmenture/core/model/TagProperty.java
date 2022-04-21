@@ -30,7 +30,6 @@ public class TagProperty extends BaseEntity {
     @Column(name = "value", nullable = false)
     private String value;
 
-
     @OneToMany(mappedBy = "tagProperty", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<ItemProperty> itemProperties;

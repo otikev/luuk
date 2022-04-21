@@ -1,14 +1,13 @@
 package com.elmenture.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -52,6 +51,9 @@ public class Item extends BaseEntity {
 
     @Column(name = "target") //m or f or c
     private String target;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemTag> itemTags;
 
     public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
         this.description = description;
