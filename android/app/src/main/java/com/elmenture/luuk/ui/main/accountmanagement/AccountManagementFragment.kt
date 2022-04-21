@@ -61,6 +61,10 @@ class AccountManagementFragment : BaseFragment() {
         binding.itemProfileSettings.setOnClickListener{
             activityView.startProfileSettingsFragment()
         }
+
+        binding.itemHelp.setOnClickListener {
+            activityView.startHelpFragment()
+        }
     }
 
 }

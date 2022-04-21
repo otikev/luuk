@@ -8,6 +8,7 @@ import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
+import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
@@ -83,6 +84,10 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun startCreateItemFragment(item: Item?) {
         addFragment(CreateNewItemFragment.newInstance(item), CreateNewItemFragment::class.java.canonicalName)
+    }
+
+    override fun startHelpFragment() {
+        addFragment(HelpFragment.newInstance(), HelpFragment::class.java.canonicalName)
     }
 
 
