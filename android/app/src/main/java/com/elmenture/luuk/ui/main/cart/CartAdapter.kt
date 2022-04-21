@@ -3,7 +3,9 @@ package com.elmenture.luuk.ui.main.cart
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.amazonaws.util.StringUtils
 import com.bumptech.glide.Glide
+import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ItemCartBinding
 import models.Spot
 import utils.MiscUtils
@@ -35,8 +37,12 @@ class CartAdapter(var list: ArrayList<Spot>, var cartActionListener: CartActionL
         fun bind(item: Spot, actionListener: CartActionListener) {
             val context = view.root.context
             view.tvDescription.text = item.description
-            view.tvSize.text = "Size ${item.sizeNumber}"
             view.tvPrice.text ="ksh ${MiscUtils.getFormattedAmount(item.priceCents.toDouble()/100)}"
+            if(item.sizeType.equals("INT",true)){
+                view.tvSize.text = "Size ${item.sizeInternational?.uppercase()}"
+            }else{
+                view.tvSize.text = "Size ${item.sizeNumber.toString()}(${item.sizeType})"
+            }
             Glide.with(context).load(item.url).into(view.ivItemImage)
 
             view.ivDiscard.setOnClickListener { actionListener.onDiscardClicked(item) }
