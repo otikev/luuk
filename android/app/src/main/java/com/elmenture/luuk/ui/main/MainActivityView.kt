@@ -2,6 +2,7 @@ package com.elmenture.luuk.ui.main
 
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.base.BaseActivityView
+import models.Item
 import models.Spot
 
 interface MainActivityView: BaseActivityView {
@@ -10,7 +11,7 @@ interface MainActivityView: BaseActivityView {
     fun startEditMySizesFragment()
     fun logout()
     fun resetBottomNavigation()
-    fun startCreateItemFragment()
+    fun startCreateItemFragment(item: Item? = null)
     fun startProfileSettingsFragment()
     fun showMessage(message: String? = null, isSuccessful: Boolean = true)
     fun startViewItemFragment(activeSpot: Spot?)

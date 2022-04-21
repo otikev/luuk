@@ -17,6 +17,7 @@ import com.elmenture.luuk.ui.main.cart.ViewCartFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.google.android.material.navigation.NavigationBarView
+import models.Item
 import models.Spot
 
 class MainActivity : AuthenticatedActivity(),
@@ -80,8 +81,8 @@ class MainActivity : AuthenticatedActivity(),
     }
 
 
-    override fun startCreateItemFragment() {
-        addFragment(CreateNewItemFragment.newInstance(), CreateNewItemFragment::class.java.canonicalName)
+    override fun startCreateItemFragment(item: Item?) {
+        addFragment(CreateNewItemFragment.newInstance(item), CreateNewItemFragment::class.java.canonicalName)
     }
 
 

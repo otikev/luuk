@@ -18,12 +18,13 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
+import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import models.enums.InternationalSizes
 import models.Item
+import models.enums.InternationalSizes
 import userdata.User
 import views.CustomProgressBar
 import java.io.File
@@ -51,11 +52,16 @@ class CreateNewItemFragment : BaseFragment() {
     private val PICK_IMAGE_REQUEST = 100
     private lateinit var filePath: Uri
     private lateinit var file: File
+    private var editableItem: Item? = null
 
     companion object {
-        fun newInstance() = CreateNewItemFragment()
-        val BUCKET_NAME =
-            "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
+        fun newInstance(item: Item?): CreateNewItemFragment {
+            val frag = CreateNewItemFragment()
+            frag.editableItem = item
+            return frag
+        }
+
+        val BUCKET_NAME = "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
@@ -93,6 +99,24 @@ class CreateNewItemFragment : BaseFragment() {
         createNewItemViewModel = ViewModelProvider(this).get(CreateNewItemViewModel::class.java)
         setUpSizesSpinner()
         binding.spnInternational.setSelection(4)
+
+        editableItem?.let {
+            setUpEditableView(it)
+        }
+    }
+
+    private fun setUpEditableView(it: Item) {
+        val size = if(it.sizeNumber == null) it.sizeInternational else it.sizeNumber.toString()
+        binding.etDescription.setText(it.description)
+        binding.etItemPrice.setText((it.price!!/100).toString())
+        binding.etEnterSize.setText(size)
+        when(it.sizeType){
+            "US"-> binding.rbUs.isChecked = true
+            "UK"-> binding.rbUk.isChecked = true
+            "EU"-> binding.rbEu.isChecked = true
+            "INT"-> binding.rbInt.isChecked = true
+        }
+        Glide.with(requireContext()).load(it.imageUrl).into(binding.ivS3image)
     }
 
     private fun setUpSizesSpinner() {
@@ -124,14 +148,17 @@ class CreateNewItemFragment : BaseFragment() {
             }
         }
 
-        binding.btnAccept.setOnClickListener {
-            var success = verifyFields(
-                binding.etDescription,
-                binding.etItemPrice
-            )
+        val editListener =  View.OnClickListener {
+            item.imageUrl = editableItem?.imageUrl
+            item.id = editableItem?.id
+            createNewItemViewModel.updateItem(getItemDetails())
+        }
+
+        val newItemListener =  View.OnClickListener {
+            var success = verifyFields(binding.etDescription,binding.etItemPrice)
 
             when (binding.rgSizes.checkedRadioButtonId) {
-                R.id.rb_us,R.id.rb_uk,R.id.rb_eu -> {
+                R.id.rb_us, R.id.rb_uk, R.id.rb_eu -> {
                     if (binding.etEnterSize.text.isNullOrEmpty()) {
                         success = false
                         activityView.showMessage("Please enter a size")
@@ -143,6 +170,10 @@ class CreateNewItemFragment : BaseFragment() {
                 uploadData()
             }
         }
+
+        val listener = if(editableItem==null) newItemListener else editListener
+
+        binding.btnAccept.setOnClickListener(listener)
 
         binding.toolBar.setNavClickListener {
             requireActivity().onBackPressed()

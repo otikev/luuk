@@ -72,7 +72,7 @@ class InventoryManagementFragment : BaseFragment(), InventoryAdapter.CartActionL
     }
 
     override fun onEditClicked(item: Item) {
-
+        activityView.startCreateItemFragment(item)
     }
 
     override fun onDiscardClicked(item: Item) {

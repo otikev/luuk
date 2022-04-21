@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class BodyMeasurementsDto {
-    private int chest_cm;
-    private int waist_cm;
-    private int hips_cm;
+    private Integer chest_cm;
+    private Integer waist_cm;
+    private Integer hips_cm;
 }

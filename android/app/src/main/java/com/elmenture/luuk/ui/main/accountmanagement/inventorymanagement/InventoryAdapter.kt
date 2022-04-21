@@ -35,9 +35,10 @@ class InventoryAdapter(var list: ArrayList<Item>, var cartActionListener: CartAc
 
         @SuppressLint("SetTextI18n")
         fun bind(item: Item, actionListener: CartActionListener) {
+            val size = if(item.sizeNumber == null) item.sizeInternational else item.sizeNumber.toString()
             val context = view.root.context
             view.tvDescription.text = item.description
-            view.tvSize.text = "Size ${item.sizeNumber}"
+            view.tvSize.text = "${item.sizeType} ${size}"
             view.tvPrice.text ="ksh ${MiscUtils.getFormattedAmount(item.price?.toDouble()?.div(100))}"
             Glide.with(context).load(item.imageUrl).into(view.ivItemImage)
 

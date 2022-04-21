@@ -37,6 +37,17 @@ public class ItemController extends BaseController {
         return new ResponseEntity<>(itemService.createItem(itemDto), HttpStatus.CREATED);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<ItemDto> updateItem(@Valid @RequestBody ItemDto itemDto) {
+        ItemDto item =  itemService.updateItem(itemDto);
+        if(item==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+
+    }
+
     @GetMapping("/all")
     public List<Item> getAllItems() {
         return itemRepository.findAll();
