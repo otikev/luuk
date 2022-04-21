@@ -1,10 +1,9 @@
 package com.elmenture.core.controller;
 
+import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.model.User;
-import com.elmenture.core.payload.BodyMeasurementsDto;
-import com.elmenture.core.payload.ClothingSizeDto;
-import com.elmenture.core.payload.SignInResponse;
-import com.elmenture.core.payload.UserMeasurementsDto;
+import com.elmenture.core.payload.*;
+import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.utils.Properties;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -46,6 +45,10 @@ public class AuthController extends BaseController{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TagPropertyRepository tagPropertyRepository;
+
 
     @PostMapping("/facebooksignin")
     public ResponseEntity<SignInResponse> facebookTokenSignin(@Valid @RequestParam MultiValueMap<String, String> idTokenString) {
@@ -163,6 +166,17 @@ public class AuthController extends BaseController{
             response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
             response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
         }
+
+        List<TagProperty> tagProperties = tagPropertyRepository.findAll();
+
+        List<TagPropertyDto> tagPropertiesList = new ArrayList<>();
+        for(TagProperty tagProperty : tagProperties){
+            TagPropertyDto dto = new TagPropertyDto();
+            dto.setId(tagProperty.getId());
+            dto.setValue(tagProperty.getValue());
+            tagPropertiesList.add(dto);
+        }
+        response.setTagProperties(tagPropertiesList);
         return response;
     }
 

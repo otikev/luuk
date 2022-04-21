@@ -196,24 +196,28 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<Item>  all = itemRepository.findAll();
 
         for(Item item : all){
-            System.out.println("Updating "+item.getDescription()+" ...");
-
+            boolean edited = false;
             if(item.getTarget() == null){
                 item.setTarget("f");
+                edited=true;
             }
 
             if(item.getSizeInternational() != null){
                 item.setSizeType("INT");
                 item.setSizeNumber(null);
+                edited=true;
             }
 
             if(item.getSizeNumber() != null){
                 item.setSizeType("US");
                 item.setSizeInternational(null);
+                edited=true;
             }
 
-            Item it = itemRepository.save(item);
-            System.out.println("Saved item = "+it);
+            if(edited){
+                Item it = itemRepository.save(item);
+                System.out.println("Saved item = "+it);
+            }
         }
     }
 }

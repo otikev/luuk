@@ -41,4 +41,7 @@ class SignInResponse {
 
     @field:SerializedName("name")
     var name: String? = null
+
+    @field:SerializedName("tagProperties")
+    var tagProperties: List<TagProperty>? = null
 }
