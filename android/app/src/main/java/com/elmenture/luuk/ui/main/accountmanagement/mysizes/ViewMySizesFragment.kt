@@ -52,12 +52,13 @@ class ViewMySizesFragment : BaseFragment() {
 
         measurements?.let {
 
-            measurements.clothingSizes?.international?.let {
+            measurements.clothingSizes?.international.let {
                 size =
                     if (dressSize?.international == null) "Int : $it" else "Int : ${dressSize.international}"
-                if (it.isNotEmpty())
-                    binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled_outlined)
                 binding.tvSizeInt.text = size
+                if (it != null && it.isNotEmpty())
+                    binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+
             }
 
 
@@ -84,15 +85,17 @@ class ViewMySizesFragment : BaseFragment() {
         }
 
         measurements?.bodyMeasurements?.let {
-            val chest = if (dressSize?.chest == null) it.chest else dressSize.chest
-            val waist = if (dressSize?.waist == null) it.waist else dressSize.waist
-            val hips = if (dressSize?.hips == null) it.hips else dressSize.hips
+            val chest = if (it.chest <= 0) dressSize?.chest else it.chest
+
+            val waist = if (it.waist <= 0) dressSize?.waist else it.waist
+
+            val hips = if (it.waist <= 0) dressSize?.hips else it.hips
 
             if (it.chest > 0)
                 binding.tvChest.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.chest > 0)
+            if (it.waist > 0)
                 binding.tvWaist.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.chest > 0)
+            if (it.hips > 0)
                 binding.tvHips.setBackgroundResource(R.drawable.rectangle_circled_outlined)
 
             binding.tvChest.text = "Chest : ${chest} CM"
