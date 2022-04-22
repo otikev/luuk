@@ -37,6 +37,14 @@ public class User {
         return userDetails.getTagProperties();
     }
 
+    public TagProperty getTagProperty(Long id){
+        for (TagProperty tagProperty : userDetails.getTagProperties()) {
+            if(tagProperty.getId().longValue() == id.longValue()){
+                return tagProperty;
+            }
+        }
+        return null;
+    }
 
     public TagProperty getTagProperty(String s){
         for (TagProperty tagProperty : userDetails.getTagProperties()) {

@@ -140,6 +140,13 @@ class CreateNewItemFragment : BaseFragment() {
     }
 
     private fun setUpEditableView(it: Item) {
+
+        if(!it.tagProperties.isNullOrEmpty()){
+            for(id in it.tagProperties!!){
+                addChipToGroup(User.getCurrent().getTagProperty(id))
+            }
+        }
+
         val size = if (it.sizeNumber == null) it.sizeInternational else it.sizeNumber.toString()
 
         binding.etDescription.setText(it.description)
