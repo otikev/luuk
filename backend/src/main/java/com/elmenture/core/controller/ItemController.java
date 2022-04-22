@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,8 +50,8 @@ public class ItemController extends BaseController {
     }
 
     @GetMapping("/all")
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public List<ItemDto> getAllItems() {
+        return itemService.getAllItems();
     }
 
     @GetMapping("/paginated")
