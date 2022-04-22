@@ -26,17 +26,17 @@ public class SizeMapper {
             Integer waist = bodyMeasurement.getWaist_cm();
             Integer hips = bodyMeasurement.getHips_cm();
 
-            if (chest != null) {
+            if (chest != null && chest > 0) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(BUST_CM, String.valueOf(chest));
                 possibilities.add(values);
             }
 
-            if (waist != null) {
+            if (waist != null && waist > 0) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(WAIST_CM, String.valueOf(waist));
                 possibilities.add(values);
             }
 
-            if (hips != null) {
+            if (hips != null&& hips > 0) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(HIPS_CM, String.valueOf(hips));
                 possibilities.add(values);
             }

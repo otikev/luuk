@@ -132,19 +132,45 @@ public class AuthController extends BaseController{
 
         BodyMeasurementsDto bodyMeasurementsDto = new BodyMeasurementsDto();
         if(user.getBodyMeasurement() != null){
-            bodyMeasurementsDto.setChest_cm(user.getBodyMeasurement().getChest_cm());
-            bodyMeasurementsDto.setWaist_cm(user.getBodyMeasurement().getWaist_cm());
-            bodyMeasurementsDto.setHips_cm(user.getBodyMeasurement().getHips_cm());
+            Integer chest = user.getBodyMeasurement().getChest_cm();
+            Integer waist = user.getBodyMeasurement().getWaist_cm();
+            Integer hips = user.getBodyMeasurement().getHips_cm();
+
+            if(chest != null && chest > 0){
+                bodyMeasurementsDto.setChest_cm(user.getBodyMeasurement().getChest_cm());
+            }
+
+            if(waist != null && waist > 0){
+                bodyMeasurementsDto.setWaist_cm(waist);
+            }
+
+            if(hips != null && hips > 0){
+                bodyMeasurementsDto.setHips_cm(hips);
+            }
         }
         actualMeasurements.setBodyMeasurements(bodyMeasurementsDto);
 
 
         ClothingSizeDto clothingSizeDto = new ClothingSizeDto();
         if(user.getClothingSize() != null){
-            clothingSizeDto.setInternational(user.getClothingSize().getInternational());
-            clothingSizeDto.setUs(user.getClothingSize().getUs());
-            clothingSizeDto.setUk(user.getClothingSize().getUk());
-            clothingSizeDto.setEu(user.getClothingSize().getEu());
+            String _int = user.getClothingSize().getInternational();
+            int us = user.getClothingSize().getUs();
+            int uk = user.getClothingSize().getUk();
+            int eu = user.getClothingSize().getEu();
+            if(_int != null){
+                clothingSizeDto.setInternational(_int);
+            }
+
+            if(us>0){
+                clothingSizeDto.setUs(us);
+            }
+
+            if(uk>0){
+                clothingSizeDto.setUk(uk);
+            }
+            if(eu>0){
+                clothingSizeDto.setEu(eu);
+            }
         }
         actualMeasurements.setClothingSizes(clothingSizeDto);
 

@@ -49,6 +49,21 @@ public class FemaleClothingChart {
     private static Map<String, String> mapBodyMeasurementToSizes(MeasurementUnit unit, int cm) {
         String[][] chart = DRESS;
         Map<String, String> sizes = new HashMap<>();
+
+        if(isTooLarge(cm,unit,chart)){
+            for (int j = 0; j < chart[chart.length-1].length; j++) {
+                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[chart.length-1][j]);
+            }
+            return sizes;
+        }
+
+        if(isTooSmall(cm,unit,chart)){
+            for (int j = 0; j < chart[0].length; j++) {
+                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[0][j]);
+            }
+            return sizes;
+        }
+
         for (int i = chart.length - 1; i >= 0; i--) {
             if (valueIsWithinRange(cm, chart[i][unit.val])) {
                 for (int j = 0; j < chart[i].length; j++) {
@@ -57,6 +72,7 @@ public class FemaleClothingChart {
                 break;
             }
         }
+
         return sizes;
     }
 
@@ -66,6 +82,24 @@ public class FemaleClothingChart {
         } else {
             return false;
         }
+    }
+
+    private static boolean isTooSmall(int value, MeasurementUnit unit, String[][] chart) {
+        String maxRange = chart[0][unit.val];
+        String[] split = maxRange.split("-");
+        if (value < Integer.parseInt(split[0])) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isTooLarge(int value, MeasurementUnit unit, String[][] chart) {
+        String maxRange = chart[chart.length-1][unit.val];
+        String[] split = maxRange.split("-");
+        if (value > Integer.parseInt(split[1])) {
+            return true;
+        }
+        return false;
     }
 
     private static boolean valueIsWithinRange(int value, String range) {
