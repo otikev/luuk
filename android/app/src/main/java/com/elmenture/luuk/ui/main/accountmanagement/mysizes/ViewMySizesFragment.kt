@@ -69,7 +69,7 @@ class ViewMySizesFragment : BaseFragment() {
             }
 
             measurements.clothingSizes?.us?.let {
-                size = if (dressSize?.eu == null) "US : $it" else "US : ${dressSize.eu}"
+                size = if (dressSize?.eu == null) "US : $it" else "US : ${dressSize.us}"
                 if (it > 0)
                     binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled_outlined)
                 binding.tvSizeUs.text = size
