@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -124,6 +125,16 @@ public class ItemServiceImpl implements ItemService {
         return buildResponse(items);
     }
 
+    @Override
+    public List<ItemDto> getAllItems() {
+        List<Item> items = itemRepository.findAll();
+        List<ItemDto> itemDtos = new ArrayList<>();
+        for(Item item : items){
+            itemDtos.add(mapToDTO(item));
+        }
+        return itemDtos;
+    }
+
     private ItemDto mapToDTO(Item item) {
         ItemDto itemDto = new ItemDto();
         itemDto.setId(item.getId());
@@ -139,6 +150,12 @@ public class ItemServiceImpl implements ItemService {
             itemDto.setImageUrl(item.getImageUrl());
         }
 
+        List<ItemProperty> properties = itemPropertyRepository.findByItemId(item.getId());
+        List<Long> ids = new ArrayList<>();
+        for(ItemProperty property : properties){
+            ids.add(property.getTagPropertyId());
+        }
+        itemDto.setTagProperties(ids);
         return itemDto;
     }
 

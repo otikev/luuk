@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface ItemPropertyRepository extends JpaRepository<ItemProperty, Long> {
     List<ItemProperty> findByItemIdAndIdNotIn(Long itemId, List<Long> ids);
+    List<ItemProperty> findByItemId(Long itemId);
 }
