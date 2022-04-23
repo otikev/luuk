@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.amazonaws.util.StringUtils
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
@@ -50,7 +51,15 @@ class ViewItemFragment : BaseFragment() {
         activeSpot?.let {
             binding.tvDescription.text = it.description
             binding.tvPrice.text ="Ksh ${MiscUtils.getFormattedAmount(it.priceCents.toDouble() / 100)}"
-            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text,"Size : ", it.sizeNumber.toString()))//"Size : ${it.sizeNumber.toString()}"
+
+            if(it.sizeType.equals("INT",true)){
+                binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size",
+                    StringUtils.upperCase(it.sizeInternational)
+                ))
+            }else{
+                binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", it.sizeNumber.toString()+"("+it.sizeType+")"))
+            }
+
             Glide.with(requireContext()).load(it.url).into(binding.ivImage)
         }
     }
