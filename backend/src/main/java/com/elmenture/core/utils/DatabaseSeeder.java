@@ -8,6 +8,7 @@ import com.elmenture.core.repository.ItemPropertyRepository;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.TagRepository;
+import com.elmenture.core.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,10 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Autowired
     ItemPropertyRepository itemPropertyRepository;
 
-    String[] CLOTHING_SIZES = new String[]{"XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL"};
+    @Autowired
+    EmailService emailService;
+
+    String[] CLOTHING_SIZES = new String[]{"XS", "S", "M", "L", "XL", "XXL"};
 
     @Override
     public void run(String... args) throws Exception {
@@ -219,5 +223,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 System.out.println("Saved item = "+it);
             }
         }
+
+        emailService.sendAppStartedEmail();
     }
 }

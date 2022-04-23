@@ -5,7 +5,7 @@ import com.elmenture.core.model.User;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
-import com.elmenture.core.utils.Properties;
+import com.elmenture.core.utils.LuukProperties;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -54,7 +54,7 @@ public class AuthController extends BaseController{
     public ResponseEntity<SignInResponse> facebookTokenSignin(@Valid @RequestParam MultiValueMap<String, String> idTokenString) {
         String userToken = idTokenString.get("userToken").get(0);
         SignInResponse response = new SignInResponse();
-        String url = "https://graph.facebook.com/oauth/access_token?client_id=" + Properties.facebookAppId + "&client_secret=" + Properties.facebookAppSecret + "&grant_type=client_credentials";
+        String url = "https://graph.facebook.com/oauth/access_token?client_id=" + LuukProperties.facebookAppId + "&client_secret=" + LuukProperties.facebookAppSecret + "&grant_type=client_credentials";
 
         RestTemplate restTemplate = new RestTemplate();
         String resultAppToken = restTemplate.getForObject(url, String.class);
@@ -93,7 +93,7 @@ public class AuthController extends BaseController{
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
                 // Specify the CLIENT_ID of the app that accesses the backend:
                 .setIssuer("https://accounts.google.com")
-                .setAudience(Collections.singletonList(Properties.googleClientId))
+                .setAudience(Collections.singletonList(LuukProperties.googleClientId))
                 .build();
         SignInResponse response = new SignInResponse();
         String token = idTokenString.get("idToken").get(0);
@@ -189,8 +189,8 @@ public class AuthController extends BaseController{
         response.setEmail(user.getEmail());
         if (isStaff(user)) {
             response.setStaff(true);
-            response.setS3AccessKeyId(Properties.amazonS3AccessKeyId);
-            response.setS3SecretKeyId(Properties.amazonS3SecretKeyId);
+            response.setS3AccessKeyId(LuukProperties.amazonS3AccessKeyId);
+            response.setS3SecretKeyId(LuukProperties.amazonS3SecretKeyId);
         }
 
         List<TagProperty> tagProperties = tagPropertyRepository.findAll();
