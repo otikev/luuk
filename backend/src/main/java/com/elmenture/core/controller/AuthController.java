@@ -154,21 +154,21 @@ public class AuthController extends BaseController{
         ClothingSizeDto clothingSizeDto = new ClothingSizeDto();
         if(user.getClothingSize() != null){
             String _int = user.getClothingSize().getInternational();
-            int us = user.getClothingSize().getUs();
-            int uk = user.getClothingSize().getUk();
-            int eu = user.getClothingSize().getEu();
+            Integer us = user.getClothingSize().getUs();
+            Integer uk = user.getClothingSize().getUk();
+            Integer eu = user.getClothingSize().getEu();
             if(_int != null){
                 clothingSizeDto.setInternational(_int);
             }
 
-            if(us>0){
+            if(us != null){
                 clothingSizeDto.setUs(us);
             }
 
-            if(uk>0){
+            if(uk != null){
                 clothingSizeDto.setUk(uk);
             }
-            if(eu>0){
+            if(eu != null){
                 clothingSizeDto.setEu(eu);
             }
         }

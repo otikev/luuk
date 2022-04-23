@@ -24,6 +24,16 @@ public class FemaleClothingChart extends ChartUtility{
             {"XXL", "22", "26", "54", "126-131", "109-114", "129-134"}
     };
 
+
+    public static Map<String, String> getMidSize(){
+        String[][] chart = DRESS;
+        Map<String, String> sizes = new HashMap<>();
+        int size = chart.length/2;
+        for (int j = 0; j < chart[size].length; j++) {
+            sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[size][j]);
+        }
+        return sizes;
+    }
     public static Map<String, String> getClothingSizesAndBodyMeasurements(MeasurementUnit unit, String value) {
         if (unitIsBodyMeasurement(unit)) {
             return mapBodyMeasurementToSizes(unit, Integer.parseInt(value));

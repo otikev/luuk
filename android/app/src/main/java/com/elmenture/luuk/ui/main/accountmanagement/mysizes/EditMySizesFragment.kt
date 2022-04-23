@@ -11,10 +11,11 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentMySizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import models.ActualMeasurements
 import models.BodyMeasurements
 import models.ClothingSizes
-import models.ActualMeasurements
 import models.enums.InternationalSizes
+import userdata.User
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -54,9 +55,9 @@ class EditMySizesFragment : BaseFragment() {
     private fun updateFields(actualMeasurements: ActualMeasurements?) {
         actualMeasurements.let { userMeasurements ->
             userMeasurements?.bodyMeasurements?.let {
-                binding.etChest.setText(it.chest.toString())
-                binding.etWaist.setText(it.waist.toString())
-                binding.etHips.setText(it.hips.toString())
+                binding.etChest.setText(it.chest?.toString())
+                binding.etWaist.setText(it.waist?.toString())
+                binding.etHips.setText(it.hips?.toString())
             }
             userMeasurements?.clothingSizes?.let { clothingSize ->
                 binding.rbSize.isChecked = true
@@ -68,20 +69,19 @@ class EditMySizesFragment : BaseFragment() {
                 }
                 clothingSize.us?.let {
                     if (it > 0) {
-                        binding.etEnterSize.setText(clothingSize.us.toString())
+                        updateSizeText(it)
                         binding.rbUs.isChecked = true
                     }
                 }
                 clothingSize.uk?.let {
-
                     if (it > 0) {
-                        binding.etEnterSize.setText(it.toString())
+                        updateSizeText(it)
                         binding.rbUk.isChecked = true
                     }
                 }
                 clothingSize.eu?.let {
                     if (it > 0) {
-                        binding.etEnterSize.setText(it.toString())
+                        updateSizeText(it)
                         binding.rbEu.isChecked = true
                     }
                 }
@@ -89,13 +89,21 @@ class EditMySizesFragment : BaseFragment() {
         }
     }
 
+    private fun updateSizeText(number: Int?) {
+        if (number == null) {
+            binding.etEnterSize.setText("")
+        } else {
+            binding.etEnterSize.setText(number.toString())
+        }
+    }
+
     private fun observeLivedata() {
         mySizesViewModel.updateUserMeasurementsApiState.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isSuccessful) {
-                    activityView.showMessage("Item Created Successfully")
+                    activityView.showMessage("Updated successfully")
                 } else {
-                    activityView.showMessage("Failed To Create Item", false)
+                    activityView.showMessage("Failed to update", false)
                 }
             }
         }
@@ -125,11 +133,21 @@ class EditMySizesFragment : BaseFragment() {
                 R.id.rb_int -> {
                     binding.llInternationalContainer.visibility = View.VISIBLE
                     binding.tiEnterSize.visibility = View.GONE
-
                 }
-                else -> {
+                R.id.rb_us -> {
                     binding.llInternationalContainer.visibility = View.GONE
                     binding.tiEnterSize.visibility = View.VISIBLE
+                    updateSizeText(User.getCurrent().userDetails.actualMeasurements?.clothingSizes?.us)
+                }
+                R.id.rb_uk -> {
+                    binding.llInternationalContainer.visibility = View.GONE
+                    binding.tiEnterSize.visibility = View.VISIBLE
+                    updateSizeText(User.getCurrent().userDetails.actualMeasurements?.clothingSizes?.uk)
+                }
+                R.id.rb_eu -> {
+                    binding.llInternationalContainer.visibility = View.GONE
+                    binding.tiEnterSize.visibility = View.VISIBLE
+                    updateSizeText(User.getCurrent().userDetails.actualMeasurements?.clothingSizes?.eu)
                 }
             }
         }
@@ -161,23 +179,38 @@ class EditMySizesFragment : BaseFragment() {
         }
         when (binding.rgSizes.checkedRadioButtonId) {
             R.id.rb_us -> {
+                val us = binding.etEnterSize.text.toString()
+                var usInt : Int? = null
+                if(us.isNotEmpty()){
+                    usInt = us.toInt()
+                }
                 return ActualMeasurements(
                     clothingSizes = ClothingSizes(
-                        us = binding.etEnterSize.text.toString().toInt()
+                        us = usInt
                     )
                 )
             }
             R.id.rb_uk -> {
+                val uk = binding.etEnterSize.text.toString()
+                var ukInt : Int? = null
+                if(uk.isNotEmpty()){
+                    ukInt = uk.toInt()
+                }
                 return ActualMeasurements(
                     clothingSizes = ClothingSizes(
-                        uk = binding.etEnterSize.text.toString().toInt()
+                        uk = ukInt
                     )
                 )
             }
             R.id.rb_eu -> {
+                val eu = binding.etEnterSize.text.toString()
+                var euInt : Int? = null
+                if(eu.isNotEmpty()){
+                    euInt = eu.toInt()
+                }
                 return ActualMeasurements(
                     clothingSizes = ClothingSizes(
-                        eu = binding.etEnterSize.text.toString().toInt()
+                        eu = euInt
                     )
                 )
             }

@@ -14,10 +14,10 @@ class NetUtils {
         const val NETWORK_ERROR_CODE: Int = -1
         const val UNAUTHORIZED_ERROR_CODE: Int = 401
         const val NETWORK_CONNECTION_OFF = "Network Error"
-        const val SYSTEM_ERROR  = "System Error"
+        const val SYSTEM_ERROR = "System Error"
 
         const val MOCK_SERVER_URL = "https://c93d2298-b08b-4518-9400-a74ede1a39c7.mock.pstmn.io"
-        const val LOCAL_TEST_URL = "http://192.168.1.192:8080/"
+        const val LOCAL_TEST_URL = "http://192.168.0.109:8080/"
         const val BASE_URL = "https://luukatme.herokuapp.com/";
 
         private val TAG = NetUtils::class.java.simpleName
@@ -32,7 +32,8 @@ class NetUtils {
                 var result = false
                 return try {
                     result = false
-                    val manager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    val manager =
+                        context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                     val info = manager.activeNetworkInfo
                     result = if (info != null && info.isAvailable) {
                         info.isConnected

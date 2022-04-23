@@ -21,7 +21,7 @@ public class SizeMapper {
         List<Map<String, String>> possibilities = new ArrayList<>();
 
         BodyMeasurement bodyMeasurement = user.getBodyMeasurement();
-        if(bodyMeasurement != null){
+        if (bodyMeasurement != null) {
             Integer chest = bodyMeasurement.getChest_cm();
             Integer waist = bodyMeasurement.getWaist_cm();
             Integer hips = bodyMeasurement.getHips_cm();
@@ -36,7 +36,7 @@ public class SizeMapper {
                 possibilities.add(values);
             }
 
-            if (hips != null&& hips > 0) {
+            if (hips != null && hips > 0) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(HIPS_CM, String.valueOf(hips));
                 possibilities.add(values);
             }
@@ -44,27 +44,27 @@ public class SizeMapper {
 
 
         ClothingSize clothingSize = user.getClothingSize();
-        if(clothingSize != null){
+        if (clothingSize != null) {
             String international = clothingSize.getInternational();
-            int us = clothingSize.getUs();
-            int uk = clothingSize.getUk();
-            int eu = clothingSize.getEu();
+            Integer us = clothingSize.getUs();
+            Integer uk = clothingSize.getUk();
+            Integer eu = clothingSize.getEu();
             if (international != null) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(INT, international);
                 possibilities.add(values);
             }
 
-            if (us > 0) {
+            if (us != null) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(US, String.valueOf(us));
                 possibilities.add(values);
             }
 
-            if (uk > 0) {
+            if (uk != null) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(UK, String.valueOf(uk));
                 possibilities.add(values);
             }
 
-            if (eu > 0) {
+            if (eu != null) {
                 Map<String, String> values = FemaleClothingChart.getClothingSizesAndBodyMeasurements(EU, String.valueOf(eu));
                 possibilities.add(values);
             }
@@ -72,6 +72,8 @@ public class SizeMapper {
 
         if (possibilities.size() == 1) {
             return possibilities.get(0);
+        }else if(possibilities.size() == 0){
+            return FemaleClothingChart.getMidSize();
         }
 
         //FIND THE LARGEST MAPPING
@@ -80,7 +82,7 @@ public class SizeMapper {
             if (largest == null) {
                 largest = mapping;
             } else {
-                if(largest.size()>0){
+                if (largest.size() > 0) {
                     int _us = Integer.parseInt(largest.get(US.name()));
                     if (Integer.parseInt(mapping.get(US.name())) > _us) {
                         largest = mapping;

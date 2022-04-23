@@ -11,11 +11,11 @@ data class ActualMeasurements(
 
 data class BodyMeasurements(
     @field:SerializedName("chest_cm")
-    var chest: Int = 0,
+    var chest: Int? = null,
     @field:SerializedName("waist_cm")
-    var waist: Int = 0,
+    var waist: Int? = null,
     @field:SerializedName("hips_cm")
-    var hips: Int = 0,
+    var hips: Int? = null,
 )
 
 data class ClothingSizes(

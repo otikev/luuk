@@ -62,40 +62,38 @@ class ViewMySizesFragment : BaseFragment() {
             }
 
 
-            measurements.clothingSizes?.uk?.let {
+            measurements.clothingSizes?.uk.let {
                 size = if (dressSize?.uk == null) "UK : $it" else "UK : ${dressSize.uk}"
-                if (it > 0)
+                if (it != null)
                     binding.tvSizeUk.setBackgroundResource(R.drawable.rectangle_circled_outlined)
                 binding.tvSizeUk.text = size
             }
 
-            measurements.clothingSizes?.us?.let {
+            measurements.clothingSizes?.us.let {
                 size = if (dressSize?.eu == null) "US : $it" else "US : ${dressSize.us}"
-                if (it > 0)
+                if (it != null)
                     binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled_outlined)
                 binding.tvSizeUs.text = size
             }
 
-            measurements.clothingSizes?.eu?.let {
+            measurements.clothingSizes?.eu.let {
                 size = if (dressSize?.eu == null) "EU : $it" else "EU : ${dressSize.eu}"
-                if (it > 0)
+                if (it != null)
                     binding.tvSizeEu.setBackgroundResource(R.drawable.rectangle_circled_outlined)
                 binding.tvSizeEu.text = size
             }
         }
 
         measurements?.bodyMeasurements?.let {
-            val chest = if (it.chest <= 0) dressSize?.chest else it.chest
+            val chest = if (it.chest == null) dressSize?.chest else it.chest
+            val waist = if (it.waist == null) dressSize?.waist else it.waist
+            val hips = if (it.hips == null) dressSize?.hips else it.hips
 
-            val waist = if (it.waist <= 0) dressSize?.waist else it.waist
-
-            val hips = if (it.waist <= 0) dressSize?.hips else it.hips
-
-            if (it.chest > 0)
+            if (it.chest != null)
                 binding.tvChest.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.waist > 0)
+            if (it.waist != null)
                 binding.tvWaist.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.hips > 0)
+            if (it.hips != null)
                 binding.tvHips.setBackgroundResource(R.drawable.rectangle_circled_outlined)
 
             binding.tvChest.text = "Chest : ${chest} CM"
