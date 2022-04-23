@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by otikev on 13-Apr-2022
  */
 //https://www.omnicalculator.com/everyday-life/dress-size
-public class FemaleClothingChart extends ChartUtility{
+public class FemaleClothingChart extends ChartUtility {
     static String[][] DRESS = {
             //"Int","US","UK","EU","BUST(CM)","WAIST(CM)","HIPS(CM)"
             {"XS", "0", "4", "32", "74-77", "58-61", "80-84"},
@@ -25,15 +25,16 @@ public class FemaleClothingChart extends ChartUtility{
     };
 
 
-    public static Map<String, String> getMidSize(){
+    public static Map<String, String> getMidSize() {
         String[][] chart = DRESS;
         Map<String, String> sizes = new HashMap<>();
-        int size = chart.length/2;
+        int size = chart.length / 2;
         for (int j = 0; j < chart[size].length; j++) {
             sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[size][j]);
         }
         return sizes;
     }
+
     public static Map<String, String> getClothingSizesAndBodyMeasurements(MeasurementUnit unit, String value) {
         if (unitIsBodyMeasurement(unit)) {
             return mapBodyMeasurementToSizes(unit, Integer.parseInt(value));
@@ -44,19 +45,8 @@ public class FemaleClothingChart extends ChartUtility{
 
     private static Map<String, String> mapSizes(MeasurementUnit unit, String value) {
         String[][] chart = DRESS;
-        Map<String, String> sizes = new HashMap<>();
-
-        if(isTooLarge(value,unit,chart)){
-            for (int j = 0; j < chart[chart.length-1].length; j++) {
-                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[chart.length-1][j]);
-            }
-            return sizes;
-        }
-
-        if(isTooSmall(value,unit,chart)){
-            for (int j = 0; j < chart[0].length; j++) {
-                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[0][j]);
-            }
+        Map<String, String> sizes = mapOutOfRangeValues(value, unit, chart);
+        if (sizes.size() > 0) {
             return sizes;
         }
 
@@ -73,19 +63,8 @@ public class FemaleClothingChart extends ChartUtility{
 
     private static Map<String, String> mapBodyMeasurementToSizes(MeasurementUnit unit, int cm) {
         String[][] chart = DRESS;
-        Map<String, String> sizes = new HashMap<>();
-
-        if(isTooLarge(String.valueOf(cm),unit,chart)){
-            for (int j = 0; j < chart[chart.length-1].length; j++) {
-                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[chart.length-1][j]);
-            }
-            return sizes;
-        }
-
-        if(isTooSmall(String.valueOf(cm),unit,chart)){
-            for (int j = 0; j < chart[0].length; j++) {
-                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[0][j]);
-            }
+        Map<String, String> sizes = mapOutOfRangeValues(String.valueOf(cm), unit, chart);
+        if (sizes.size() > 0) {
             return sizes;
         }
 
