@@ -127,9 +127,8 @@
 
                 <TextView
                     android:id="@+id/tv_hips"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Pin Stripe"
                     android:paddingHorizontal="12dp"
                     android:textColor="@color/black"
@@ -137,8 +136,10 @@
 
                 <TextView
                     android:id="@+id/tv_edit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
                     android:text="Edit Measurements"
                     android:textColor="@color/com_facebook_blue"
                     android:textSize="18sp" />
