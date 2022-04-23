@@ -1,5 +1,6 @@
 package com.elmenture.luuk.ui.main.accountmanagement.mysizes
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class ViewMySizesFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateFields(measurements: ActualMeasurements?) {
         var size = ""
         val dressSize = User.getCurrent().userDetails.femaleSize?.dress
@@ -53,52 +55,80 @@ class ViewMySizesFragment : BaseFragment() {
         measurements?.let {
 
             measurements.clothingSizes?.international.let {
-                size =
-                    if (dressSize?.international == null) "Int : $it" else "Int : ${dressSize.international}"
-                binding.tvSizeInt.text = size
-                if (it != null && it.isNotEmpty())
+                var size = ""
+                if (it != null) {
+                    size = "Int : $it"
                     binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-
+                } else {
+                    size = "Int : ${dressSize?.international}"
+                }
+                binding.tvSizeInt.text = size
             }
 
 
             measurements.clothingSizes?.uk.let {
-                size = if (dressSize?.uk == null) "UK : $it" else "UK : ${dressSize.uk}"
-                if (it != null)
+                var size = ""
+                if (it != null) {
+                    size = "UK : $it"
                     binding.tvSizeUk.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+                } else {
+                    size = "UK : ${dressSize?.uk}"
+                }
                 binding.tvSizeUk.text = size
             }
 
             measurements.clothingSizes?.us.let {
-                size = if (dressSize?.eu == null) "US : $it" else "US : ${dressSize.us}"
-                if (it != null)
+                var size = ""
+                if (it != null) {
+                    size = "US : $it"
                     binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+                } else {
+                    size = "US : ${dressSize?.us}"
+                }
                 binding.tvSizeUs.text = size
             }
 
             measurements.clothingSizes?.eu.let {
-                size = if (dressSize?.eu == null) "EU : $it" else "EU : ${dressSize.eu}"
-                if (it != null)
+                var size = ""
+                if (it != null) {
+                    size = "EU : $it"
                     binding.tvSizeEu.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+                } else {
+                    size = "EU : ${dressSize?.eu}"
+                }
                 binding.tvSizeEu.text = size
             }
         }
 
         measurements?.bodyMeasurements?.let {
-            val chest = if (it.chest == null) dressSize?.chest else it.chest
-            val waist = if (it.waist == null) dressSize?.waist else it.waist
-            val hips = if (it.hips == null) dressSize?.hips else it.hips
+            var chest: String?
+            var waist: String?
+            var hips: String?
 
-            if (it.chest != null)
+            if (it.chest == null) {
+                chest = dressSize?.chest
+            } else {
+                chest = it.chest.toString()
                 binding.tvChest.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.waist != null)
-                binding.tvWaist.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-            if (it.hips != null)
-                binding.tvHips.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            }
 
-            binding.tvChest.text = "Chest : ${chest} CM"
-            binding.tvWaist.text = "Waist : ${waist} CM"
-            binding.tvHips.text = "Hips : ${hips}  CM"
+            if (it.waist == null) {
+                waist = dressSize?.waist
+            } else {
+                waist = it.waist.toString()
+                binding.tvWaist.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            }
+
+            if (it.hips == null) {
+                hips = dressSize?.hips
+            } else {
+                hips = it.hips.toString()
+                binding.tvHips.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            }
+
+            binding.tvChest.text = "Chest : $chest CM"
+            binding.tvWaist.text = "Waist : $waist CM"
+            binding.tvHips.text = "Hips : $hips  CM"
         }
     }
 

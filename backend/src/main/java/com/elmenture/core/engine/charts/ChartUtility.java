@@ -1,5 +1,7 @@
 package com.elmenture.core.engine.charts;
 
+import static com.elmenture.core.engine.charts.MeasurementUnit.*;
+
 /**
  * Created by otikev on 22-Apr-2022
  */
@@ -7,27 +9,49 @@ package com.elmenture.core.engine.charts;
 public abstract class ChartUtility {
 
     protected static boolean unitIsBodyMeasurement(MeasurementUnit unit) {
-        if (unit == MeasurementUnit.BUST_CM || unit == MeasurementUnit.WAIST_CM || unit == MeasurementUnit.HIPS_CM) {
+        if (unit == BUST_CM || unit == WAIST_CM || unit == HIPS_CM) {
             return true;
         } else {
             return false;
         }
     }
 
-    protected static boolean isTooSmall(int value, MeasurementUnit unit, String[][] chart) {
-        String maxRange = chart[0][unit.val];
-        String[] split = maxRange.split("-");
-        if (value < Integer.parseInt(split[0])) {
-            return true;
+    protected static boolean isTooSmall(String value, MeasurementUnit unit, String[][] chart) {
+        if(unit == INT){
+            return false;
+        }
+
+        if(unitIsBodyMeasurement(unit)){
+            String minRange = chart[0][unit.val];
+            String[] split = minRange.split("-");
+            if (Integer.parseInt(value) < Integer.parseInt(split[0])) {
+                return true;
+            }
+        }else{
+            String min = chart[0][unit.val];
+            if (Integer.parseInt(value) < Integer.parseInt(min)) {
+                return true;
+            }
         }
         return false;
     }
 
-    protected static boolean isTooLarge(int value, MeasurementUnit unit, String[][] chart) {
-        String maxRange = chart[chart.length - 1][unit.val];
-        String[] split = maxRange.split("-");
-        if (value > Integer.parseInt(split[1])) {
-            return true;
+    protected static boolean isTooLarge(String value, MeasurementUnit unit, String[][] chart) {
+        if(unit == INT){
+            return false;
+        }
+
+        if(unitIsBodyMeasurement(unit)){
+            String maxRange = chart[chart.length - 1][unit.val];
+            String[] split = maxRange.split("-");
+            if (Integer.parseInt(value) > Integer.parseInt(split[1])) {
+                return true;
+            }
+        }else{
+            String max = chart[chart.length - 1][unit.val];
+            if (Integer.parseInt(value) > Integer.parseInt(max)) {
+                return true;
+            }
         }
         return false;
     }

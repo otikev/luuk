@@ -45,6 +45,21 @@ public class FemaleClothingChart extends ChartUtility{
     private static Map<String, String> mapSizes(MeasurementUnit unit, String value) {
         String[][] chart = DRESS;
         Map<String, String> sizes = new HashMap<>();
+
+        if(isTooLarge(value,unit,chart)){
+            for (int j = 0; j < chart[chart.length-1].length; j++) {
+                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[chart.length-1][j]);
+            }
+            return sizes;
+        }
+
+        if(isTooSmall(value,unit,chart)){
+            for (int j = 0; j < chart[0].length; j++) {
+                sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[0][j]);
+            }
+            return sizes;
+        }
+
         for (int i = chart.length - 1; i >= 0; i--) {
             if (chart[i][unit.val].equalsIgnoreCase(value)) {
                 for (int j = 0; j < chart[i].length; j++) {
@@ -60,14 +75,14 @@ public class FemaleClothingChart extends ChartUtility{
         String[][] chart = DRESS;
         Map<String, String> sizes = new HashMap<>();
 
-        if(isTooLarge(cm,unit,chart)){
+        if(isTooLarge(String.valueOf(cm),unit,chart)){
             for (int j = 0; j < chart[chart.length-1].length; j++) {
                 sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[chart.length-1][j]);
             }
             return sizes;
         }
 
-        if(isTooSmall(cm,unit,chart)){
+        if(isTooSmall(String.valueOf(cm),unit,chart)){
             for (int j = 0; j < chart[0].length; j++) {
                 sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[0][j]);
             }
