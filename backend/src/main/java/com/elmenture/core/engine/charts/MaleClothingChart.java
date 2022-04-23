@@ -22,19 +22,4 @@ public class MaleClothingChart {
             { "XXL","50","50","60","","",""},
             { "XXL","52","52","62","","",""}
     };
-
-    public static Map<String,String> getClothingSizes(MeasurementUnit unit, String value){
-        String[][] chart = MALE;
-        Map<String,String> sizes = new HashMap<>();
-        for(int i = chart.length-1; i>=0; i--){
-           if(chart[i][unit.val].equalsIgnoreCase(value)){
-               for(int j = 0; j< chart[i].length; j++){
-                    sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[i][j]);
-               }
-               break;
-           }
-        }
-        return sizes;
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.model.Item;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemRepository;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,10 +38,10 @@ public class ItemController extends BaseController {
 
     @PostMapping("/update")
     public ResponseEntity<ItemDto> updateItem(@Valid @RequestBody ItemDto itemDto) {
-        ItemDto item =  itemService.updateItem(itemDto);
-        if(item==null){
+        ItemDto item = itemService.updateItem(itemDto);
+        if (item == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
+        } else {
             return new ResponseEntity<>(item, HttpStatus.OK);
         }
 

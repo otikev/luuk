@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ClothingSizeDto {
     private String international;
-    private int us;
-    private int uk;
-    private int eu;
+    private Integer us;
+    private Integer uk;
+    private Integer eu;
 }

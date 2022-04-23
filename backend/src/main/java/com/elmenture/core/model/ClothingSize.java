@@ -25,13 +25,13 @@ public class ClothingSize extends BaseEntity {
     private String international;
 
     @Column(name = "us")
-    private int us;
+    private Integer us;
 
     @Column(name = "uk")
-    private int uk;
+    private Integer uk;
 
     @Column(name = "eu")
-    private int eu;
+    private Integer eu;
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

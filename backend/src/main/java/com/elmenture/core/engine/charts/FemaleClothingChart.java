@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by otikev on 13-Apr-2022
  */
 //https://www.omnicalculator.com/everyday-life/dress-size
-public class FemaleClothingChart {
+public class FemaleClothingChart extends ChartUtility{
     static String[][] DRESS = {
             //"Int","US","UK","EU","BUST(CM)","WAIST(CM)","HIPS(CM)"
             {"XS", "0", "4", "32", "74-77", "58-61", "80-84"},
@@ -74,39 +74,5 @@ public class FemaleClothingChart {
         }
 
         return sizes;
-    }
-
-    private static boolean unitIsBodyMeasurement(MeasurementUnit unit) {
-        if (unit == MeasurementUnit.BUST_CM || unit == MeasurementUnit.WAIST_CM || unit == MeasurementUnit.HIPS_CM) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private static boolean isTooSmall(int value, MeasurementUnit unit, String[][] chart) {
-        String maxRange = chart[0][unit.val];
-        String[] split = maxRange.split("-");
-        if (value < Integer.parseInt(split[0])) {
-            return true;
-        }
-        return false;
-    }
-
-    private static boolean isTooLarge(int value, MeasurementUnit unit, String[][] chart) {
-        String maxRange = chart[chart.length-1][unit.val];
-        String[] split = maxRange.split("-");
-        if (value > Integer.parseInt(split[1])) {
-            return true;
-        }
-        return false;
-    }
-
-    private static boolean valueIsWithinRange(int value, String range) {
-        String[] split = range.split("-");
-        if (value >= Integer.parseInt(split[0]) && value <= Integer.parseInt(split[1])) {
-            return true;
-        }
-        return false;
     }
 }
