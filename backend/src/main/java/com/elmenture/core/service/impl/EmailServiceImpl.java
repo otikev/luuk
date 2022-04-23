@@ -19,15 +19,12 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    //set to true in debug environment if you don't want to send emails
-    final boolean DISABLE_EMAILS = false;
-
     @Override
     public void sendAppStartedEmail() {
-        if(DISABLE_EMAILS){
+        System.out.println("Sending app started email...");
+        if(!LuukProperties.enableEmails){
             return;
         }
-        System.out.println("Sending app started email...");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(LuukProperties.smtpUsername);
         message.setTo(SITE_ADMINS[0]);

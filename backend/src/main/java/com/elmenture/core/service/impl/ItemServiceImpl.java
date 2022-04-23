@@ -2,7 +2,6 @@ package com.elmenture.core.service.impl;
 
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.ItemProperty;
-import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemPropertyRepository;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
             itemProperty.setItemId(newItem.getId());
             itemProperty.setTagPropertyId(id);
             ItemProperty created = itemPropertyRepository.save(itemProperty);
-            System.out.println("Created item property id "+created.getId());
+            System.out.println("Created item property id " + created.getId());
         }
 
         // convert entity to DTO
@@ -64,10 +62,10 @@ public class ItemServiceImpl implements ItemService {
             Item post = mapToEntity(postDto);
             Item newItem = itemRepository.save(post);
 
-            List<ItemProperty> deletedProperties = itemPropertyRepository.findByItemIdAndIdNotIn(item.getId(),postDto.getTagProperties());
-            for(ItemProperty property : deletedProperties){
+            List<ItemProperty> deletedProperties = itemPropertyRepository.findByItemIdAndIdNotIn(item.getId(), postDto.getTagProperties());
+            for (ItemProperty property : deletedProperties) {
                 itemPropertyRepository.delete(property);
-                System.out.println("Deleted item property id "+property.getId());
+                System.out.println("Deleted item property id " + property.getId());
             }
 
             for (Long id : postDto.getTagProperties()) {
@@ -75,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
                 itemProperty.setItemId(newItem.getId());
                 itemProperty.setTagPropertyId(id);
                 ItemProperty created = itemPropertyRepository.save(itemProperty);
-                System.out.println("Created item property id "+created.getId());
+                System.out.println("Created item property id " + created.getId());
             }
 
             ItemDto postResponse = mapToDTO(newItem);
@@ -129,7 +127,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> getAllItems() {
         List<Item> items = itemRepository.findAll();
         List<ItemDto> itemDtos = new ArrayList<>();
-        for(Item item : items){
+        for (Item item : items) {
             itemDtos.add(mapToDTO(item));
         }
         return itemDtos;
@@ -144,7 +142,7 @@ public class ItemServiceImpl implements ItemService {
         itemDto.setPrice(item.getPrice());
         itemDto.setTarget(item.getTarget());
         itemDto.setSizeType(item.getSizeType());
-        if (item.getImageUrl() == null || item.getImageUrl().isEmpty()) {
+        if (item.getImageUrl() == null || item.getImageUrl().isEmpty() || item.getImageUrl().equals("https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg")) {
             itemDto.setImageUrl("https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png");//Default image
         } else {
             itemDto.setImageUrl(item.getImageUrl());
@@ -152,7 +150,7 @@ public class ItemServiceImpl implements ItemService {
 
         List<ItemProperty> properties = itemPropertyRepository.findByItemId(item.getId());
         List<Long> ids = new ArrayList<>();
-        for(ItemProperty property : properties){
+        for (ItemProperty property : properties) {
             ids.add(property.getTagPropertyId());
         }
         itemDto.setTagProperties(ids);
