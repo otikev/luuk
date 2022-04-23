@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -55,8 +54,9 @@ public class Item extends BaseEntity {
     //@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private List<ItemProperty> itemProperties;
 
-    public Item(String description, String sizeInternational, Long sizeNumber, long price, String imageUrl) {
+    public Item(String description, String sizeInternational, String sizeType, Long sizeNumber, long price, String imageUrl) {
         this.description = description;
+        this.sizeType = sizeType;
         this.sizeInternational = sizeInternational;
         this.sizeNumber = sizeNumber;
         this.price = price;

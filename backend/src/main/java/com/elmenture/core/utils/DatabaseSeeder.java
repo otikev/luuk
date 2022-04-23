@@ -170,7 +170,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         if (itemRepository.count() == 0) {
             Random rn = new Random();
-            String placeholderImageUrl = "https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg";
+            String placeholderImageUrl = "https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png";
             //Generate 50 dummy items
             for (int i = 1; i <= 50; i++) {
                 int size_max = CLOTHING_SIZES.length - 1;
@@ -179,7 +179,8 @@ public class DatabaseSeeder implements CommandLineRunner {
                 int price_max = 600000;
                 int price_min = 20000;
                 long price = rn.nextInt(price_max - price_min + 1) + price_min;
-                Item item = new Item("Clothing " + i, clothingSize, null, price, placeholderImageUrl);
+                Item item = new Item("Clothing " + i, clothingSize, "US", 18L, price, placeholderImageUrl);
+                item.setTarget("f");
                 itemRepository.save(item);
 
                 //Generate 5 dummy tags
@@ -196,33 +197,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         }
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
-
-        List<Item>  all = itemRepository.findAll();
-
-        for(Item item : all){
-            boolean edited = false;
-            if(item.getTarget() == null){
-                item.setTarget("f");
-                edited=true;
-            }
-
-            if(item.getSizeInternational() != null){
-                item.setSizeType("INT");
-                item.setSizeNumber(null);
-                edited=true;
-            }
-
-            if(item.getSizeNumber() != null){
-                item.setSizeType("US");
-                item.setSizeInternational(null);
-                edited=true;
-            }
-
-            if(edited){
-                Item it = itemRepository.save(item);
-                System.out.println("Saved item = "+it);
-            }
-        }
 
         emailService.sendAppStartedEmail();
     }
