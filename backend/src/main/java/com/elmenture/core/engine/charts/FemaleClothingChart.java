@@ -3,6 +3,8 @@ package com.elmenture.core.engine.charts;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.elmenture.core.engine.charts.MeasurementUnit.*;
+
 /**
  * Created by otikev on 13-Apr-2022
  */
@@ -58,6 +60,18 @@ public class FemaleClothingChart extends ChartUtility {
                 break;
             }
         }
+
+        if (unit == US || unit == UK || unit == EU) {
+            for (int i = chart.length - 1; i >= 0; i--) {
+                if (chart[i][unit.val].equalsIgnoreCase(String.valueOf(Integer.parseInt(value) + 1))) {
+                    for (int j = 0; j < chart[i].length; j++) {
+                        sizes.put(MeasurementUnit.valueOfLabel(j).toString(), chart[i][j]);
+                    }
+                    break;
+                }
+            }
+        }
+
         return sizes;
     }
 
