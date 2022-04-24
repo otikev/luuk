@@ -118,9 +118,11 @@ class ProfileSettingsFragment : BaseFragment() {
             binding.etContactPhone.setText(details.contactPhoneNumber)
             binding.tvProfileInitials.text = MiscUtils.getUserNameInitials(details.name)
 
-            binding.rbMale.isChecked = details.clothingRecommendations!!.contains(Tags.m.name)
-            binding.rbFemale.isChecked = details.clothingRecommendations!!.contains(Tags.f.name)
-            binding.rbKids.isChecked = details.clothingRecommendations!!.contains(Tags.c.name)
+            details.clothingRecommendations?.let {
+                binding.rbMale.isChecked = it.contains(Tags.m.name)
+                binding.rbFemale.isChecked = it.contains(Tags.f.name)
+                binding.rbKids.isChecked = it.contains(Tags.c.name)
+            }
         }
 
         setDataChangeListeners()
