@@ -9,12 +9,13 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
-import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.CreateNewItemFragment
+import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.cart.ViewCartFragment
+import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.google.android.material.navigation.NavigationBarView
@@ -97,6 +98,10 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun startViewCartFragment() {
         addFragment(ViewCartFragment.newInstance(), ViewCartFragment::class.java.canonicalName)
+    }
+
+    override fun startViewCheckoutFragment() {
+        addFragment(CheckoutFragment.newInstance(), CheckoutFragment::class.java.canonicalName)
     }
 
     override fun startInventoryManagementFragment() {

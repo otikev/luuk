@@ -52,52 +52,50 @@ class ViewMySizesFragment : BaseFragment() {
         var size = ""
         val dressSize = User.getCurrent().userDetails.femaleSize?.dress
 
-        measurements?.let {
 
-            measurements.clothingSizes?.international.let {
-                var size = ""
-                if (it != null) {
-                    size = "Int : $it"
-                    binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-                } else {
-                    size = "Int : ${dressSize?.international}"
-                }
-                binding.tvSizeInt.text = size
+        measurements?.clothingSizes?.international.let {
+            var size = ""
+            if (it != null) {
+                size = "Int : $it"
+                binding.tvSizeInt.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            } else {
+                size = "Int : ${dressSize?.international}"
             }
+            binding.tvSizeInt.text = size
+        }
 
 
-            measurements.clothingSizes?.uk.let {
-                var size = ""
-                if (it != null) {
-                    size = "UK : $it"
-                    binding.tvSizeUk.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-                } else {
-                    size = "UK : ${dressSize?.uk}"
-                }
-                binding.tvSizeUk.text = size
+        measurements?.clothingSizes?.uk.let {
+            var size = ""
+            if (it != null && it > 0) {
+                size = "UK : $it"
+                binding.tvSizeUk.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            } else {
+                size = "UK : ${dressSize?.uk}"
             }
+            binding.tvSizeUk.text = size
+        }
 
-            measurements.clothingSizes?.us.let {
-                var size = ""
-                if (it != null) {
-                    size = "US : $it"
-                    binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-                } else {
-                    size = "US : ${dressSize?.us}"
-                }
-                binding.tvSizeUs.text = size
+        measurements?.clothingSizes?.us.let {
+            var size = ""
+            if (it != null && it > 0) {
+                size = "US : $it"
+                binding.tvSizeUs.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            } else {
+                size = "US : ${dressSize?.us}"
             }
+            binding.tvSizeUs.text = size
+        }
 
-            measurements.clothingSizes?.eu.let {
-                var size = ""
-                if (it != null) {
-                    size = "EU : $it"
-                    binding.tvSizeEu.setBackgroundResource(R.drawable.rectangle_circled_outlined)
-                } else {
-                    size = "EU : ${dressSize?.eu}"
-                }
-                binding.tvSizeEu.text = size
+        measurements?.clothingSizes?.eu.let {
+            var size = ""
+            if (it != null && it > 0) {
+                size = "EU : $it"
+                binding.tvSizeEu.setBackgroundResource(R.drawable.rectangle_circled_outlined)
+            } else {
+                size = "EU : ${dressSize?.eu}"
             }
+            binding.tvSizeEu.text = size
         }
 
         measurements?.bodyMeasurements?.let {

@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.cart
+package com.elmenture.luuk.ui.main.cart.checkout
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,31 +9,31 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.repositories.LocalRepository
+import com.elmenture.luuk.databinding.FragmentCheckoutBinding
 import com.elmenture.luuk.databinding.FragmentViewCartBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.elmenture.luuk.ui.main.cart.CartViewModel
 import models.Spot
 import utils.MiscUtils
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ViewCartFragment : BaseFragment(), CartAdapter.CartActionListener {
-    lateinit var binding: FragmentViewCartBinding
+class CheckoutFragment : BaseFragment(){
+    lateinit var binding: FragmentCheckoutBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
-    private var cartList: ArrayList<Spot> = ArrayList()
-    lateinit var cartAdapter: CartAdapter
     private lateinit var viewModel: CartViewModel
 
-
     companion object {
-        fun newInstance() = ViewCartFragment()
+        fun newInstance() = CheckoutFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentViewCartBinding.inflate(inflater, container, false)
+        binding = FragmentCheckoutBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,22 +48,19 @@ class ViewCartFragment : BaseFragment(), CartAdapter.CartActionListener {
     private fun observeLiveData() {
         viewModel.cartItemsLiveData.observe(viewLifecycleOwner) { swipeRecords ->
             swipeRecords?.let {
-                cartList.clear()
-                cartList.addAll(it)
-                cartAdapter.notifyDataSetChanged()
-
-                binding.btnCheckout.text = "Checkout ${it.size} Items"
-
-                if(it.isNotEmpty()){
-                    binding.llSubtotal.visibility = View.VISIBLE
-                    binding.tvSubtotal.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(it))}"
-                }else{
-                    binding.llSubtotal.visibility = View.GONE
-                    binding.btnCheckout.isEnabled = it.isNotEmpty()
-                }
+                updateView(it)
             }
         }
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateView(set: MutableSet<Spot>) {
+        val userData = LocalRepository.userDetailsLiveData.value
+        binding.tvLocation.text = userData?.physicalAddress
+        binding.tvAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
+        binding.tvItemCount.text = set.size.toString()
+        binding.tvPhoneNumber.text = userData?.contactPhoneNumber
     }
 
     private fun calculateSubTotal(cart: MutableSet<Spot>): Double {
@@ -76,25 +73,12 @@ class ViewCartFragment : BaseFragment(), CartAdapter.CartActionListener {
 
     private fun initView() {
         viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        cartAdapter = CartAdapter(cartList,this)
-        binding.rvCart.layoutManager = LinearLayoutManager(context)
-        binding.rvCart.adapter = cartAdapter
     }
 
     private fun setUpEventListeners() {
-        binding.btnCheckout.setOnClickListener{ activityView.startViewCheckoutFragment()}
-    }
+        binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
+        binding.tvChangeOrder.setOnClickListener{ requireActivity().onBackPressed()}
 
-    override fun onSaveForLaterClicked(spot: Spot) {
-        val cart = viewModel.cartItemsLiveData.value
-        cart?.remove(spot)
-         viewModel.updateCart(cart)
-    }
-
-    override fun onDiscardClicked(spot: Spot) {
-        val cart = viewModel.cartItemsLiveData.value
-        cart?.remove(spot)
-        viewModel.updateCart(cart)
     }
 
 }

@@ -44,6 +44,11 @@ class HelpFragment : BaseFragment() {
 
     private fun initView() {
         binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
-        binding.webView.loadUrl("https://www.w3.org/Provider/Style/dummy.html")
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.settings.loadWithOverviewMode = true
+        binding.webView.settings.useWideViewPort = true
+        binding.webView.settings.domStorageEnabled = true;
+
+        binding.webView.loadUrl("https://luukatme.notion.site/Help-Center-a72368080d754a10844094e65f249bff")
     }
 }

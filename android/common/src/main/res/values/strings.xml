@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="your_order">Your order is on the way to \n<b>Magiwa Estate, HSE 33B</b>.\nDelivery by <b>Moses \n0712345689</b></string>
+    <string name="change"><u>Change</u></string>
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,11 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:toolbar_title="Create New Item" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/dimens_large_size">
+        android:layout_margin="@dimen/dimens_large_size"
+        android:layout_weight="1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,20 +155,31 @@
                 android:id="@+id/tagsMultiAutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rectangle_outlined"
                 android:ems="10"
-                android:hint="Enter tags" />
+                android:hint="Enter tags"
+                android:padding="@dimen/dimens_mid_size" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
 
-            <ImageView
-                android:id="@+id/iv_s3image"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:scaleType="centerCrop"/>
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/iv_s3image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter" />
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_upload"

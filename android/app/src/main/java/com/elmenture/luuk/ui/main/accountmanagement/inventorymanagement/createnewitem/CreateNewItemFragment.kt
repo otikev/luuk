@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement
+package com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem
 
 import android.app.Activity
 import android.content.Intent

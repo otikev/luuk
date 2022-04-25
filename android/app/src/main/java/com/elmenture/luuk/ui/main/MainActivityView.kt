@@ -19,4 +19,5 @@ interface MainActivityView: BaseActivityView {
     fun startViewCartFragment()
     fun startInventoryManagementFragment()
     fun startHelpFragment()
+    fun startViewCheckoutFragment()
 }
