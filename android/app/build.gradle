@@ -71,7 +71,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
     implementation 'com.amazonaws:aws-android-sdk-s3:2.17.1'
-    //kapt 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'com.google.android.libraries.places:places:2.6.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

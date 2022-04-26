@@ -14,6 +14,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="contrast_text"><![CDATA[%s <b>%s</b>]]></string>
+    <string name="api_key">AIzaSyDrg6Ds3fRXopTa8YCH5jxp1-4riWd3oCQ</string>
+
     <string-array name="item_target_array">
         <item>Select target...</item>
         <item>Female</item>

@@ -78,6 +78,7 @@ class CheckoutFragment : BaseFragment(){
     private fun setUpEventListeners() {
         binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
         binding.tvChangeOrder.setOnClickListener{ requireActivity().onBackPressed()}
+        binding.tvChangeLocation.setOnClickListener{ activityView.startProfileSettingsFragment()}
 
     }
 

@@ -1,5 +1,6 @@
 package com.elmenture.luuk.ui.main.accountmanagement.profilesettings
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,9 +10,15 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentProfileSettingsBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import models.SignInResponse
 import models.UpdateUserDetailsRequest
 import models.enums.Tags
@@ -22,6 +29,7 @@ import utils.MiscUtils
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileSettingsFragment : BaseFragment() {
+    private val LOCATIONS_REQUEST_CODE: Int = 10001
     private lateinit var profileSettingsViewModel: ProfileSettingsViewModel
     lateinit var binding: FragmentProfileSettingsBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
@@ -81,6 +89,7 @@ class ProfileSettingsFragment : BaseFragment() {
         }
 
         binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
+        binding.etAddress.setOnClickListener { showPlacesActivity() }
     }
 
 
@@ -113,7 +122,8 @@ class ProfileSettingsFragment : BaseFragment() {
         details?.let {
             binding.etName.setText(details.name)
             binding.etAddress.setText(details.physicalAddress)
-            binding.tiEmail.visibility = if (details.email.isNullOrEmpty()) View.VISIBLE else View.GONE
+            binding.tiEmail.visibility =
+                if (details.email.isNullOrEmpty()) View.VISIBLE else View.GONE
             binding.etEmail.setText(details.email)
             binding.etContactPhone.setText(details.contactPhoneNumber)
             binding.tvProfileInitials.text = MiscUtils.getUserNameInitials(details.name)
@@ -126,6 +136,39 @@ class ProfileSettingsFragment : BaseFragment() {
         }
 
         setDataChangeListeners()
+    }
+
+    fun showPlacesActivity() {
+        val fields: List<Place.Field> = listOf(
+            Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.ADDRESS,
+            Place.Field.LAT_LNG
+        )
+        val intent = Autocomplete.IntentBuilder(
+            AutocompleteActivityMode.FULLSCREEN, fields
+        ).setCountry("KE") //KENYA
+            .build(requireContext())
+        startActivityForResult(intent, LOCATIONS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOCATIONS_REQUEST_CODE) {
+            when {
+                resultCode == AuthenticatedActivity.RESULT_OK -> {
+                    val place = Autocomplete.getPlaceFromIntent(data!!)
+                    val address = place.address
+                    binding.etAddress.setText(place.name)
+                }
+                resultCode == AutocompleteActivity.RESULT_ERROR -> {
+                    val status: Status = Autocomplete.getStatusFromIntent(data)
+                }
+                resultCode == AuthenticatedActivity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+        }
     }
 
     private fun setDataChangeListeners() {

@@ -4,18 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentHelpBinding
-import com.elmenture.luuk.databinding.FragmentMySizesBinding
-import com.elmenture.luuk.ui.main.MainActivityView
-import models.BodyMeasurements
-import models.ClothingSizes
-import models.ActualMeasurements
-import models.enums.InternationalSizes
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
