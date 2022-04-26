@@ -287,7 +287,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
                         sizeInternational = item.sizeInternational,
                         sizeNumber = item.sizeNumber,
                         itemId = item.id!!,
-                        description = item.description!!
+                        description = item.description!!,
+                        tagProperties =  item.tagProperties!!
                     )
                 )
             }
