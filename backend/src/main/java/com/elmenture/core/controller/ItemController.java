@@ -1,9 +1,9 @@
 package com.elmenture.core.controller;
 
+import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
-import com.elmenture.core.repository.ItemRepository;
-import com.elmenture.core.repository.UserRepository;
+import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
 import com.elmenture.core.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,10 @@ import java.util.List;
 public class ItemController extends BaseController {
 
     @Autowired
-    private ItemRepository itemRepository;
-
-    @Autowired
     private ItemService itemService;
 
     @Autowired
-    UserRepository userRepository;
+    private ItemActionService itemActionService;
 
     @PostMapping("/new")
     public ResponseEntity<ItemDto> createItem(@Valid @RequestBody ItemDto itemDto) {
@@ -59,6 +56,18 @@ public class ItemController extends BaseController {
         //First page is 0
         ItemResponse response = itemService.getAllItems(getLoggedInUser().preferredRecommendations(), pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/queue")
+    public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "offsetItemId",required = false) int offsetItemId) {
+        List<ItemDto> queue = itemService.getQueue(offsetItemId,20);
+        return new ResponseEntity<>(queue, HttpStatus.OK);
+    }
+
+    @PostMapping("/actions")
+    public ResponseEntity logUserActions(@Valid @RequestBody ActionDto action) {
+        itemActionService.logActions(getLoggedInUser().getId(), action);
+        return ResponseEntity.ok("OK");
     }
 
     @RequestMapping("/open")

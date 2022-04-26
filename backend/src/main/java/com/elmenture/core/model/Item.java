@@ -51,6 +51,9 @@ public class Item extends BaseEntity {
     @Column(name = "target") //m or f or c
     private String target;
 
+    @Column(name = "sold") //m or f or c
+    private Boolean sold = false;
+
     //@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private List<ItemProperty> itemProperties;
 

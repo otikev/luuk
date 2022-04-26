@@ -133,6 +133,12 @@ public class ItemServiceImpl implements ItemService {
         return itemDtos;
     }
 
+    @Override
+    public List<ItemDto> getQueue(int offsetItemId, int size) {
+        //TODO
+        return null;
+    }
+
     private ItemDto mapToDTO(Item item) {
         ItemDto itemDto = new ItemDto();
         itemDto.setId(item.getId());
