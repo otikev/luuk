@@ -18,7 +18,7 @@ From the root of this project run:
 git subtree push --prefix backend heroku master
 ```
 
-## Accessing Postgres console
+## Accessing local Postgres console
 
 Switch to postgres user
 ```
@@ -37,6 +37,19 @@ postgres=# \connect luuk_dev;
 Exiting psql
 ```
 luuk_dev=# \q
+```
+
+## Accessing Heroku Postgres console
+
+```
+~$ heroku pg:psql
+```
+
+
+Now run your SQL commands
+
+```
+luukatme::DATABASE=> select * from users;
 ```
 
 ### Reference Documentation
