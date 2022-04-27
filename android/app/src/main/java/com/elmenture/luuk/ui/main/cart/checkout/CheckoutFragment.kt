@@ -79,7 +79,7 @@ class CheckoutFragment : BaseFragment(){
         binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
         binding.tvChangeOrder.setOnClickListener{ requireActivity().onBackPressed()}
         binding.tvChangeLocation.setOnClickListener{ activityView.startProfileSettingsFragment()}
-
+        binding.btnPayNow.setOnClickListener { viewModel.validateCartItems() }
     }
 
 }

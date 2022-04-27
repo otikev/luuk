@@ -34,4 +34,8 @@ interface EndPoints {
 
     @POST("items/update")
     fun updateItem(@Body request: Item): Call<ResponseBody>
+
+
+    @POST("order/validate")
+    fun validateCartItems(@Body cartItems: ArrayList<Long>): Call<ResponseBody>
 }

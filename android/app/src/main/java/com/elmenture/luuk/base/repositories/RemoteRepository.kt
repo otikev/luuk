@@ -11,6 +11,7 @@ import network.service.EndPoints
 import retrofit2.Call
 import utils.LogUtils
 import utils.NetUtils
+import java.util.ArrayList
 
 object RemoteRepository {
     val responseErrorCode = MutableLiveData<Int>()
@@ -101,4 +102,8 @@ object RemoteRepository {
         return processRequest(call)
     }
 
+    fun validateCartItems(cartItems: ArrayList<Long>):BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).validateCartItems(cartItems)
+        return processRequest(call)
+    }
 }

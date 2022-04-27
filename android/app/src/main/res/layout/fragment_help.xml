@@ -7,16 +7,9 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <views.CustomToolBar
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:nav_visible="true"
-        app:toolbar_title="Help" />
 
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="24dp"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>

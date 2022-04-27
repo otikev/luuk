@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentHelpBinding
@@ -34,10 +35,10 @@ class HelpFragment : BaseFragment() {
 
 
     private fun initView() {
-        binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.loadWithOverviewMode = true
         binding.webView.settings.useWideViewPort = true
+        binding.webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
         binding.webView.settings.domStorageEnabled = true;
 
         binding.webView.loadUrl("https://luukatme.notion.site/Help-Center-a72368080d754a10844094e65f249bff")
