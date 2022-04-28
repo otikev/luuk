@@ -8,7 +8,10 @@ import com.elmenture.core.utils.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
+
+import static com.elmenture.core.utils.Action.DISLIKE;
+import static com.elmenture.core.utils.Action.LIKE;
 
 /**
  * Created by otikev on 26-Apr-2022
@@ -39,18 +42,18 @@ public class ItemActionServiceImpl implements ItemActionService {
 
     @Override
     public void logActions(Long userId, ActionDto action) {
-        Map<Long, Integer> likes = action.getLikes();
-        Map<Long, Integer> dislikes = action.getDislikes();
-
+        List<Long> likes = action.getLikes();
+        List<Long> dislikes = action.getDislikes();
+        System.out.println("Logging actions for user id " + userId);
         if (likes != null) {
-            for (Map.Entry<Long, Integer> entry : likes.entrySet()) {
-                logAction(userId, entry.getKey(), Action.getAction(entry.getValue()));
+            for (Long itemId : likes) {
+                logAction(userId, itemId, LIKE);
             }
         }
 
         if (dislikes != null) {
-            for (Map.Entry<Long, Integer> entry : dislikes.entrySet()) {
-                logAction(userId, entry.getKey(), Action.getAction(entry.getValue()));
+            for (Long itemId : dislikes) {
+                logAction(userId, itemId, DISLIKE);
             }
         }
     }

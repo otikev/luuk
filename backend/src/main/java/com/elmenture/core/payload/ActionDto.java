@@ -2,7 +2,7 @@ package com.elmenture.core.payload;
 
 import lombok.Data;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by otikev on 26-Apr-2022
@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 public class ActionDto {
 
-    private Map<Long, Integer> likes; //Item,ItemAction
+    private List<Long> likes;
 
-    private Map<Long, Integer> dislikes;//Item,ItemAction
+    private List<Long> dislikes;
 }
