@@ -2,6 +2,7 @@ package com.elmenture.luuk.base.repositories
 
 import androidx.lifecycle.MutableLiveData
 import com.elmenture.luuk.base.BaseApiState
+import models.Action
 import models.Item
 import models.UpdateUserDetailsRequest
 import models.ActualMeasurements
@@ -99,6 +100,11 @@ object RemoteRepository {
 
     fun updateItem(request: Item): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateItem(request)
+        return processRequest(call)
+    }
+
+    fun logUserActions(request: Action): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).logUserActions(request)
         return processRequest(call)
     }
 

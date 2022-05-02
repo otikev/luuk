@@ -35,6 +35,9 @@ interface EndPoints {
     @POST("items/update")
     fun updateItem(@Body request: Item): Call<ResponseBody>
 
+    @POST("items/actions")
+    fun logUserActions(@Body request: Action): Call<ResponseBody>
+
 
     @POST("order/validate")
     fun validateCartItems(@Body cartItems: ArrayList<Long>): Call<StkConfirmationResponse>

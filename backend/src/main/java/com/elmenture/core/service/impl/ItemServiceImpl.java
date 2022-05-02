@@ -105,7 +105,6 @@ public class ItemServiceImpl implements ItemService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        //List<Item> itemsRaw = itemRepository.findByTargetInAndSizeInternationalIs(targets,sizeInternational);
         Page<Item> items = itemRepository.findByTargetInAndSizeInternationalIs(targets, sizeInternational, pageable);
 
         return buildResponse(items);
@@ -117,7 +116,6 @@ public class ItemServiceImpl implements ItemService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        //List<Item> itemsRaw = itemRepository.findByTargetIn(targets);
         Page<Item> items = itemRepository.findByTargetIn(targets, pageable);
 
         return buildResponse(items);

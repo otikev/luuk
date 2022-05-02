@@ -114,7 +114,7 @@ class CreateNewItemFragment : BaseFragment() {
             android.R.layout.simple_dropdown_item_1line, User.getCurrent().tags
         )
 
-        binding.tagsMultiAutoCompleteTextView.setAdapter( adapter)
+        binding.tagsMultiAutoCompleteTextView.setAdapter(adapter)
 
         editableItem?.let {
             setUpEditableView(it)
@@ -141,8 +141,8 @@ class CreateNewItemFragment : BaseFragment() {
 
     private fun setUpEditableView(it: Item) {
 
-        if(!it.tagProperties.isNullOrEmpty()){
-            for(id in it.tagProperties!!){
+        if (!it.tagProperties.isNullOrEmpty()) {
+            for (id in it.tagProperties!!) {
                 addChipToGroup(User.getCurrent().getTagProperty(id))
             }
         }

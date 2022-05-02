@@ -59,13 +59,13 @@ public class ItemController extends BaseController {
     }
 
     @GetMapping("/queue")
-    public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "offsetItemId",required = false) int offsetItemId) {
-        List<ItemDto> queue = itemService.getQueue(offsetItemId,20);
+    public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "offsetItemId", required = false) int offsetItemId) {
+        List<ItemDto> queue = itemService.getQueue(offsetItemId, 20);
         return new ResponseEntity<>(queue, HttpStatus.OK);
     }
 
     @PostMapping("/actions")
-    public ResponseEntity logUserActions(@Valid @RequestBody ActionDto action) {
+    public ResponseEntity<String> logUserActions(@Valid @RequestBody ActionDto action) {
         itemActionService.logActions(getLoggedInUser().getId(), action);
         return ResponseEntity.ok("OK");
     }

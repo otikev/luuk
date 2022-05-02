@@ -74,6 +74,7 @@ public class User extends BaseEntity implements UserDetails {
     private ClothingSize clothingSize;
 
     public List<String> preferredRecommendations() {
+        /*
         List<String> recommendations = new ArrayList<>();
         if (clothingRecommendations == null) {
             recommendations.add("m");
@@ -87,6 +88,11 @@ public class User extends BaseEntity implements UserDetails {
         }
 
         return recommendations;
+*/
+        //TODO: only handling female clothing for now.
+        List<String> targets = new ArrayList<String>();
+        targets.add("f");
+        return targets;
     }
 
     @Override

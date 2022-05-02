@@ -74,7 +74,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
-        Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
+
     }
 
     override fun onCardSwiped(direction: Direction) {
@@ -287,7 +287,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
                         sizeInternational = item.sizeInternational,
                         sizeNumber = item.sizeNumber,
                         itemId = item.id!!,
-                        description = item.description!!
+                        description = item.description!!,
+                        tagProperties =  item.tagProperties!!
                     )
                 )
             }
