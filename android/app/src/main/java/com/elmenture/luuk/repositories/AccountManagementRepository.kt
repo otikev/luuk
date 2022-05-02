@@ -6,6 +6,7 @@ import com.elmenture.luuk.base.repositories.RemoteRepository
 import models.Item
 import models.UpdateUserDetailsRequest
 import models.ActualMeasurements
+import java.util.ArrayList
 
 object AccountManagementRepository {
 
@@ -62,5 +63,9 @@ object AccountManagementRepository {
 
     fun updateItem(request: Item): BaseApiState {
         return RemoteRepository.updateItem(request)
+    }
+
+    fun validateCartItems(cartItems: ArrayList<Long>) {
+        RemoteRepository.validateCartItems(cartItems)
     }
 }

@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/image/**");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/facebooksignin");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/googlesignin");
+        web.ignoring().antMatchers(HttpMethod.POST, "/order/payment-confirmed");
     }
 
     @Override
