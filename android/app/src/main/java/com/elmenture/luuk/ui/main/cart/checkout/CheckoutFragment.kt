@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.FragmentCheckoutBinding
-import com.elmenture.luuk.databinding.FragmentViewCartBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.elmenture.luuk.ui.main.cart.CartViewModel
 import models.Spot
@@ -20,7 +18,7 @@ import utils.MiscUtils
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class CheckoutFragment : BaseFragment(){
+class CheckoutFragment : BaseFragment() {
     lateinit var binding: FragmentCheckoutBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private lateinit var viewModel: CartViewModel
@@ -52,12 +50,33 @@ class CheckoutFragment : BaseFragment(){
             }
         }
 
+        viewModel.paymentStatus.observe(viewLifecycleOwner) { paymentStatus ->
+            when (paymentStatus) {
+                CartViewModel.PaymentStatus.RequestSentState -> {
+                    binding.btnPayNow.text = "Confirm Payment"
+                }
+                CartViewModel.PaymentStatus.RequestFailedState -> {
+                    activityView.startCheckoutFailureFragment()
+                }
+            }
+        }
+        viewModel.orderConfirmationApiState.observe(viewLifecycleOwner) { orderState ->
+            orderState?.let {
+                if(orderState.isSuccessful){
+                    activityView.startCheckoutSuccessFragment()
+                }else{
+                    activityView.startCheckoutFailureFragment()
+                }
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateView(set: MutableSet<Spot>) {
         val userData = LocalRepository.userDetailsLiveData.value
         binding.tvLocation.text = userData?.physicalAddress
+        binding.tvName.text = userData?.name
         binding.tvAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
         binding.tvItemCount.text = set.size.toString()
         binding.tvPhoneNumber.text = userData?.contactPhoneNumber
@@ -76,10 +95,17 @@ class CheckoutFragment : BaseFragment(){
     }
 
     private fun setUpEventListeners() {
-        binding.toolBar.setNavClickListener{ requireActivity().onBackPressed()}
-        binding.tvChangeOrder.setOnClickListener{ requireActivity().onBackPressed()}
-        binding.tvChangeLocation.setOnClickListener{ activityView.startProfileSettingsFragment()}
-        binding.btnPayNow.setOnClickListener { viewModel.validateCartItems() }
+        binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
+        binding.tvChangeOrder.setOnClickListener { requireActivity().onBackPressed() }
+        binding.tvChangeLocation.setOnClickListener { activityView.startProfileSettingsFragment() }
+
+        binding.btnPayNow.setOnClickListener {
+            if (viewModel.paymentStatus.value == CartViewModel.PaymentStatus.RequestSentState) {
+                viewModel.confirmOrder()
+            } else {
+                viewModel.validateCartItems()
+            }
+        }
     }
 
 }

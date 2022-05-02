@@ -1,23 +1,28 @@
 package com.elmenture.luuk.ui.main.cart
 
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.elmenture.luuk.base.BaseApiState
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.repositories.AccountManagementRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import models.Spot
+import models.StkConfirmationResponse
 
 class CartViewModel : ViewModel() {
 
     var cartItemsLiveData = MediatorLiveData<MutableSet<Spot>>()
+    var paymentApiState = MutableLiveData<BaseApiState>()
+    var orderConfirmationApiState = MutableLiveData<BaseApiState>()
+    var paymentStatus = MutableLiveData<PaymentStatus>(PaymentStatus.EmptyState)
 
     init {
         cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) {
-            cartItemsLiveData.setValue(
-                it
-            )
+            cartItemsLiveData.setValue(it)
         }
     }
 
@@ -35,8 +40,29 @@ class CartViewModel : ViewModel() {
 
     fun validateCartItems() {
         viewModelScope.launch(Dispatchers.IO) {
-                AccountManagementRepository.validateCartItems(getCartItems())
+            val response = AccountManagementRepository.validateCartItems(getCartItems())
+            withContext(Dispatchers.Main){
+                paymentApiState.value = response
+                if(response.isSuccessful){
+                    paymentStatus.value = PaymentStatus.RequestSentState
+                }else{
+                    paymentStatus.value = PaymentStatus.RequestFailedState
+                }
+            }
         }
     }
 
+    fun confirmOrder() {
+        val stkData = paymentApiState.value?.data as StkConfirmationResponse
+
+        viewModelScope.launch(Dispatchers.IO) {
+            orderConfirmationApiState.postValue(AccountManagementRepository.confirmOrder(stkData.merchantRequestID))
+        }
+    }
+
+    sealed class PaymentStatus{
+        object EmptyState : PaymentStatus()
+        object RequestSentState : PaymentStatus()
+        object RequestFailedState : PaymentStatus()
+    }
 }

@@ -31,39 +31,49 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="24dp"
                 android:layout_weight="1"
                 android:background="@color/off_white_light"
+                android:orientation="vertical"
 
-                android:orientation="vertical">
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Deliver To"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"
-                    android:drawablePadding="8dp"
                     android:layout_marginBottom="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Deliver To"
+                    android:textSize="16sp"
                     app:drawableStartCompat="@drawable/ic_location" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Luukman"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:layout_marginBottom="8dp"
-                    android:text="Magiwa Estate" />
+                    android:text="Magiwa Estate"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_change_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/change"
+                    android:textColor="@color/luuk_mint_green"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/luuk_mint_green"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -80,112 +90,121 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="24dp"
-                android:background="@color/off_white_light"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@color/off_white_light"
+                android:orientation="vertical"
+                android:padding="24dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:drawablePadding="8dp"
                     android:layout_marginBottom="@dimen/dimens_mid_size"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
                     android:text="Order Summary"
                     app:drawableStartCompat="@drawable/ic_summary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="Total Amount" />
+                        android:text="Total Amount"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:text="Ksh 3000"
                         android:textColor="@color/black"
-                        android:text="Ksh 3000" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="Phone Number" />
+                        android:text="Phone Number"
+                        android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
                         android:id="@+id/tv_phone_number"
-                        android:textSize="16sp"
-                        android:text="07070707070" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="07070707070"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
                         android:layout_weight="1"
-                        android:text="Delivery Mode" />
+                        android:text="Delivery Mode"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Express"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:text="Express" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
 
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="Order Item Count" />
+                        android:text="Order Item Count"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_item_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="3"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:text="3" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_change_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/change"
+                    android:textColor="@color/luuk_mint_green"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/luuk_mint_green"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

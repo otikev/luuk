@@ -37,5 +37,8 @@ interface EndPoints {
 
 
     @POST("order/validate")
-    fun validateCartItems(@Body cartItems: ArrayList<Long>): Call<ResponseBody>
+    fun validateCartItems(@Body cartItems: ArrayList<Long>): Call<StkConfirmationResponse>
+
+    @GET("order/confirm")
+    fun confirmOrder(@Query("merchant_request_id") merchantRequestID: String): Call<OrderConfirmationResponse>
 }

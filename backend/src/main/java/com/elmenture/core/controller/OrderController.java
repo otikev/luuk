@@ -9,15 +9,14 @@ import com.elmenture.core.repository.OrderRepository;
 import com.elmenture.core.repository.TransactionDetailsRepository;
 import com.google.gson.Gson;
 import okhttp3.*;
+import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -76,6 +75,13 @@ public class OrderController extends BaseController {
         double amount = itemlist.getJSONObject(0).getDouble("Value");
         String mpesaReceiptNumber = itemlist.getJSONObject(1).getString("Value");
         Long phoneNumber = itemlist.getJSONObject(4).getLong("Value");
+        
+        List<Long> cartItemIds = orderItemRepository.findItemIdByOrderId(order.getId());
+        List<Item> cartItems = itemRepository.findAllById(cartItemIds);
+        for (Item cartItem: cartItems) {
+            cartItem.setSold(true);
+        }
+        itemRepository.saveAll(cartItems);
 
         TransactionDetails transactionDetails = new TransactionDetails(merchantId,
                 amount,
@@ -83,9 +89,20 @@ public class OrderController extends BaseController {
                 mpesaReceiptNumber);
 
         transactionDetailsRepository.save(transactionDetails);
-        order.setState("completed");
+        order.setState("paid");
         orderRepository.save(order);
 
+    }
+
+    @GetMapping("/confirm")
+    public ResponseEntity confirmOrder(@RequestParam(value = "merchant_request_id") String merchantRequestID) {
+            User user = getLoggedInUser();
+            Order order = orderRepository.findByUserAndMerchantRequestIDAndState(user, merchantRequestID, "paid");
+            if (order!=null){
+                return new ResponseEntity<>(order,HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>("order payment for merchantRequestID : "+merchantRequestID+" does not exist", HttpStatus.NOT_FOUND);
+            }
     }
 
     @PostMapping("/validate")
@@ -99,9 +116,9 @@ public class OrderController extends BaseController {
             StkPushResponseDto stkPushResponse = triggerStkPush(amount);
             if (stkPushResponse != null) {
                 createOrder(getLoggedInUser(), orderList, stkPushResponse);
-                return new ResponseEntity<>(HttpStatus.CREATED);
+                return new ResponseEntity<>(stkPushResponse,HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Error executing Stk API",HttpStatus.BAD_REQUEST);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -145,7 +162,7 @@ public class OrderController extends BaseController {
             String resBody = response.body().string();
             DarajaAuthDto darajaAuthDTO = new Gson().fromJson(resBody, DarajaAuthDto.class);
             String darajaAuth = darajaAuthDTO.getAccessToken();
-            String callbackUrl = "https://dfdf-41-80-22-214.in.ngrok.io/order/payment-confirmed";
+            String callbackUrl = "https://bf5d-41-80-22-214.in.ngrok.io/order/payment-confirmed";
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddHHmmss");

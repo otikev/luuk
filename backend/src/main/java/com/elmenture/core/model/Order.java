@@ -1,5 +1,6 @@
 package com.elmenture.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

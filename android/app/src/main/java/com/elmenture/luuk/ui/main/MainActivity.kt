@@ -1,10 +1,7 @@
 package com.elmenture.luuk.ui.main
 
-import android.R.attr
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.AuthenticatedActivity
@@ -12,22 +9,19 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
-import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
+import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.cart.ViewCartFragment
+import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFailureFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFragment
+import com.elmenture.luuk.ui.main.cart.checkout.CheckoutSuccessFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
-import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.navigation.NavigationBarView
 import models.Item
 import models.Spot
@@ -139,6 +133,14 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun startViewCheckoutFragment() {
         addFragment(CheckoutFragment.newInstance(), CheckoutFragment::class.java.canonicalName)
+    }
+
+    override fun startCheckoutSuccessFragment() {
+        addFragment(CheckoutSuccessFragment.newInstance(), CheckoutSuccessFragment::class.java.canonicalName)
+    }
+
+    override fun startCheckoutFailureFragment() {
+        addFragment(CheckoutFailureFragment.newInstance(), CheckoutFailureFragment::class.java.canonicalName)
     }
 
     override fun startInventoryManagementFragment() {

@@ -1,6 +1,8 @@
 package com.elmenture.luuk.base
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -119,7 +121,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     }
 
     private fun hideProgressDialog() {
-        loader?.dismissAllowingStateLoss()
+        Handler(Looper.getMainLooper()).postDelayed({loader?.dismissAllowingStateLoss()}, 1000)
     }
 
     fun showMessage(view: View, isSuccessFullAction: Boolean, message: String? = null) {

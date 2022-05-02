@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     public Order findByMerchantRequestID(String merchantRequestID);
     public Order findByUserAndState(User user, String state);
+    public Order findByUserAndMerchantRequestIDAndState(User user, String merchantRequestID, String state);
 }

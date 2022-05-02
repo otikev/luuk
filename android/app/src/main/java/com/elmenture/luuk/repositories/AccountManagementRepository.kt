@@ -65,7 +65,11 @@ object AccountManagementRepository {
         return RemoteRepository.updateItem(request)
     }
 
-    fun validateCartItems(cartItems: ArrayList<Long>) {
-        RemoteRepository.validateCartItems(cartItems)
+    fun validateCartItems(cartItems: ArrayList<Long>):BaseApiState {
+        return RemoteRepository.validateCartItems(cartItems)
+    }
+
+    fun confirmOrder(merchantRequestID: String):BaseApiState {
+        return RemoteRepository.confirmOrder(merchantRequestID)
     }
 }
