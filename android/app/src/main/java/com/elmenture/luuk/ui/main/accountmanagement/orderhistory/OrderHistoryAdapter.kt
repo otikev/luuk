@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.databinding.OrderHistoryItemBinding
-import models.Item
 import models.Order
-import models.OrderItem
 import utils.MiscUtils
 
 class OrderHistoryAdapter(var list: ArrayList<Order>) :
@@ -36,14 +34,19 @@ class OrderHistoryAdapter(var list: ArrayList<Order>) :
 
         fun bind(order: Order) {
             var amount = 0L;
-            for (orderItem in order.orderItems!!){
-                amount += orderItem?.item?.price!!
+
+            order?.let {
+                for (orderItem in order.orderItems!!) {
+                    amount += orderItem?.item?.price!!
+                }
+                val context = view.root.context
+                view.tvStatus.text = order.state
+                view.tvPrice.text = "KES ${MiscUtils.getFormattedAmount(amount.toDouble() / 100)}"
+                Glide.with(context).load(order.orderItems?.getOrNull(0)?.item?.imageUrl)
+                    .into(view.ivItemImage)
+                view.tvCount.text = "${order.orderItems?.count()} Items"
             }
-            val context = view.root.context
-            view.tvStatus.text = order.state
-            view.tvPrice.text ="KES ${MiscUtils.getFormattedAmount(amount.toDouble()/100)}"
-            Glide.with(context).load(order.orderItems?.get(0)?.item?.imageUrl).into(view.ivItemImage)
-            view.tvCount.text = "${order.orderItems?.count()} Items"
+
         }
     }
 

@@ -26,7 +26,7 @@ class OrderHistoryFragment : BaseFragment() {
     lateinit var binding: FragmentOrderHistoryBinding
     lateinit var orderHistoryViewModel: OrderHistoryViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
-    private var orderList: ArrayList<Order> = ArrayList()
+    private var orderList = arrayListOf<Order>()
     lateinit var orderAdapter: OrderHistoryAdapter
 
     companion object {
@@ -46,7 +46,12 @@ class OrderHistoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeLiveData()
+        setEventListeners()
         orderHistoryViewModel.fetchAllOrders()
+    }
+
+    private fun setEventListeners() {
+        binding.toolBar.setNavClickListener{requireActivity().onBackPressed()}
     }
 
     private fun observeLiveData() {

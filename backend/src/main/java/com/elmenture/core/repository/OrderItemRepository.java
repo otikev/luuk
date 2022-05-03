@@ -1,5 +1,6 @@
 package com.elmenture.core.repository;
 
+import com.elmenture.core.model.Item;
 import com.elmenture.core.model.Order;
 import com.elmenture.core.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> deleteByOrderId(Long orderId);
 
     List<Long> findItemIdByOrderId(Long orderId);
+
+    List<OrderItem> findByOrderId(long id);
+    List<Long> findItemByOrderId(long id);
 }
