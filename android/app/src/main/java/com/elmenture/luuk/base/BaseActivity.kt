@@ -121,7 +121,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     }
 
     private fun hideProgressDialog() {
-        Handler(Looper.getMainLooper()).postDelayed({loader?.dismissAllowingStateLoss()}, 1000)
+        loader?.dismissAllowingStateLoss()
     }
 
     fun showMessage(view: View, isSuccessFullAction: Boolean, message: String? = null) {

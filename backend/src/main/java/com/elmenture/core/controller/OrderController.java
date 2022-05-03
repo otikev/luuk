@@ -43,6 +43,13 @@ public class OrderController extends BaseController {
     @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
 
+    @GetMapping("/all")
+    public ResponseEntity fetchOrders() {
+        User user = getLoggedInUser();
+        List<Order> orderList = orderRepository.findAllByUserId(user.getId());
+        return new ResponseEntity(orderList,HttpStatus.OK);
+    }
+
     @PostMapping("/payment-confirmed")
     public void paymentConfirmed(@Valid @org.springframework.web.bind.annotation.RequestBody Object request) {
 

@@ -72,4 +72,8 @@ object AccountManagementRepository {
     fun confirmOrder(merchantRequestID: String):BaseApiState {
         return RemoteRepository.confirmOrder(merchantRequestID)
     }
+
+    fun fetchAllOrders(): BaseApiState {
+        return RemoteRepository.fetchAllOrders()
+    }
 }

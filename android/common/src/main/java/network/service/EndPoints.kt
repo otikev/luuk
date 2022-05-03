@@ -44,4 +44,7 @@ interface EndPoints {
 
     @GET("order/confirm")
     fun confirmOrder(@Query("merchant_request_id") merchantRequestID: String): Call<OrderConfirmationResponse>
+
+    @GET("order/all")
+    fun fetchAllOrders(): Call<List<Order>>
 }

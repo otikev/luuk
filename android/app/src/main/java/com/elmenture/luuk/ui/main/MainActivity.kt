@@ -13,6 +13,7 @@ import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.Inventor
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
+import com.elmenture.luuk.ui.main.accountmanagement.orderhistory.OrderHistoryFragment
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.cart.ViewCartFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFailureFragment
@@ -144,10 +145,11 @@ class MainActivity : AuthenticatedActivity(),
     }
 
     override fun startInventoryManagementFragment() {
-        addFragment(
-            InventoryManagementFragment.newInstance(),
-            InventoryManagementFragment::class.java.canonicalName
-        )
+        addFragment(InventoryManagementFragment.newInstance(),InventoryManagementFragment::class.java.canonicalName)
+    }
+
+    override fun startOrderHistoryFragment() {
+        addFragment(OrderHistoryFragment.newInstance(),OrderHistoryFragment::class.java.canonicalName)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -1,6 +1,7 @@
 package com.elmenture.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id",  nullable = false)
     private Order order;

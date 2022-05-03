@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -32,6 +33,10 @@ public class Order extends BaseEntity {
 
     @Column(name = "merchant_request_id")
     private String merchantRequestID;
+
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
     public Order(User user, String state, String merchantRequestID) {
         this.user = user;

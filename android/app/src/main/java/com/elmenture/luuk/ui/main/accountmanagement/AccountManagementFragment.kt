@@ -65,6 +65,9 @@ class AccountManagementFragment : BaseFragment() {
         binding.itemHelp.setOnClickListener {
             activityView.startHelpFragment()
         }
+        binding.itemOrderHistory.setOnClickListener {
+            activityView.startOrderHistoryFragment()
+        }
     }
 
 }
