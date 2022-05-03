@@ -28,5 +28,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "select sum(price) from Item where id in :ids")
     int sumOfPriceIn(@Param("ids") List<Long> ids);
 
-    Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
+    Page<Item> findByTargetInAndSizeInternationalIsAndSoldIs(List<String> targets, String sizeInternational, boolean sold, Pageable pageable );
 }

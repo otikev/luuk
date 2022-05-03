@@ -60,6 +60,10 @@ class CartViewModel : ViewModel() {
         }
     }
 
+    fun clearCartData() {
+        LocalRepository.swipeRecords.likes.value?.clear()
+    }
+
     sealed class PaymentStatus{
         object EmptyState : PaymentStatus()
         object RequestSentState : PaymentStatus()

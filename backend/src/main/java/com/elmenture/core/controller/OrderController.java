@@ -43,6 +43,7 @@ public class OrderController extends BaseController {
 
     @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
+    private String BASE_URL = "https://7f2e-41-80-23-108.in.ngrok.io/";//TODO replace with correct base URL
 
     @GetMapping("/all")
     public ResponseEntity fetchOrders() {
@@ -158,13 +159,21 @@ public class OrderController extends BaseController {
     private StkPushResponseDto triggerStkPush(int amount) throws IOException {
         StkPushResponseDto stkPushResponse = null;
         User user = getLoggedInUser();
+        String stkUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+        String darajaAuthUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
         String key = "G7v6VB93Ax1f01hvFyokdHT679GMSx7Y";
-        String secret = "G7v6VB93Ax1f01hvFyokdHT679GMSx7Y:QD8uVEuhE5GQKHzp";
+        String consumerSecret = "QD8uVEuhE5GQKHzp";
+        String secret = key+":"+consumerSecret;
+        String passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+        long shortCode = 174379L;
+        String userNumber = user.getContactPhoneNumber().substring(1);
+        Long userNumberLong = Long.parseLong("254"+userNumber);
+
         String auth = Base64.getEncoder().encodeToString(secret.getBytes());
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
-                .url("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
+                .url(darajaAuthUrl)
                 .method("GET", null)
                 .addHeader("Authorization", "Basic " + auth)
                 .build();
@@ -174,34 +183,33 @@ public class OrderController extends BaseController {
             String resBody = response.body().string();
             DarajaAuthDto darajaAuthDTO = new Gson().fromJson(resBody, DarajaAuthDto.class);
             String darajaAuth = darajaAuthDTO.getAccessToken();
-            String callbackUrl = "https://7f2e-41-80-23-108.in.ngrok.io/order/payment-confirmed";
+            String callbackUrl = BASE_URL+"order/payment-confirmed";
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddHHmmss");
 
-            String passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
             String timeStamp = sdf.format(timestamp);
-            String shortCode = "174379";
-            String password = Base64.getEncoder().encodeToString((shortCode + passkey + timeStamp).getBytes());
+            String password = Base64.getEncoder().encodeToString((String.valueOf(shortCode) + passkey + timeStamp).getBytes());
 
             MediaType mediaType = MediaType.parse("application/json");
 
+
             StkPushRequestDto body = new StkPushRequestDto();
-            body.setBusinessShortCode(174379);
+            body.setBusinessShortCode((int)shortCode);
             body.setPassword(password);
             body.setTimestamp(timeStamp);
             body.setTransactionType("CustomerPayBillOnline");
             body.setAmount(1/*amount*/);
-            body.setPartyB(174379L);
+            body.setPartyB(shortCode);
             body.setCallBackURL(callbackUrl);
-            body.setPartyA(254704033136L);
-            body.setPhoneNumber(254704033136L);
+            body.setPartyA(userNumberLong);
+            body.setPhoneNumber(userNumberLong);
             body.setAccountReference("LuukAtMe");
             body.setTransactionDesc("Payment");
 
 
             Request req = new Request.Builder()
-                    .url("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest")
+                    .url(stkUrl)
                     .method("POST", RequestBody.create(mediaType, new Gson().toJson(body)))
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "Bearer " + darajaAuth)
@@ -211,6 +219,8 @@ public class OrderController extends BaseController {
             if (res.isSuccessful()) {
                 String responseBody = res.body().string();
                 stkPushResponse = new Gson().fromJson(responseBody, StkPushResponseDto.class);
+            }else {
+                System.out.println(res.body().toString());
             }
         }
         return stkPushResponse;

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
@@ -52,7 +53,19 @@ class HomeFragment : BaseFragment(), CardStackListener {
         initView()
         observeViewModelLiveData()
         setupCardStackView()
+        setEventListeners()
         homeViewModel.fetchItems()
+    }
+
+    private fun setEventListeners() {
+        val comingSoonAction = View.OnClickListener {
+            Toast.makeText(requireContext(), "feature Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+        binding.btn1.setOnClickListener(comingSoonAction)
+        binding.btn2.setOnClickListener(comingSoonAction)
+        binding.btn3.setOnClickListener(comingSoonAction)
+        binding.btn4.setOnClickListener(comingSoonAction)
+        binding.btn5.setOnClickListener(comingSoonAction)
     }
 
     private fun observeViewModelLiveData() {
@@ -121,10 +134,22 @@ class HomeFragment : BaseFragment(), CardStackListener {
             )
         )
 
-        if(item.sizeType.equals("INT",true)){
-            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", upperCase(item.sizeInternational)))
-        }else{
-            binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", item.sizeNumber.toString()+"("+item.sizeType+")"))
+        if (item.sizeType.equals("INT", true)) {
+            binding.tvSize.text = MiscUtils.getSpannedText(
+                getString(
+                    R.string.contrast_text,
+                    "Size",
+                    upperCase(item.sizeInternational)
+                )
+            )
+        } else {
+            binding.tvSize.text = MiscUtils.getSpannedText(
+                getString(
+                    R.string.contrast_text,
+                    "Size",
+                    item.sizeNumber.toString() + "(" + item.sizeType + ")"
+                )
+            )
         }
     }
 
@@ -288,7 +313,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
                         sizeNumber = item.sizeNumber,
                         itemId = item.id!!,
                         description = item.description!!,
-                        tagProperties =  item.tagProperties!!
+                        tagProperties = item.tagProperties!!
                     )
                 )
             }

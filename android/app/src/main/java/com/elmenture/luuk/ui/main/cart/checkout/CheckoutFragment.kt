@@ -64,6 +64,7 @@ class CheckoutFragment : BaseFragment() {
             orderState?.let {
                 if(orderState.isSuccessful){
                     activityView.startCheckoutSuccessFragment()
+                    viewModel.clearCartData();
                 }else{
                     activityView.startCheckoutFailureFragment()
                 }

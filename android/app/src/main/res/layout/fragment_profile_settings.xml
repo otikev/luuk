@@ -87,7 +87,7 @@
                     android:id="@+id/et_contact_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Contact Phone"
+                    android:hint="Contact Phone e.g (07XX)"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 

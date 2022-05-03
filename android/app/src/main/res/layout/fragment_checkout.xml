@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:drawablePadding="8dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"
                     android:text="Luukman"
                     android:textSize="16sp" />
