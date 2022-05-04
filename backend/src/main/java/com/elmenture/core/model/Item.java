@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -53,6 +55,9 @@ public class Item extends BaseEntity {
 
     @Column(name = "sold") //m or f or c
     private Boolean sold = false;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ItemAction> itemActions;
 
     //@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private List<ItemProperty> itemProperties;

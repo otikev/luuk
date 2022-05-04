@@ -29,4 +29,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     int sumOfPriceIn(@Param("ids") List<Long> ids);
 
     Page<Item> findByTargetInAndSizeInternationalIsAndSoldIs(List<String> targets, String sizeInternational, boolean sold, Pageable pageable );
+
+    Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
+
+    //List<Item> findBySoldIs(boolean sold,)
+
 }

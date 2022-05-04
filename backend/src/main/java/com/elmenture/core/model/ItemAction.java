@@ -38,4 +38,8 @@ public class ItemAction extends BaseEntity {
 
     @Column(name = "count", nullable = false)
     private Integer count;
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 }
