@@ -10,11 +10,7 @@ object RestClient {
     }
 
     fun <T> serviceWithUserAuthentication(service: Class<T>): T {
-
-        var authKey = "null"
-        if (User.getCurrent() != null) {
-            authKey = User.getCurrent().userDetails.sessionKey!!
-        }
+        var authKey = User.getCurrent().sessionKey
         return RestAdapterBuilderFactory.authenticated(authKey).build().create(service)
     }
 

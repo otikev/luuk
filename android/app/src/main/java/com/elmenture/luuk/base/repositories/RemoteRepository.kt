@@ -122,4 +122,9 @@ object RemoteRepository {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchAllOrders()
         return processRequest(call)
     }
+
+    fun fetchUserDetails(): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).userDetails()
+        return processRequest(call)
+    }
 }

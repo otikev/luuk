@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import userdata.User;
+import utils.SecureUtils;
 
 //https://developers.google.com/identity/sign-in/android/backend-auth
 public class SignInActivity extends BaseActivity {
@@ -81,6 +82,7 @@ public class SignInActivity extends BaseActivity {
                     SignInResponse res = (SignInResponse) baseApiState.getData();
                     if (res.isSuccessful()) {
                         User.getCurrent().setUserDetails(res);
+                        SecureUtils.setUserSessionKey(SignInActivity.this, res.getSessionKey());
                         logUtils.i("Signin success");
                         setResult(RESULT_OK);
                         showMainScreen();

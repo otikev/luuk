@@ -3,11 +3,13 @@ package com.elmenture.core.controller;
 import com.elmenture.core.model.BodyMeasurement;
 import com.elmenture.core.model.ClothingSize;
 import com.elmenture.core.model.User;
+import com.elmenture.core.payload.SignInResponse;
 import com.elmenture.core.payload.UserDetailsDto;
 import com.elmenture.core.payload.UserMeasurementsDto;
 import com.elmenture.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,5 +83,16 @@ public class UserController extends BaseController {
         userRepository.save(user);
 
         return ResponseEntity.ok("Updated Successfully");
+    }
+
+    @GetMapping("details")
+    public ResponseEntity<SignInResponse> getUserDetails() {
+        User user = getLoggedInUser();
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        SignInResponse response = new SignInResponse();
+        response = createSigninResponse(response, user);
+        return ResponseEntity.ok(response);
     }
 }

@@ -38,7 +38,6 @@ interface EndPoints {
     @POST("items/actions")
     fun logUserActions(@Body request: Action): Call<ResponseBody>
 
-
     @POST("order/validate")
     fun validateCartItems(@Body cartItems: ArrayList<Long>): Call<StkConfirmationResponse>
 
@@ -47,4 +46,8 @@ interface EndPoints {
 
     @GET("order/all")
     fun fetchAllOrders(): Call<List<Order>>
+
+    @GET("user/details")
+    fun userDetails(): Call<SignInResponse>
+
 }

@@ -1,15 +1,16 @@
 package com.elmenture.core.controller;
 
 import com.elmenture.core.model.*;
-import com.elmenture.core.model.Item;
-import com.elmenture.core.payload.*;
+import com.elmenture.core.payload.DarajaAuthDto;
+import com.elmenture.core.payload.StkPushRequestDto;
+import com.elmenture.core.payload.StkPushResponseDto;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.OrderItemRepository;
 import com.elmenture.core.repository.OrderRepository;
 import com.elmenture.core.repository.TransactionDetailsRepository;
 import com.google.gson.Gson;
-import okhttp3.*;
 import okhttp3.RequestBody;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,10 @@ public class OrderController extends BaseController {
     private String BASE_URL = "https://7f2e-41-80-23-108.in.ngrok.io/";//TODO replace with correct base URL
 
     @GetMapping("/all")
-    public ResponseEntity fetchOrders() {
+    public ResponseEntity<List<Order>> fetchOrders() {
         User user = getLoggedInUser();
         List<Order> orderList = orderRepository.findAllByUserId(user.getId());
-        return new ResponseEntity(orderList, HttpStatus.OK);
+        return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
     @PostMapping("/payment-confirmed")
@@ -163,11 +164,11 @@ public class OrderController extends BaseController {
         String darajaAuthUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
         String key = "G7v6VB93Ax1f01hvFyokdHT679GMSx7Y";
         String consumerSecret = "QD8uVEuhE5GQKHzp";
-        String secret = key+":"+consumerSecret;
+        String secret = key + ":" + consumerSecret;
         String passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
         long shortCode = 174379L;
         String userNumber = user.getContactPhoneNumber().substring(1);
-        Long userNumberLong = Long.parseLong("254"+userNumber);
+        Long userNumberLong = Long.parseLong("254" + userNumber);
 
         String auth = Base64.getEncoder().encodeToString(secret.getBytes());
 
@@ -183,7 +184,7 @@ public class OrderController extends BaseController {
             String resBody = response.body().string();
             DarajaAuthDto darajaAuthDTO = new Gson().fromJson(resBody, DarajaAuthDto.class);
             String darajaAuth = darajaAuthDTO.getAccessToken();
-            String callbackUrl = BASE_URL+"order/payment-confirmed";
+            String callbackUrl = BASE_URL + "order/payment-confirmed";
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddHHmmss");
@@ -195,7 +196,7 @@ public class OrderController extends BaseController {
 
 
             StkPushRequestDto body = new StkPushRequestDto();
-            body.setBusinessShortCode((int)shortCode);
+            body.setBusinessShortCode((int) shortCode);
             body.setPassword(password);
             body.setTimestamp(timeStamp);
             body.setTransactionType("CustomerPayBillOnline");
@@ -219,11 +220,10 @@ public class OrderController extends BaseController {
             if (res.isSuccessful()) {
                 String responseBody = res.body().string();
                 stkPushResponse = new Gson().fromJson(responseBody, StkPushResponseDto.class);
-            }else {
+            } else {
                 System.out.println(res.body().toString());
             }
         }
         return stkPushResponse;
     }
-
 }

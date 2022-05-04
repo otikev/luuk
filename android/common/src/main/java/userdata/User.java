@@ -8,6 +8,7 @@ import models.TagProperty;
 public class User {
     String[] tags;
     public SignInResponse userDetails;
+    public String sessionKey;
 
     private static User user = new User();
 
@@ -17,6 +18,7 @@ public class User {
 
     public void setUserDetails(SignInResponse userDetails) {
         this.userDetails = userDetails;
+        this.sessionKey = userDetails.getSessionKey();
         tags = new String[userDetails.getTagProperties().size()];
         int i = 0;
         for (TagProperty tagProperty : userDetails.getTagProperties()) {
@@ -37,18 +39,18 @@ public class User {
         return userDetails.getTagProperties();
     }
 
-    public TagProperty getTagProperty(Long id){
+    public TagProperty getTagProperty(Long id) {
         for (TagProperty tagProperty : userDetails.getTagProperties()) {
-            if(tagProperty.getId().longValue() == id.longValue()){
+            if (tagProperty.getId().longValue() == id.longValue()) {
                 return tagProperty;
             }
         }
         return null;
     }
 
-    public TagProperty getTagProperty(String s){
+    public TagProperty getTagProperty(String s) {
         for (TagProperty tagProperty : userDetails.getTagProperties()) {
-            if(tagProperty.getValue().equalsIgnoreCase(s)){
+            if (tagProperty.getValue().equalsIgnoreCase(s)) {
                 return tagProperty;
             }
         }

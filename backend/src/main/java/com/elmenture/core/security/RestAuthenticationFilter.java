@@ -53,6 +53,7 @@ public class RestAuthenticationFilter extends OncePerRequestFilter {
         String token = splitted[2];
 
         Authentication restToken = new RestToken(username, token);
+        System.out.println("Authentication : "+restToken.toString());
         SecurityContextHolder.getContext().setAuthentication(restToken);
         filterChain.doFilter(request, response);
     }
