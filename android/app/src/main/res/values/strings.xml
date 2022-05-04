@@ -18,6 +18,7 @@
     <string name="thank_you_for_your_order">Thank you for your order! Please check \n your email for your receipt\n\n Luuk out to our rider in the next\n <b>60 minutes</b></string>
     <string name="track_your_order"><u>Track Your Order</u></string>
     <string name="that_did_now_work_please_try_again">That did now work, <b>please try again</b></string>
+    <string name="strike_amt"><strike>Ksh 300</strike></string>
     <string-array name="item_target_array">
         <item>Select target...</item>
         <item>Female</item>
