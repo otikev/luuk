@@ -79,6 +79,7 @@ class CheckoutFragment : BaseFragment() {
         binding.tvLocation.text = userData?.physicalAddress
         binding.tvName.text = userData?.name
         binding.tvAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
+        binding.tvSubtotalAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
         binding.tvItemCount.text = set.size.toString()
         binding.tvPhoneNumber.text = userData?.contactPhoneNumber
     }
