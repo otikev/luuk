@@ -67,7 +67,7 @@ public class OrderController extends BaseController {
 
         if (stkCallback.getInt("ResultCode") == 0) {
             saveTransactionDetails(stkCallback, order);
-            sendEmail(order.getId());//TODO: Run in background thread
+            executor.execute(() -> sendEmail(order.getId()));
         } else {
             undoCreatedOrder(order);
         }

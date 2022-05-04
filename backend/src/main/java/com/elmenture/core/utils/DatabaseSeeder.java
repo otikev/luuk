@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by otikev on 16-Mar-2022
@@ -205,6 +207,12 @@ public class DatabaseSeeder implements CommandLineRunner {
             itemRepository.save(item);
         }
 
-        emailService.sendAppStartedEmail();
+         ExecutorService executor = Executors.newFixedThreadPool(2);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendAppStartedEmail();
+            }
+        });
     }
 }
