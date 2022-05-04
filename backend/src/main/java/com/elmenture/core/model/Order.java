@@ -22,7 +22,6 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
