@@ -198,6 +198,13 @@ public class DatabaseSeeder implements CommandLineRunner {
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
 
+        List<Item> items = itemRepository.findBySoldNull();
+
+        for (Item item : items) {
+            item.setSold(false);
+            itemRepository.save(item);
+        }
+
         emailService.sendAppStartedEmail();
     }
 }

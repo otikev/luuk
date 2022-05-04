@@ -122,6 +122,22 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemResponse getAllItems(List<String> targets, boolean sold, int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Item> items;
+        if (sold) {
+            items = itemRepository.findByTargetInAndSoldTrue(targets, pageable);
+        } else {
+            items = itemRepository.findByTargetInAndSoldFalse(targets, pageable);
+        }
+
+        return buildResponse(items);
+    }
+
+    @Override
     public List<ItemDto> getAllItems() {
         List<Item> items = itemRepository.findAll();
         List<ItemDto> itemDtos = new ArrayList<>();
