@@ -20,6 +20,12 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Page<Item> findByTargetIn(List<String> targets, Pageable pageable);
 
+    Page<Item> findByTargetInAndSoldFalse(List<String> targets, Pageable pageable);
+
+    Page<Item> findByTargetInAndSoldTrue(List<String> targets, Pageable pageable);
+
+    List<Item> findBySoldNull();
+
     List<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational);
 
     //@Query("select a from Item a where sold = true and id in :ids")

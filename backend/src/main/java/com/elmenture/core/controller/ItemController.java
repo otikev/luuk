@@ -54,10 +54,12 @@ public class ItemController extends BaseController {
                                                           @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
 
         //First page is 0
-        ItemResponse response = itemService.getAllItems(getLoggedInUser().preferredRecommendations(), pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
+        ItemResponse response = itemService.getAllItems(getLoggedInUser().preferredRecommendations(), false, pageNo, pageSize, AppConstants.DEFAULT_SORT_BY, "desc");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    //TODO: WIP
     @GetMapping("/queue")
     public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "offsetItemId", required = false) int offsetItemId) {
         List<ItemDto> queue = itemService.getQueue(offsetItemId, 20);

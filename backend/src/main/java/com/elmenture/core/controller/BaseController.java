@@ -6,6 +6,7 @@ import com.elmenture.core.model.User;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
+import com.elmenture.core.service.EmailService;
 import com.elmenture.core.utils.LuukProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.elmenture.core.engine.charts.MeasurementUnit.*;
 
@@ -23,11 +26,15 @@ import static com.elmenture.core.engine.charts.MeasurementUnit.*;
 public abstract class BaseController {
 
     @Autowired
+    protected EmailService emailService;
+
+    @Autowired
     protected UserRepository userRepository;
 
     @Autowired
     protected TagPropertyRepository tagPropertyRepository;
 
+    protected ExecutorService executor = Executors.newFixedThreadPool(10);
 
     //FIXME: Hardcoding for now. This will eventually be replaced with user roles functionality
     private String[] STAFF = {

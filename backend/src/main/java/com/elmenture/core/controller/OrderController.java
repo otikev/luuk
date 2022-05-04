@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -67,10 +68,31 @@ public class OrderController extends BaseController {
 
         if (stkCallback.getInt("ResultCode") == 0) {
             saveTransactionDetails(stkCallback, order);
+            executor.execute(() -> sendEmail(order.getId()));
         } else {
             undoCreatedOrder(order);
         }
+    }
 
+    private void sendEmail(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
+        List<Long> orderItemIds = new ArrayList<>();
+        long totalCents = 0;
+        String customerName = order.getUser().getFirstName() + order.getUser().getLastName();
+        String address = order.getUser().getPhysicalAddress();
+
+        for (OrderItem orderItem : orderItems) {
+            Item item = orderItem.getItem();
+            orderItemIds.add(orderItem.getId());
+            totalCents += item.getPrice();
+        }
+
+        try {
+            emailService.sendNewOrderEmail(order.getId(), orderItemIds, totalCents, customerName, address, null);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     private void undoCreatedOrder(Order order) {
