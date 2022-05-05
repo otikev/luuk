@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun setEventListeners() {
         val comingSoonAction = View.OnClickListener {
-            Toast.makeText(requireContext(), "feature Coming Soon", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Feature Coming Soon", Toast.LENGTH_SHORT).show()
         }
         binding.btn1.setOnClickListener(comingSoonAction)
         binding.btn2.setOnClickListener(comingSoonAction)
