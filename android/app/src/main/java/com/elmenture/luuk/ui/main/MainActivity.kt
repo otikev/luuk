@@ -66,7 +66,7 @@ class MainActivity : AuthenticatedActivity(),
 
     private fun setUpPlaces() {
         if (!Places.isInitialized()) {
-            Places.initialize(this, getString(R.string.api_key));
+            Places.initialize(this, getString(R.string.maps_api_key));
         }
         Places.createClient(this)
     }
