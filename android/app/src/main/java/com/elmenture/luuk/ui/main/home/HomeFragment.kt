@@ -167,7 +167,6 @@ class HomeFragment : BaseFragment(), CardStackListener {
         adapter.setItemClickListener { activityView.startViewItemFragment(adapter.getItem(manager.topPosition)) }
     }
 
-
     private fun initialize() {
         manager.setStackFrom(StackFrom.None)
         manager.setVisibleCount(3)

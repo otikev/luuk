@@ -105,7 +105,7 @@ object RemoteRepository {
 
     fun logUserActions(request: Action): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).logUserActions(request)
-        return processRequest(call)
+        return processRequest(call,blockUi = false)
     }
 
     fun validateCartItems(cartItems: ArrayList<Long>):BaseApiState {
@@ -125,6 +125,6 @@ object RemoteRepository {
 
     fun fetchUserDetails(): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).userDetails()
-        return processRequest(call)
+        return processRequest(call,blockUi = false)
     }
 }
