@@ -197,6 +197,7 @@ public class OrderController extends BaseController {
                 .url(DARAJA_AUTH_URL)
                 .method("GET", null)
                 .addHeader("Authorization", "Basic " + auth)
+                .addHeader("cache-control", "no-cache")
                 .build();
         Response response = client.newCall(request).execute();
 
@@ -234,6 +235,7 @@ public class OrderController extends BaseController {
                     .method("POST", RequestBody.create(mediaType, new Gson().toJson(body)))
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "Bearer " + darajaAuth)
+                    .addHeader("cache-control", "no-cache")
                     .build();
 
             Response res = client.newCall(req).execute();

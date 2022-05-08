@@ -62,7 +62,8 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Order #:</b> " + orderId + "<br><br>" +
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
-                        "<b>Delivery Address:</b> " + deliveryAddress;
+                        "<b>Delivery Address:</b> " + deliveryAddress +
+                        "<b>Delivery Mode:</b> Standard";
 
         helper.setText(emailBody, html);
         emailSender.send(message);
