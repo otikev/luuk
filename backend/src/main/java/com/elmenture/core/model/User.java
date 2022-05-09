@@ -60,6 +60,12 @@ public class User extends BaseEntity implements UserDetails {
     private String gender;
 
     /**
+     * Stores the last item id in items table that was traversed while fetching the user's queue
+     */
+    @Column(name = "item_queue_tracker", columnDefinition = "bigint default 0")
+    private long itemQueueTracker = 0;
+
+    /**
      * Contains a comma separated text for the type of clothing the user
      * wants to see e.g.
      * m,f,c -> see male, female and child clothes

@@ -35,6 +35,8 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private lateinit var homeViewModel: HomeViewModel
     private val itemList by lazy { homeViewModel.itemsLiveData.value }
 
+    private val showMySizes: Boolean = true
+
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -54,7 +56,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         observeViewModelLiveData()
         setupCardStackView()
         setEventListeners()
-        homeViewModel.fetchItems()
+        homeViewModel.fetchItems(showMySizes)
     }
 
     private fun setEventListeners() {
@@ -72,7 +74,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
             val cart = LocalRepository.swipeRecords.likes.value
             adapter.updateContent(filterListAgainstCart(cart!!))
-            cardStackView.adapter = adapter
+            //cardStackView.adapter = adapter
         }
     }
 
@@ -92,9 +94,9 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     override fun onCardSwiped(direction: Direction) {
         val touchedCardPosition = manager.topPosition - 1
-        if (manager.topPosition == adapter.itemCount - 5) {
+        if (manager.topPosition > adapter.itemCount - 3) {
             paginate()
-            homeViewModel.fetchItems()
+            homeViewModel.fetchItems(showMySizes)
         }
 
         when (direction) {

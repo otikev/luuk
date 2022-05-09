@@ -25,6 +25,8 @@ interface EndPoints {
     @POST("items/new")
     fun createNewItem(@Body request: Item): Call<ResponseBody>
 
+    @GET("items/queue")
+    fun fetchItemsQueue(@Query("filter") filter: Boolean): Call<List<Item>>
 
     @GET("items/all")
     fun fetchAllItems(): Call<List<Item>>

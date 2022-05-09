@@ -40,7 +40,7 @@ public class Item extends BaseEntity {
     private Long sizeNumber;
 
     /**
-     * One of US, UK, EU
+     * One of US, UK, EU, INT
      */
     @Column(name = "size_type")
     private String sizeType;

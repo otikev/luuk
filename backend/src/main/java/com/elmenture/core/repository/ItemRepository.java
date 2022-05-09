@@ -18,6 +18,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByTargetIn(List<String> targets);
 
+    Page<Item> findBySoldFalse(Pageable pageable);
+
     Page<Item> findByTargetIn(List<String> targets, Pageable pageable);
 
     Page<Item> findByTargetInAndSoldFalse(List<String> targets, Pageable pageable);
@@ -34,7 +36,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "select sum(price) from Item where id in :ids")
     int sumOfPriceIn(@Param("ids") List<Long> ids);
 
-    Page<Item> findByTargetInAndSizeInternationalIsAndSoldIs(List<String> targets, String sizeInternational, boolean sold, Pageable pageable );
+    Page<Item> findByTargetInAndSizeInternationalIsAndSoldIs(List<String> targets, String sizeInternational, boolean sold, Pageable pageable);
 
     Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
 

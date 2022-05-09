@@ -1,13 +1,17 @@
 package com.elmenture.core.service.impl;
 
+import com.elmenture.core.engine.SizeMapper;
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.ItemProperty;
+import com.elmenture.core.model.User;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemPropertyRepository;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
+import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.ItemService;
+import com.elmenture.core.utils.ChunkRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +39,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private TagPropertyRepository tagPropertyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public ItemDto createItem(ItemDto postDto) {
@@ -101,8 +109,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse getAllItems(List<String> targets, String sizeInternational, int page, int size, String sortBy, String sortDir) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Item> items = itemRepository.findByTargetInAndSizeInternationalIs(targets, sizeInternational, pageable);
@@ -112,8 +119,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse getAllItems(List<String> targets, int page, int size, String sortBy, String sortDir) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Item> items = itemRepository.findByTargetIn(targets, pageable);
@@ -123,8 +129,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse getAllItems(List<String> targets, boolean sold, int page, int size, String sortBy, String sortDir) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Item> items;
@@ -148,9 +153,82 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getQueue(int offsetItemId, int size) {
-        //TODO
-        return null;
+    public List<ItemDto> getQueue(User user, boolean filter, int size) {
+        List<Item> finalResults = new ArrayList<>();
+        Sort sort = Sort.by("id").descending();
+        Map<String, String> userSizes = SizeMapper.mappedSizesForUser(user);
+        long offset = user.getItemQueueTracker();
+        int queueLaps = 0;
+
+        long newTrackerPosition = 0;
+
+        do {
+            Pageable pageable = new ChunkRequest(offset, size, sort);
+            Page<Item> items = itemRepository.findBySoldFalse(pageable);
+            List<Item> listOfItems = items.getContent();
+
+
+            if (finalResults.size() > 0 && listOfItems.size() == 0) {
+                //Found some items and reached end of queue without getting enough items
+                //Send the items to the user
+                System.out.println("Reached end of queue with " + finalResults.size() + " items instead of " + size + ". Returning results to user.");
+                break;
+            } else if (finalResults.size() == 0 && listOfItems.size() == 0) {
+                //Found no items and reached end of queue
+                if (queueLaps < 1) {
+                    //Try 1 more pass, could pick some previous items that user had seen but did not
+                    System.out.println("Reached end of queue with 0 items, moving to beginning of queue.");
+                    offset = 0;
+                    queueLaps++;
+                } else {
+                    System.out.println("Reached end of queue with 0 items (started at beginning of queue), returning empty results to user.");
+                    break;
+                }
+            }
+
+            if (listOfItems.size() < size) {
+                System.out.println("Reached end of queue!");
+                queueLaps++;
+            }
+
+            for (Item item : listOfItems) {
+                newTrackerPosition = item.getId();
+
+                if (filter) {
+                    String itemSizeType = item.getSizeType();
+                    String itemSize = "";
+                    if (itemSizeType.equalsIgnoreCase("UK") || itemSizeType.equalsIgnoreCase("US") || itemSizeType.equalsIgnoreCase("EU")) {
+                        itemSize = String.valueOf(item.getSizeNumber());
+                    } else if (itemSizeType.equalsIgnoreCase("INT")) {
+                        itemSize = item.getSizeInternational();
+                    }
+                    if (userSizes.get(itemSizeType).equalsIgnoreCase(itemSize)) {
+                        System.out.println("Found match!");
+                        offset = item.getId();
+                        finalResults.add(item);
+                    }
+                } else {
+                    finalResults.add(item);
+                }
+
+                if (finalResults.size() >= size) {
+                    //got enough items!
+                    break;
+                }
+            }
+        } while (finalResults.size() >= size);//true ==> reached expected page size
+        System.out.println("*** Found "+finalResults.size()+" items");
+
+        List<ItemDto> content = finalResults.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        updateTracker(user, newTrackerPosition);
+        return content;
+    }
+
+    private void updateTracker(User user, long tracker) {
+        user = userRepository.findById(user.getId()).get();
+        user.setItemQueueTracker(tracker);
+        userRepository.save(user);
+        System.out.println("Updated user "+user.getId()+"'s item queue tracker to "+tracker);
     }
 
     private ItemDto mapToDTO(Item item) {

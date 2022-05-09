@@ -58,11 +58,9 @@ public class ItemController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    //TODO: WIP
     @GetMapping("/queue")
-    public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "offsetItemId", required = false) int offsetItemId) {
-        List<ItemDto> queue = itemService.getQueue(offsetItemId, 20);
+    public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "filter", defaultValue = "true", required = false) boolean filter) {
+        List<ItemDto> queue = itemService.getQueue(getLoggedInUser(), filter, 20);
         return new ResponseEntity<>(queue, HttpStatus.OK);
     }
 

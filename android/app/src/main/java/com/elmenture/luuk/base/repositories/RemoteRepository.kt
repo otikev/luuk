@@ -3,25 +3,24 @@ package com.elmenture.luuk.base.repositories
 import androidx.lifecycle.MutableLiveData
 import com.elmenture.luuk.base.BaseApiState
 import models.Action
+import models.ActualMeasurements
 import models.Item
 import models.UpdateUserDetailsRequest
-import models.ActualMeasurements
 import network.RestClient
 import network.interceptors.ConnectivityInterceptor
 import network.service.EndPoints
 import retrofit2.Call
 import utils.LogUtils
 import utils.NetUtils
-import java.util.ArrayList
 
 object RemoteRepository {
     val responseErrorCode = MutableLiveData<Int>()
     val blockUserInteraction = MutableLiveData(false)
     val TAG = "BaseRepository"
 
-    private fun processRequest(call: Call<*>, blockUi:Boolean = true): BaseApiState {
+    private fun processRequest(call: Call<*>, blockUi: Boolean = true): BaseApiState {
         var viewState: BaseApiState
-        if(blockUi)
+        if (blockUi)
             this.blockUserInteraction.postValue(true)
         try {
             val response = call.execute()
@@ -48,7 +47,7 @@ object RemoteRepository {
 
         }
         viewState.errorCode?.let { responseErrorCode.postValue(it) }
-        if(blockUi)
+        if (blockUi)
             this.blockUserInteraction.postValue(false)
         return viewState
     }
@@ -89,7 +88,8 @@ object RemoteRepository {
 
     fun updateUserDetails(request: UpdateUserDetailsRequest): BaseApiState {
         val call =
-            RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateUserDetails(request)
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+                .updateUserDetails(request)
         return processRequest(call)
     }
 
@@ -98,23 +98,33 @@ object RemoteRepository {
         return processRequest(call)
     }
 
+    fun fetchItemsQueue(filter: Boolean): BaseApiState {
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchItemsQueue(filter)
+        return processRequest(call, blockUi = false)
+    }
+
     fun updateItem(request: Item): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateItem(request)
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateItem(request)
         return processRequest(call)
     }
 
     fun logUserActions(request: Action): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).logUserActions(request)
-        return processRequest(call,blockUi = false)
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).logUserActions(request)
+        return processRequest(call, blockUi = false)
     }
 
-    fun validateCartItems(cartItems: ArrayList<Long>):BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).validateCartItems(cartItems)
+    fun validateCartItems(cartItems: ArrayList<Long>): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .validateCartItems(cartItems)
         return processRequest(call)
     }
 
-    fun confirmOrder(merchantRequestID: String):BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).confirmOrder(merchantRequestID)
+    fun confirmOrder(merchantRequestID: String): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .confirmOrder(merchantRequestID)
         return processRequest(call)
     }
 
@@ -125,6 +135,6 @@ object RemoteRepository {
 
     fun fetchUserDetails(): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).userDetails()
-        return processRequest(call,blockUi = false)
+        return processRequest(call, blockUi = false)
     }
 }

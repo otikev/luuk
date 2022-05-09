@@ -1,5 +1,6 @@
 package com.elmenture.core.service;
 
+import com.elmenture.core.model.User;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 
@@ -12,7 +13,7 @@ public interface ItemService {
 
     List<ItemDto> getAllItems();
 
-    List<ItemDto> getQueue(int offsetItemId, int size);
+    List<ItemDto> getQueue(User user, boolean filter, int size);
 
     ItemResponse getAllItems(List<String> targets, int page, int size, String sortBy, String sortDir);
 
