@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by otikev on 17-Mar-2022
@@ -24,6 +22,9 @@ public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "brand")
+    private String brand;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -53,7 +54,7 @@ public class Item extends BaseEntity {
     @Column(name = "target") //m or f or c
     private String target;
 
-    @Column(name = "sold") //m or f or c
+    @Column(name = "sold")
     private Boolean sold;
 
     //@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

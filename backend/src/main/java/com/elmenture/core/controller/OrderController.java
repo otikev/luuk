@@ -229,7 +229,6 @@ public class OrderController extends BaseController {
             body.setAccountReference(STK_ACCOUNT_REFERENCE);
             body.setTransactionDesc("Payment");
 
-
             Request req = new Request.Builder()
                     .url(DARAJA_STK_URL)
                     .method("POST", RequestBody.create(mediaType, new Gson().toJson(body)))
