@@ -1,4 +1,4 @@
-package com.elmenture.luuk.utils;
+package utils;
 
 import android.util.Log;
 

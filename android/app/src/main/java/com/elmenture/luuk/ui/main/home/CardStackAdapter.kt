@@ -5,15 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
+import com.elmenture.luuk.data.ItemQueue
 import models.Spot
 
-class CardStackAdapter(
-    private var spots: ArrayList<Spot> = arrayListOf()
-) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
+class CardStackAdapter : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
 
     private var itemClickListener: View.OnClickListener? = null
 
@@ -26,7 +24,7 @@ class CardStackAdapter(
         this.itemClickListener = listener
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val spot = spots[position]
+        val spot = ItemQueue.spots[position]
         val description: String = spot.description
 
         holder.description.text = description
@@ -40,25 +38,15 @@ class CardStackAdapter(
     }
 
     override fun getItemCount(): Int {
-        return spots.size
-    }
-
-    fun setSpots(spots: List<Spot>) {
-        this.spots = spots as ArrayList<Spot>
+        return ItemQueue.spots.size
     }
 
     fun getSpots(): List<Spot> {
-        return spots
+        return ItemQueue.spots
     }
 
     fun getItem(position:Int): Spot {
-        return spots[position]
-    }
-
-    fun updateContent(spots: List<Spot>) {
-        this.spots.clear()
-        this.spots.addAll(spots)
-        this.notifyItemRangeChanged(0, spots.count())
+        return ItemQueue.spots[position]
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

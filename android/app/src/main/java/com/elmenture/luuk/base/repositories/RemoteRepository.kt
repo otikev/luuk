@@ -14,9 +14,9 @@ import utils.LogUtils
 import utils.NetUtils
 
 object RemoteRepository {
+    val logUtils = LogUtils(javaClass)
     val responseErrorCode = MutableLiveData<Int>()
     val blockUserInteraction = MutableLiveData(false)
-    val TAG = "BaseRepository"
 
     private fun processRequest(call: Call<*>, blockUi: Boolean = true): BaseApiState {
         var viewState: BaseApiState
@@ -27,12 +27,12 @@ object RemoteRepository {
             if (response.isSuccessful) {
                 BaseApiState.SUCCESS_STATE.data = response.body() as Any
                 viewState = BaseApiState.SUCCESS_STATE
-                LogUtils.logI(TAG, "Success")
+                logUtils.i("Success")
             } else {
                 BaseApiState.ERROR_STATE.errorCode = response.code()
                 BaseApiState.ERROR_STATE.errorMessage = response.errorBody()?.string()
                 viewState = BaseApiState.ERROR_STATE
-                LogUtils.logW(TAG, "Api Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
+                logUtils.w("Api Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
 
             }
         } catch (e: Exception) {
@@ -41,7 +41,7 @@ object RemoteRepository {
             } else {
                 BaseApiState.ERROR_STATE.errorCode = NetUtils.NETWORK_ERROR_CODE
             }
-            LogUtils.logW(TAG, "Connectivity Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
+            logUtils.w("Connectivity Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
             BaseApiState.ERROR_STATE.errorMessage = e.message
             viewState = BaseApiState.ERROR_STATE
 

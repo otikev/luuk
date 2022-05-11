@@ -1,7 +1,6 @@
 package com.elmenture.luuk.ui.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DiffUtil
 import com.amazonaws.util.StringUtils.upperCase
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
+import com.elmenture.luuk.data.ItemQueue
 import models.Item
 import models.Spot
 import utils.MiscUtils
@@ -29,8 +28,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private val binding get() = _binding!!
     private val cardStackView by lazy { binding.cardStackView }
-    private var spots: ArrayList<Spot> = arrayListOf()
-    private val adapter = CardStackAdapter(spots)
+    private val adapter = CardStackAdapter()
     private val manager by lazy { CardStackLayoutManager(activity, this) }
     private lateinit var homeViewModel: HomeViewModel
     private val itemList by lazy { homeViewModel.itemsLiveData.value }
@@ -73,19 +71,23 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
             val cart = LocalRepository.swipeRecords.likes.value
-            adapter.updateContent(filterListAgainstCart(cart!!))
-            //cardStackView.adapter = adapter
+            val unfilteredList = createSpots(itemList).toMutableSet()
+            val filteredList = filterListAgainstCart(cart!!, unfilteredList)
+            ItemQueue.addItems(filteredList)
+            adapter.notifyDataSetChanged()
         }
     }
 
-    private fun filterListAgainstCart(cartList: MutableSet<Spot>): List<Spot> {
-        val spotList = createSpots(itemList).toMutableSet()
+    private fun filterListAgainstCart(
+        cartList: MutableSet<Spot>,
+        unfilteredList: MutableSet<Spot>
+    ): List<Spot> {
         for (i in 0 until cartList.size) {
-            if (spotList.contains(cartList.elementAt(i))) {
-                spotList.remove(cartList.elementAt(i))
+            if (unfilteredList.contains(cartList.elementAt(i))) {
+                unfilteredList.remove(cartList.elementAt(i))
             }
         }
-        return spotList.toMutableList()
+        return unfilteredList.toMutableList()
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
@@ -93,38 +95,37 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
-        val touchedCardPosition = manager.topPosition - 1
-        if (manager.topPosition > adapter.itemCount - 3) {
-            paginate()
-            homeViewModel.fetchItems(showMySizes)
-        }
+        val spot = ItemQueue.getTopItem()
+        ItemQueue.removeTopItem()
+        adapter.notifyDataSetChanged()
 
         when (direction) {
             Direction.Left -> homeViewModel.updateSwipesData(
-                dislike = adapter.getItem(
-                    touchedCardPosition
-                )
+                dislike = spot
             )
             Direction.Right -> homeViewModel.updateSwipesData(
-                like = adapter.getItem(
-                    touchedCardPosition
-                )
+                like = spot
             )
+        }
+
+        logUtils.d("onCardSwiped, items remaining : ${adapter.itemCount}")
+        if (adapter.itemCount < 3) {
+            homeViewModel.fetchItems(showMySizes)
         }
     }
 
     override fun onCardRewound() {
-        Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
+        logUtils.d("onCardRewound: ${manager.topPosition}")
     }
 
     override fun onCardCanceled() {
-        Log.d("CardStackView", "onCardCanceled: ${manager.topPosition}")
+        logUtils.d("onCardCanceled: ${manager.topPosition}")
     }
 
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
 
-        Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
+        logUtils.d("onCardAppeared: ($position) ${textView.text}")
 
         val item = adapter.getSpots()[position]
         val priceCents = item.priceCents
@@ -157,7 +158,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     override fun onCardDisappeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
-        Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
+        logUtils.d("onCardDisappeared: ($position) ${textView.text}")
     }
 
     private fun setupCardStackView() {
@@ -188,117 +189,6 @@ class HomeFragment : BaseFragment(), CardStackListener {
                 supportsChangeAnimations = false
             }
         }
-    }
-
-    private fun paginate() {
-        val old = adapter.getSpots()
-        val new = old.plus(createSpots(itemList))
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun reload() {
-        val old = adapter.getSpots()
-        val new = createSpots(itemList)
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun addFirst(size: Int) {
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
-                add(manager.topPosition, createSpot())
-            }
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun addLast(size: Int) {
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            addAll(List(size) { createSpot() })
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun removeFirst(size: Int) {
-        if (adapter.getSpots().isEmpty()) {
-            return
-        }
-
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
-                removeAt(manager.topPosition)
-            }
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun removeLast(size: Int) {
-        if (adapter.getSpots().isEmpty()) {
-            return
-        }
-
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            for (i in 0 until size) {
-                removeAt(this.size - 1)
-            }
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun replace() {
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            removeAt(manager.topPosition)
-            add(manager.topPosition, createSpot())
-        }
-        adapter.setSpots(new)
-        adapter.notifyItemChanged(manager.topPosition)
-    }
-
-    private fun swap() {
-        val old = adapter.getSpots()
-        val new = mutableListOf<Spot>().apply {
-            addAll(old)
-            val first = removeAt(manager.topPosition)
-            val last = removeAt(this.size - 1)
-            add(manager.topPosition, last)
-            add(first)
-        }
-        val callback = SpotDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setSpots(new)
-        result.dispatchUpdatesTo(adapter)
-    }
-
-    private fun createSpot(): Spot {
-        val spots = ArrayList<Spot>()
-        return spots[0]
     }
 
     private fun createSpots(itemList: ArrayList<Item>?): List<Spot> {

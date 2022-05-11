@@ -17,7 +17,7 @@ class NetUtils {
         const val SYSTEM_ERROR = "System Error"
 
         const val MOCK_SERVER_URL = "https://c93d2298-b08b-4518-9400-a74ede1a39c7.mock.pstmn.io"
-        const val LOCAL_TEST_URL = "http://192.168.1.102:8080/"
+        const val LOCAL_TEST_URL = "http://192.168.1.105:8080/"
         const val BASE_URL = "https://luukatme.herokuapp.com/";
 
         private val TAG = NetUtils::class.java.simpleName
@@ -38,12 +38,14 @@ class NetUtils {
                     result = if (info != null && info.isAvailable) {
                         info.isConnected
                     } else {
-                        LogUtils.logW(TAG, "ConnectivityManager says that network is NOT available")
+                        LogUtils(javaClass).w(
+                            "ConnectivityManager says that network is NOT available"
+                        )
                         false
                     }
                     result
                 } catch (e: Exception) {
-                    LogUtils.logE(TAG, e.message, e)
+                    LogUtils(javaClass).e(e)
                     result
                 }
             }

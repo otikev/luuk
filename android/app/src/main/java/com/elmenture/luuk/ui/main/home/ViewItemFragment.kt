@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentViewItemBinding
-import com.elmenture.luuk.ui.main.MainActivityView
 import com.google.android.material.chip.Chip
 import models.Spot
 import models.TagProperty
@@ -21,7 +20,6 @@ import utils.MiscUtils
 class ViewItemFragment : BaseFragment() {
 
     private var activeSpot: Spot? = null
-    private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private lateinit var binding: FragmentViewItemBinding
 
     companion object {
@@ -54,18 +52,28 @@ class ViewItemFragment : BaseFragment() {
     private fun initView() {
         activeSpot?.let {
             binding.tvDescription.text = it.description
-            binding.tvPrice.text ="Ksh ${MiscUtils.getFormattedAmount(it.priceCents.toDouble() / 100)}"
+            binding.tvPrice.text =
+                "Ksh ${MiscUtils.getFormattedAmount(it.priceCents.toDouble() / 100)}"
 
-            if(it.sizeType.equals("INT",true)){
-                binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size",
-                    StringUtils.upperCase(it.sizeInternational)
-                ))
-            }else{
-                binding.tvSize.text = MiscUtils.getSpannedText(getString(R.string.contrast_text, "Size", it.sizeNumber.toString()+"("+it.sizeType+")"))
+            if (it.sizeType.equals("INT", true)) {
+                binding.tvSize.text = MiscUtils.getSpannedText(
+                    getString(
+                        R.string.contrast_text, "Size",
+                        StringUtils.upperCase(it.sizeInternational)
+                    )
+                )
+            } else {
+                binding.tvSize.text = MiscUtils.getSpannedText(
+                    getString(
+                        R.string.contrast_text,
+                        "Size",
+                        it.sizeNumber.toString() + "(" + it.sizeType + ")"
+                    )
+                )
             }
 
-            if(!it.tagProperties.isNullOrEmpty()){
-                for(id in it.tagProperties!!){
+            if (!it.tagProperties.isNullOrEmpty()) {
+                for (id in it.tagProperties!!) {
                     addChipToGroup(User.getCurrent().getTagProperty(id))
                 }
             }

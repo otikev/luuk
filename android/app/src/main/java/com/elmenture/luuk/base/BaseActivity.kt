@@ -1,8 +1,6 @@
 package com.elmenture.luuk.base
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -11,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.repositories.RemoteRepository
-import com.elmenture.luuk.utils.LogUtils
+import utils.LogUtils
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.CallbackManager.Factory.create

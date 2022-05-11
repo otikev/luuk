@@ -43,7 +43,7 @@ object DateUtils {
             mDateFormat.timeZone = TimeZone.getTimeZone("UTC")
             return mDateFormat.parse(target)
         } catch (e: ParseException) {
-            LogUtils.logE(TAG, e.toString())
+            LogUtils(javaClass).e(e)
         }
         return null
     }

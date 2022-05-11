@@ -203,7 +203,7 @@ public class ItemServiceImpl implements ItemService {
                         itemSize = item.getSizeInternational();
                     }
                     if (userSizes.get(itemSizeType).equalsIgnoreCase(itemSize)) {
-                        System.out.println("Found match!");
+                        System.out.println("Found match : " + item.getDescription());
                         offset = item.getId();
                         finalResults.add(item);
                     }
@@ -217,7 +217,7 @@ public class ItemServiceImpl implements ItemService {
                 }
             }
         } while (finalResults.size() >= size);//true ==> reached expected page size
-        System.out.println("*** Found "+finalResults.size()+" items");
+        System.out.println("*** Found " + finalResults.size() + " items");
 
         List<ItemDto> content = finalResults.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
         updateTracker(user, newTrackerPosition);
@@ -228,7 +228,7 @@ public class ItemServiceImpl implements ItemService {
         user = userRepository.findById(user.getId()).get();
         user.setItemQueueTracker(tracker);
         userRepository.save(user);
-        System.out.println("Updated user "+user.getId()+"'s item queue tracker to "+tracker);
+        System.out.println("Updated user " + user.getId() + "'s item queue tracker to " + tracker);
     }
 
     private ItemDto mapToDTO(Item item) {
