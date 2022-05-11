@@ -1,5 +1,6 @@
 package com.elmenture.luuk.ui.main.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,9 @@ import com.amazonaws.util.StringUtils.upperCase
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.repositories.LocalRepository
+import com.elmenture.luuk.data.ItemQueue
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import com.elmenture.luuk.data.ItemQueue
 import models.Item
 import models.Spot
 import utils.MiscUtils
@@ -33,10 +34,22 @@ class HomeFragment : BaseFragment(), CardStackListener {
     private lateinit var homeViewModel: HomeViewModel
     private val itemList by lazy { homeViewModel.itemsLiveData.value }
 
-    private val showMySizes: Boolean = true
-
     companion object {
         fun newInstance() = HomeFragment()
+    }
+
+    fun showAllItemsInQueue(): Boolean {
+        val sharedPref =
+            requireContext().getSharedPreferences("LUUK_PREFERENCES", Context.MODE_PRIVATE)
+        return sharedPref.getBoolean("show_all_items", true)
+    }
+
+    fun saveQueueSetting(showAllItems: Boolean) {
+        val sharedPref =
+            requireContext().getSharedPreferences("LUUK_PREFERENCES", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putBoolean("show_all_items", showAllItems)
+        editor.apply()
     }
 
     override fun onCreateView(
@@ -54,10 +67,28 @@ class HomeFragment : BaseFragment(), CardStackListener {
         observeViewModelLiveData()
         setupCardStackView()
         setEventListeners()
-        homeViewModel.fetchItems(showMySizes)
+        homeViewModel.fetchItems(showAllItemsInQueue())
     }
 
     private fun setEventListeners() {
+        binding.rgOptions.setOnCheckedChangeListener { _, checkedId ->
+            homeViewModel.itemsLiveData.value = ArrayList<Item>()
+            when (checkedId) {
+                R.id.rb_my_sizes -> {
+                    ItemQueue.clear()
+                    adapter.notifyDataSetChanged()
+                    saveQueueSetting(false)
+                    homeViewModel.fetchItems(false)
+                }
+                R.id.rb_all -> {
+                    ItemQueue.clear()
+                    adapter.notifyDataSetChanged()
+                    saveQueueSetting(true)
+                    homeViewModel.fetchItems(true)
+                }
+            }
+        }
+
         val comingSoonAction = View.OnClickListener {
             Toast.makeText(requireContext(), "Feature Coming Soon", Toast.LENGTH_SHORT).show()
         }
@@ -110,7 +141,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
         logUtils.d("onCardSwiped, items remaining : ${adapter.itemCount}")
         if (adapter.itemCount < 3) {
-            homeViewModel.fetchItems(showMySizes)
+            homeViewModel.fetchItems(showAllItemsInQueue())
         }
     }
 
@@ -166,6 +197,12 @@ class HomeFragment : BaseFragment(), CardStackListener {
     }
 
     private fun initView() {
+        if (showAllItemsInQueue()) {
+            binding.rbAll.isChecked = true
+        } else {
+            binding.rbMySizes.isChecked = true
+        }
+
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java);
         adapter.setItemClickListener { activityView.startViewItemFragment(adapter.getItem(manager.topPosition)) }
     }

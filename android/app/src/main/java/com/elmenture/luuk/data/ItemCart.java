@@ -6,7 +6,7 @@ import java.util.List;
 import models.Spot;
 import utils.LogUtils;
 
-public class ItemQueue {
+public class ItemCart {
     static LogUtils logUtils = new LogUtils(ItemQueue.class);
     public static List<Spot> spots = new ArrayList<>();
 
@@ -24,12 +24,8 @@ public class ItemQueue {
         print();
     }
 
-    public static void addItems(List<Spot> _spots) {
-        for (Spot spot : _spots) {
-            if (!queueContains(spot)) {
-                spots.add(spot);
-            }
-        }
+    public static void addItem(Spot spot) {
+        spots.add(spot);
         print();
     }
 
@@ -43,11 +39,11 @@ public class ItemQueue {
     }
 
     public static void print() {
-        String queue = " \n*Queue items*\n[";
+        String queue = " \n*Cart items*\n[";
         for (Spot spot : spots) {
             queue = queue + "\n" + spot.getItemId() + ". " + spot.getDescription();
         }
-        queue = queue + "\n] "+spots.size()+" items";
+        queue = queue + "\n] " + spots.size() + " items";
         logUtils.d(queue);
     }
 }

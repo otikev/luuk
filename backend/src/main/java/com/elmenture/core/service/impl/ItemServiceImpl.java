@@ -155,45 +155,38 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getQueue(User user, boolean filter, int size) {
         List<Item> finalResults = new ArrayList<>();
-        Sort sort = Sort.by("id").descending();
+        Sort sort = Sort.by("id").ascending();
         Map<String, String> userSizes = SizeMapper.mappedSizesForUser(user);
-        long offset = user.getItemQueueTracker();
-        int queueLaps = 0;
 
-        long newTrackerPosition = 0;
-
+        long startTrackerPosition = user.getItemQueueTracker();
+        long newTrackerPosition = startTrackerPosition;
+        long offset = startTrackerPosition;
+        boolean startedFromBeginning = false;
         do {
-            Pageable pageable = new ChunkRequest(offset, size, sort);
+            Pageable pageable;
+
+            List<Item> listOfItems = new ArrayList<>();
+            System.out.println("Started traversing item queue at id " + offset);
+
+            if (offset < startTrackerPosition) {
+                startedFromBeginning = true;
+                int limit = (int) (startTrackerPosition - offset);
+                pageable = new ChunkRequest(offset, limit, sort);
+            } else {
+                pageable = new ChunkRequest(offset, size, sort);
+            }
+
             Page<Item> items = itemRepository.findBySoldFalse(pageable);
-            List<Item> listOfItems = items.getContent();
+            listOfItems = items.getContent();
 
-
-            if (finalResults.size() > 0 && listOfItems.size() == 0) {
-                //Found some items and reached end of queue without getting enough items
-                //Send the items to the user
-                System.out.println("Reached end of queue with " + finalResults.size() + " items instead of " + size + ". Returning results to user.");
-                break;
-            } else if (finalResults.size() == 0 && listOfItems.size() == 0) {
-                //Found no items and reached end of queue
-                if (queueLaps < 1) {
-                    //Try 1 more pass, could pick some previous items that user had seen but did not
-                    System.out.println("Reached end of queue with 0 items, moving to beginning of queue.");
-                    offset = 0;
-                    queueLaps++;
-                } else {
-                    System.out.println("Reached end of queue with 0 items (started at beginning of queue), returning empty results to user.");
-                    break;
-                }
-            }
-
-            if (listOfItems.size() < size) {
-                System.out.println("Reached end of queue!");
-                queueLaps++;
-            }
-
+            boolean exit = false;
             for (Item item : listOfItems) {
                 newTrackerPosition = item.getId();
-
+                if (startedFromBeginning && newTrackerPosition >= startTrackerPosition) {
+                    System.out.println("Traversed the whole queue, exiting... ");
+                    exit = true;
+                    break;
+                }
                 if (filter) {
                     String itemSizeType = item.getSizeType();
                     String itemSize = "";
@@ -212,11 +205,23 @@ public class ItemServiceImpl implements ItemService {
                 }
 
                 if (finalResults.size() >= size) {
-                    //got enough items!
+                    System.out.println("got enough items!");
                     break;
                 }
             }
-        } while (finalResults.size() >= size);//true ==> reached expected page size
+
+            if (exit) {
+                break;
+            }
+
+            if (listOfItems.size() < size && finalResults.size() < size) {
+                System.out.println("Reached end of item queue at id " + newTrackerPosition + ". moving to beginning of queue.");
+                offset = 0;
+            } else {
+                offset = newTrackerPosition;
+            }
+        } while (finalResults.size() < size);
+
         System.out.println("*** Found " + finalResults.size() + " items");
 
         List<ItemDto> content = finalResults.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());

@@ -41,9 +41,9 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun fetchItems(filter: Boolean) {
+    fun fetchItems(showAllItems: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = RemoteRepository.fetchItemsQueue(filter)
+            val response = RemoteRepository.fetchItemsQueue(!showAllItems)
             if (response.isSuccessful) {
                 LocalRepository.updateItemList(response.data as ArrayList<Item>?)
             }
