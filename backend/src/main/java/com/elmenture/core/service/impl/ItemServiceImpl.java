@@ -197,7 +197,6 @@ public class ItemServiceImpl implements ItemService {
                     }
                     if (userSizes.get(itemSizeType).equalsIgnoreCase(itemSize)) {
                         System.out.println("Found match : " + item.getDescription());
-                        offset = item.getId();
                         finalResults.add(item);
                     }
                 } else {
