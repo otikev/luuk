@@ -206,6 +206,7 @@ public class OrderController extends BaseController {
             DarajaAuthDto darajaAuthDTO = new Gson().fromJson(resBody, DarajaAuthDto.class);
             String darajaAuth = darajaAuthDTO.getAccessToken();
             String callbackUrl = BASE_URL + "order/payment-confirmed";
+            System.out.println("STK_CALLBACK_URL"+callbackUrl);
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddHHmmss");
