@@ -19,6 +19,11 @@ public class ItemQueue {
         print();
     }
 
+
+    public static boolean isEmpty() {
+        return spots.isEmpty();
+    }
+
     public static void clear() {
         spots.clear();
         print();
@@ -47,7 +52,7 @@ public class ItemQueue {
         for (Spot spot : spots) {
             queue = queue + "\n" + spot.getItemId() + ". " + spot.getDescription();
         }
-        queue = queue + "\n] "+spots.size()+" items";
+        queue = queue + "\n] " + spots.size() + " items";
         logUtils.d(queue);
     }
 }
