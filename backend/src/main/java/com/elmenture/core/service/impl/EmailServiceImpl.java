@@ -24,6 +24,7 @@ import java.util.List;
 public class EmailServiceImpl implements EmailService {
     private final String[] SITE_ADMINS = {"oti.kevin@gmail.com", "aycewhispero@gmail.com"};
     private final String[] BUSINESS_ADMINS = {"k.kinyua@luukat.me"};
+    private final String ORDERS_NOTIFICATIONS_EMAIL = "orders@luukat.me";
 
     @Autowired
     private JavaMailSender emailSender;
@@ -50,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
 
         helper.setSubject("New Order");
         helper.setFrom(LuukProperties.smtpUsername);
-        helper.setTo("orders@luukat.me");
+        helper.setTo(ORDERS_NOTIFICATIONS_EMAIL);
 
         boolean html = true;
 
@@ -69,7 +70,7 @@ public class EmailServiceImpl implements EmailService {
 
         helper.setText(emailBody, html);
         emailSender.send(message);
-        logSent(Arrays.toString(BUSINESS_ADMINS));
+        logSent(ORDERS_NOTIFICATIONS_EMAIL);
     }
 
     private void logSent(String recipients) {
