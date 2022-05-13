@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
 
         helper.setSubject("New Order");
         helper.setFrom(LuukProperties.smtpUsername);
-        helper.setTo(BUSINESS_ADMINS);
+        helper.setTo("orders@luukat.me");
 
         boolean html = true;
 
@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Order #:</b> " + orderId + "<br><br>" +
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
-                        "<b>Delivery Address:</b> " + deliveryAddress +
+                        "<b>Delivery Address:</b> " + deliveryAddress + "<br><br>" +
                         "<b>Delivery Mode:</b> " + deliveryMode;
 
         helper.setText(emailBody, html);
@@ -73,6 +73,6 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private void logSent(String recipients) {
-        System.out.println("Sent email to " + recipients);
+        System.out.println("@@@@ Sent email to " + recipients);
     }
 }
