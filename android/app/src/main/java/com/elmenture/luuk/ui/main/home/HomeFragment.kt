@@ -232,21 +232,23 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val spots = ArrayList<Spot>()
         itemList?.let {
             for (item in it) {
-                spots.add(
-                    Spot(
-                        url = item.imageUrl!!,
-                        priceCents = item.price!!,
-                        sizeType = item.sizeType!!,
-                        sizeInternational = item.sizeInternational,
-                        sizeNumber = item.sizeNumber,
-                        itemId = item.id!!,
-                        description = item.description!!,
-                        tagProperties = item.tagProperties!!
-                    )
-                )
+                spots.add(createSpot(item))
             }
         }
         return spots
+    }
+
+    private fun createSpot(item: Item): Spot {
+        return Spot(
+            url = item.imageUrl!!,
+            priceCents = item.price!!,
+            sizeType = item.sizeType!!,
+            sizeInternational = item.sizeInternational,
+            sizeNumber = item.sizeNumber,
+            itemId = item.id!!,
+            description = item.description!!,
+            tagProperties = item.tagProperties!!
+        )
     }
 
     override fun onDestroyView() {

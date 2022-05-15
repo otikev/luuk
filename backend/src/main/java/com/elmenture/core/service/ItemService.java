@@ -20,4 +20,6 @@ public interface ItemService {
     ItemResponse getAllItems(List<String> targets, boolean sold, int page, int size, String sortBy, String sortDir);
 
     ItemResponse getAllItems(List<String> targets, String sizeInternational, int page, int size, String sortBy, String sortDir);
+
+    List<ItemDto> getAllItems(String keyword);
 }

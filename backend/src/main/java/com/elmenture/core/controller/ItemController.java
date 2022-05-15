@@ -6,6 +6,7 @@ import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
 import com.elmenture.core.utils.AppConstants;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,8 +71,14 @@ public class ItemController extends BaseController {
         return ResponseEntity.ok("OK");
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ItemDto>> searchItem(@RequestParam(value = "filter") String keyword) {
+        return new ResponseEntity<>(itemService.getAllItems(keyword), HttpStatus.OK);
+    }
+
     @RequestMapping("/open")
     public String open() {
         return "Is this what you expect to see?";
     }
+
 }

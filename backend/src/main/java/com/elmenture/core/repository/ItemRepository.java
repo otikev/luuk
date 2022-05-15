@@ -40,6 +40,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Page<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational, Pageable pageable);
 
-    //List<Item> findBySoldIs(boolean sold,)
+    @Query("SELECT i FROM Item i WHERE lower(i.description) LIKE lower(concat('%', :nameToFind,'%')) OR lower(i.brand) LIKE lower(concat('%', :nameToFind,'%'))")
+    List<Item> searchAllLike(@Param("nameToFind") String keyword);
 
 }

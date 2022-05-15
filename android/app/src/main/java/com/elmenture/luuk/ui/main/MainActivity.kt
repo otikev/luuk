@@ -21,6 +21,7 @@ import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutSuccessFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
+import com.elmenture.luuk.ui.main.search.SearchItemsFragment
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.navigation.NavigationBarView
@@ -137,19 +138,38 @@ class MainActivity : AuthenticatedActivity(),
     }
 
     override fun startCheckoutSuccessFragment() {
-        addFragment(CheckoutSuccessFragment.newInstance(), CheckoutSuccessFragment::class.java.canonicalName)
+        addFragment(
+            CheckoutSuccessFragment.newInstance(),
+            CheckoutSuccessFragment::class.java.canonicalName
+        )
     }
 
     override fun startCheckoutFailureFragment() {
-        addFragment(CheckoutFailureFragment.newInstance(), CheckoutFailureFragment::class.java.canonicalName)
+        addFragment(
+            CheckoutFailureFragment.newInstance(),
+            CheckoutFailureFragment::class.java.canonicalName
+        )
     }
 
     override fun startInventoryManagementFragment() {
-        addFragment(InventoryManagementFragment.newInstance(),InventoryManagementFragment::class.java.canonicalName)
+        addFragment(
+            InventoryManagementFragment.newInstance(),
+            InventoryManagementFragment::class.java.canonicalName
+        )
     }
 
     override fun startOrderHistoryFragment() {
-        addFragment(OrderHistoryFragment.newInstance(),OrderHistoryFragment::class.java.canonicalName)
+        addFragment(
+            OrderHistoryFragment.newInstance(),
+            OrderHistoryFragment::class.java.canonicalName
+        )
+    }
+
+    override fun startSearchItemsFragment() {
+        addFragment(
+            SearchItemsFragment.newInstance(),
+            SearchItemsFragment::class.java.canonicalName
+        )
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -160,7 +180,8 @@ class MainActivity : AuthenticatedActivity(),
                 true
             }
             R.id.navSearch -> {
-                // Respond to navigation item 2 click
+                if (!item.isChecked)
+                    startSearchItemsFragment()
                 true
             }
             R.id.navCart -> {

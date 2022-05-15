@@ -137,4 +137,9 @@ object RemoteRepository {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).userDetails()
         return processRequest(call, blockUi = false)
     }
+
+    fun fetchSearchItems(searchItem: String): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchSearchItems(searchItem)
+        return processRequest(call, blockUi = false)
+    }
 }

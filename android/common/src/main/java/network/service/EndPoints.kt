@@ -52,4 +52,7 @@ interface EndPoints {
     @GET("user/details")
     fun userDetails(): Call<SignInResponse>
 
+    @GET("items/search")
+    fun fetchSearchItems(@Query("filter") searchItem: String): Call<List<Item>>
+
 }

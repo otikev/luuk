@@ -118,6 +118,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemDto> getAllItems(String keyword) {
+        if(keyword==null || keyword.isEmpty()){
+            return new ArrayList<>();
+        }
+        List<Item> items = itemRepository.searchAllLike(keyword);
+        List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+
+        return response;
+    }
+
+
+    @Override
     public ItemResponse getAllItems(List<String> targets, int page, int size, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
