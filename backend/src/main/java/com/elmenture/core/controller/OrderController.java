@@ -89,7 +89,7 @@ public class OrderController extends BaseController {
         }
 
         try {
-            emailService.sendNewOrderEmail(order.getId(), orderItemIds, totalCents, customerName, address, null);
+            emailService.sendNewOrderEmail(order.getId(), orderItemIds, totalCents, customerName, address, "Standard");
         } catch (MessagingException e) {
             e.printStackTrace();
         }

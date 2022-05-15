@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +22,9 @@ import java.util.List;
 //https://www.baeldung.com/spring-email
 @Service
 public class EmailServiceImpl implements EmailService {
-    private final String[] SITE_ADMINS = {"oti.kevin@gmail.com"};
+    private final String[] SITE_ADMINS = {"oti.kevin@gmail.com", "aycewhispero@gmail.com"};
     private final String[] BUSINESS_ADMINS = {"k.kinyua@luukat.me"};
+    private final String ORDERS_NOTIFICATIONS_EMAIL = "orders@luukat.me";
 
     @Autowired
     private JavaMailSender emailSender;
@@ -35,10 +37,11 @@ public class EmailServiceImpl implements EmailService {
         }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(LuukProperties.smtpUsername);
-        message.setTo(SITE_ADMINS[0]);
+        message.setTo(SITE_ADMINS);
         message.setSubject("LUUK SERVICE NOTIFICATION");
         message.setText("Luuk backend has started running");
         emailSender.send(message);
+        logSent(Arrays.toString(BUSINESS_ADMINS));
     }
 
     @Override
@@ -48,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
 
         helper.setSubject("New Order");
         helper.setFrom(LuukProperties.smtpUsername);
-        helper.setTo(BUSINESS_ADMINS[0]);
+        helper.setTo(ORDERS_NOTIFICATIONS_EMAIL);
 
         boolean html = true;
 
@@ -62,10 +65,15 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Order #:</b> " + orderId + "<br><br>" +
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
-                        "<b>Delivery Address:</b> " + deliveryAddress +
-                        "<b>Delivery Mode:</b> Standard";
+                        "<b>Delivery Address:</b> " + deliveryAddress + "<br><br>" +
+                        "<b>Delivery Mode:</b> " + deliveryMode;
 
         helper.setText(emailBody, html);
         emailSender.send(message);
+        logSent(ORDERS_NOTIFICATIONS_EMAIL);
+    }
+
+    private void logSent(String recipients) {
+        System.out.println("@@@@ Sent email to " + recipients);
     }
 }

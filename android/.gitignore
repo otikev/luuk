@@ -13,3 +13,5 @@
 local.properties
 /app/debug
 /app/release
+/app/build
+/common/build

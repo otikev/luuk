@@ -17,6 +17,9 @@ class HomeViewModel : ViewModel() {
         itemsLiveData.addSource(LocalRepository.itemListLiveData) { itemsLiveData.setValue(it) }
     }
 
+    fun clearItems(){
+        LocalRepository.itemListLiveData.value?.clear()
+    }
 
     fun updateSwipesData(like: Spot? = null, dislike: Spot? = null) {
         val likeData = LocalRepository.swipeRecords.likes.value

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
@@ -72,7 +73,7 @@ class HomeFragment : BaseFragment(), CardStackListener {
 
     private fun setEventListeners() {
         binding.rgOptions.setOnCheckedChangeListener { _, checkedId ->
-            homeViewModel.itemsLiveData.value = ArrayList<Item>()
+            homeViewModel.clearItems()
             when (checkedId) {
                 R.id.rb_my_sizes -> {
                     ItemQueue.clear()
@@ -106,6 +107,17 @@ class HomeFragment : BaseFragment(), CardStackListener {
             val filteredList = filterListAgainstCart(cart!!, unfilteredList)
             ItemQueue.addItems(filteredList)
             adapter.notifyDataSetChanged()
+            if (ItemQueue.isEmpty()) {
+                if (!binding.rbAll.isChecked) {
+                    binding.noItems.visibility = VISIBLE
+                }
+                binding.itemInfo.visibility = GONE
+                binding.cardStackView.visibility = INVISIBLE
+            } else {
+                binding.itemInfo.visibility = VISIBLE
+                binding.cardStackView.visibility = VISIBLE
+                binding.noItems.visibility = GONE
+            }
         }
     }
 
@@ -129,6 +141,18 @@ class HomeFragment : BaseFragment(), CardStackListener {
         val spot = ItemQueue.getTopItem()
         ItemQueue.removeTopItem()
         adapter.notifyDataSetChanged()
+
+        if (ItemQueue.isEmpty()) {
+            if (!binding.rbAll.isChecked) {
+                binding.noItems.visibility = VISIBLE
+            }
+            binding.itemInfo.visibility = GONE
+            binding.cardStackView.visibility = INVISIBLE
+        } else {
+            binding.itemInfo.visibility = VISIBLE
+            binding.cardStackView.visibility = VISIBLE
+            binding.noItems.visibility = GONE
+        }
 
         when (direction) {
             Direction.Left -> homeViewModel.updateSwipesData(
