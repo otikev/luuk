@@ -5,31 +5,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentSearchBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
 import models.Spot
-import models.TagProperty
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class SearchItemsFragment : BaseFragment(), SearchAdapter.CartActionListener {
+class ViewSearchedItemsFragment : BaseFragment(), ViewSearchedItemsAdapter.CartActionListener {
     lateinit var binding: FragmentSearchBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
-    private var itemList: ArrayList<TagProperty> = ArrayList()
-    var adapter = SearchAdapter(itemList, this)
+    private var itemList: ArrayList<Item> = ArrayList()
 
     private lateinit var viewModel: SearchViewModel
 
 
     companion object {
-        fun newInstance() = SearchItemsFragment()
+        fun newInstance(list: List<Item>) :ViewSearchedItemsFragment{
+            val frag = ViewSearchedItemsFragment()
+            frag.itemList = list as ArrayList<Item>
+            return frag
+        }
     }
 
     override fun onCreateView(
@@ -49,46 +52,22 @@ class SearchItemsFragment : BaseFragment(), SearchAdapter.CartActionListener {
 
     private fun initView() {
         viewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
-        binding.rvSearch.layoutManager = LinearLayoutManager(context)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+        gridLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        binding.rvSearch.layoutManager = gridLayoutManager
+        val adapter = ViewSearchedItemsAdapter(itemList, this)
         binding.rvSearch.adapter = adapter
     }
 
     private fun setUpEventListeners() {
-        binding.svItems.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrEmpty())
-                    viewModel.fetchSearchItems(query);
-                return false
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty())
-                    viewModel.fetchSearchItems(newText);
-                return false
-            }
-        })
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeLiveData() {
-        viewModel.searchTagLiveData.observe(viewLifecycleOwner) {
-            itemList.clear()
-            itemList.addAll(it)
-            adapter.notifyDataSetChanged()
-        }
 
-        viewModel.searchItemsByTagViewState.observe(viewLifecycleOwner) {
-            if(it.isSuccessful){
-                activityView.startViewSearchedItemsFragment(it.data as List<Item>);
-            }
-
-        }
     }
 
-    override fun onItemClicked(tagProperty: TagProperty) {
-        viewModel.fetchItemsByTag(tagProperty.id!!)
-    }
 
     private fun createSpot(item: Item): Spot {
         return Spot(
@@ -101,6 +80,10 @@ class SearchItemsFragment : BaseFragment(), SearchAdapter.CartActionListener {
             description = item.description!!,
             tagProperties = item.tagProperties!!
         )
+    }
+
+    override fun onItemClicked(item: Item) {
+
     }
 
 

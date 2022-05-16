@@ -30,6 +30,7 @@ public class TagProperty extends BaseEntity {
     @Column(name = "value", nullable = false)
     private String value;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;

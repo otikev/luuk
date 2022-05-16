@@ -1,9 +1,11 @@
 package com.elmenture.core.controller;
 
 import com.elmenture.core.engine.SizeMapper;
+import com.elmenture.core.model.ItemProperty;
 import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.model.User;
 import com.elmenture.core.payload.*;
+import com.elmenture.core.repository.ItemPropertyRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.EmailService;
@@ -33,6 +35,9 @@ public abstract class BaseController {
 
     @Autowired
     protected TagPropertyRepository tagPropertyRepository;
+
+    @Autowired
+    protected ItemPropertyRepository itemPropertyRepository;
 
     protected ExecutorService executor = Executors.newFixedThreadPool(10);
 

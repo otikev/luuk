@@ -119,12 +119,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getAllItems(String keyword) {
-        if(keyword==null || keyword.isEmpty()){
+        if (keyword == null || keyword.isEmpty()) {
             return new ArrayList<>();
         }
         List<Item> items = itemRepository.searchAllLike(keyword);
         List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
 
+        return response;
+    }
+
+    @Override
+    public List<ItemDto> getAllItems(List<Long> itemIds) {
+        List<Item> items = itemRepository.findAllById(itemIds);
+        List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
         return response;
     }
 

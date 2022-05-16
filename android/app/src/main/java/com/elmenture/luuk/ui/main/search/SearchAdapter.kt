@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.elmenture.luuk.databinding.SearchItemBinding
-import com.elmenture.luuk.ui.main.cart.CartAdapter
-import models.Item
+import models.TagProperty
 
-class SearchAdapter(var list: ArrayList<Item>, var itemActionListener: CartActionListener) :
+class SearchAdapter(var list: ArrayList<TagProperty>, var itemActionListener: CartActionListener) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,8 +19,8 @@ class SearchAdapter(var list: ArrayList<Item>, var itemActionListener: CartActio
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
-        holder.bind(item, itemActionListener)
+        val tagProperty = list[position]
+        holder.bind(tagProperty, itemActionListener)
     }
 
     override fun getItemCount(): Int {
@@ -30,14 +29,14 @@ class SearchAdapter(var list: ArrayList<Item>, var itemActionListener: CartActio
 
     class ViewHolder(private val view: SearchItemBinding) :
         RecyclerView.ViewHolder(view.root) {
-        fun bind(item: Item, itemActionListener: CartActionListener) {
-            view.tvDescription.text = item.description
-            view.searchContainer.setOnClickListener { itemActionListener.onItemClicked(item) }
+        fun bind(tagProperty: TagProperty, itemActionListener: CartActionListener) {
+            view.tvDescription.text = tagProperty.value
+            view.searchContainer.setOnClickListener { itemActionListener.onItemClicked(tagProperty) }
         }
     }
 
     interface CartActionListener{
-        fun onItemClicked(item: Item)
+        fun onItemClicked(tagProperty: TagProperty)
     }
 
 }

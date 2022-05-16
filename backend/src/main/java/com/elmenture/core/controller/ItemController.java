@@ -1,5 +1,7 @@
 package com.elmenture.core.controller;
 
+import com.elmenture.core.model.Item;
+import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
@@ -64,7 +66,7 @@ public class ItemController extends BaseController {
         long start = System.currentTimeMillis();
         List<ItemDto> queue = itemService.getQueue(getLoggedInUser(), filter, 20);
         long totalTime = System.currentTimeMillis() - start;
-        System.out.println("===== Generated queue in "+totalTime+" milliseconds. Filtered : "+filter+" =====");
+        System.out.println("===== Generated queue in " + totalTime + " milliseconds. Filtered : " + filter + " =====");
         return new ResponseEntity<>(queue, HttpStatus.OK);
     }
 
@@ -75,8 +77,14 @@ public class ItemController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ItemDto>> searchItem(@RequestParam(value = "filter") String keyword) {
-        return new ResponseEntity<>(itemService.getAllItems(keyword), HttpStatus.OK);
+    public ResponseEntity<List<TagProperty>> searchTags(@RequestParam(value = "filter") String keyword) {
+        return new ResponseEntity<>(tagPropertyRepository.searchAllLike(keyword), HttpStatus.OK);
+    }
+
+    @GetMapping("/with-property")
+    public List<ItemDto> searchItemsWithTagProperty(@RequestParam(value = "tag_property") Long tagPropertyId) {
+        List<Long> itemIds = itemPropertyRepository.findItemIdByTagPropertyId(tagPropertyId);
+        return itemService.getAllItems(itemIds);
     }
 
     @RequestMapping("/open")

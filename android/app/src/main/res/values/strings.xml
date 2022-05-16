@@ -15,7 +15,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="contrast_text"><![CDATA[%s <b>%s</b>]]></string>
 
-    <string name="thank_you_for_your_order">Thank you for your order! Please check \n your email for your receipt\n\n Luuk out to our rider in the next\n <b>60 minutes</b></string>
+    <string name="thank_you_for_your_order">Thank you for your order! Please check \n your email for your receipt\n\n Luuk out to our rider within the day</string>
     <string name="track_your_order"><u>Track Your Order</u></string>
     <string name="that_did_now_work_please_try_again">That did now work, <b>please try again</b></string>
     <string name="strike_amt"><strike>Ksh 300</strike></string>

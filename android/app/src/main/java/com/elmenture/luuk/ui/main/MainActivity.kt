@@ -22,6 +22,7 @@ import com.elmenture.luuk.ui.main.cart.checkout.CheckoutSuccessFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.elmenture.luuk.ui.main.search.SearchItemsFragment
+import com.elmenture.luuk.ui.main.search.ViewSearchedItemsFragment
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.navigation.NavigationBarView
@@ -172,6 +173,12 @@ class MainActivity : AuthenticatedActivity(),
         )
     }
 
+    override fun startViewSearchedItemsFragment(list: List<Item>) {
+        addFragment(
+            ViewSearchedItemsFragment.newInstance(list),
+            ViewSearchedItemsFragment::class.java.canonicalName
+        )
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.navHome -> {
@@ -198,6 +205,7 @@ class MainActivity : AuthenticatedActivity(),
             else -> false
         }
     }
+
 
     private fun setupBottomNavView() {
         binding.bottomNavigation.setOnItemSelectedListener(this)

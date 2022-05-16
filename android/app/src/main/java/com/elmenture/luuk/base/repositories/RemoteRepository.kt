@@ -138,8 +138,13 @@ object RemoteRepository {
         return processRequest(call, blockUi = false)
     }
 
-    fun fetchSearchItems(searchItem: String): BaseApiState {
+    fun fetchSearchTags(searchItem: String): BaseApiState {
         val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchSearchItems(searchItem)
+        return processRequest(call, blockUi = false)
+    }
+
+    fun fetchItemsByTagProperty(tagPropertyId: Long): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchAllWithProperty(tagPropertyId)
         return processRequest(call, blockUi = false)
     }
 }
