@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.elmenture.luuk.base.BaseActivity;
 import com.elmenture.luuk.base.repositories.LocalRepository;
 import com.elmenture.luuk.ui.signin.SignInActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import userdata.User;
 import utils.SecureUtils;
@@ -24,6 +25,7 @@ public class AuthenticatedActivity extends BaseActivity {
     }
 
     protected void logout() {
+        FirebaseAuth.getInstance().signOut();
         SecureUtils.setUserSessionKey(AuthenticatedActivity.this, null);
         User.getCurrent().logout();
         LocalRepository.INSTANCE.updateUserDetails(null);
