@@ -9,47 +9,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.repositories.RemoteRepository
-<<<<<<< HEAD
-import utils.LogUtils
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.CallbackManager.Factory.create
-import com.facebook.login.LoginManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.snackbar.Snackbar
-import userdata.User
-=======
 import com.google.android.material.snackbar.Snackbar
 import utils.LogUtils
->>>>>>> 3556c87 (Remove unneeded code)
 import views.ProgressDialog
 
 
 abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
     protected var logUtils = LogUtils(this.javaClass)
-<<<<<<< HEAD
 
-    @JvmField
-    protected var mGoogleSignInClient: GoogleSignInClient? = null
-
-    @JvmField
-    protected var callbackManager: CallbackManager? = null
-=======
->>>>>>> 3556c87 (Remove unneeded code)
     private var loader: DialogFragment? = null
     private var snackbar: Snackbar? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-<<<<<<< HEAD
-        configureGoogleSignIn()
-        configureFacebookSignin()
-=======
->>>>>>> 3556c87 (Remove unneeded code)
         observeGlobalEvents()
     }
 
@@ -63,27 +37,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.layout_fragment_container, fragment, tag)
             .commitAllowingStateLoss()
-    }
-
-    private fun configureGoogleSignIn() {
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
-            .requestEmail()
-            .build()
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-        if (account != null) {
-            if (!User.hasSignedInUser()) {
-                mGoogleSignInClient!!.signOut()
-            }
-        }
     }
 
     private fun observeGlobalEvents() {
@@ -117,7 +70,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     fun showMessage(view: View, isSuccessFullAction: Boolean, message: String? = null) {
         snackbar?.dismiss()
         var snackMsg = message
-        if(snackMsg.isNullOrEmpty()){
+        if (snackMsg.isNullOrEmpty()) {
             snackMsg = "Action Failed. Try Again"
             if (isSuccessFullAction) {
                 snackMsg = "Action Completed Successfully"
@@ -125,7 +78,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         }
 
         snackbar = Snackbar.make(view, snackMsg, Snackbar.LENGTH_INDEFINITE)
-        val textView = snackbar?.view?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        val textView =
+            snackbar?.view?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
         textView?.gravity = Gravity.CENTER
         textView?.setLines(2);
         textView?.setTextColor(resources.getColor(R.color.luuk_yellow))
