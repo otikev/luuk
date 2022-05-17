@@ -113,7 +113,6 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
         btnFacebook.setOnClickListener(view -> {
             btnFacebookLoginHidden.performClick();
-            //LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
         });
     }
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.repositories.RemoteRepository
+<<<<<<< HEAD
 import utils.LogUtils
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -19,38 +20,37 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import userdata.User
+=======
+import com.google.android.material.snackbar.Snackbar
+import utils.LogUtils
+>>>>>>> 3556c87 (Remove unneeded code)
 import views.ProgressDialog
 
 
 abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     @JvmField
     protected var logUtils = LogUtils(this.javaClass)
+<<<<<<< HEAD
 
     @JvmField
     protected var mGoogleSignInClient: GoogleSignInClient? = null
 
     @JvmField
     protected var callbackManager: CallbackManager? = null
+=======
+>>>>>>> 3556c87 (Remove unneeded code)
     private var loader: DialogFragment? = null
     private var snackbar: Snackbar? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+<<<<<<< HEAD
         configureGoogleSignIn()
         configureFacebookSignin()
+=======
+>>>>>>> 3556c87 (Remove unneeded code)
         observeGlobalEvents()
-    }
-
-    private fun configureFacebookSignin() {
-        callbackManager = create()
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-        if (isLoggedIn) {
-            if (!User.hasSignedInUser()) {
-                LoginManager.getInstance().logOut()
-            }
-        }
     }
 
     override fun addFragment(fragment: Fragment, tag: String) {
