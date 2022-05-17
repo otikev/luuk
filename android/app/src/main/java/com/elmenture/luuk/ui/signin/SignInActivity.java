@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +15,11 @@ import com.elmenture.luuk.R;
 import com.elmenture.luuk.base.BaseActivity;
 import com.elmenture.luuk.ui.main.MainActivity;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,32 +27,38 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 import models.SignInResponse;
 import userdata.User;
 import utils.SecureUtils;
 
+
+//https://firebase.google.com/docs/auth/android/facebook-login
+//https://firebase.google.com/docs/auth/android/google-signin
 //https://developers.google.com/identity/sign-in/android/backend-auth
 public class SignInActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener {
     private Button btnGoogle;
     private Button btnFacebook;
+    private LoginButton btnFacebookLoginHidden;
 
-    private static final String EMAIL = "email";
-    private static final String AUTH_TYPE = "rerequest";
     private static final int RC_SIGN_IN = 10001;
     private boolean showOneTapUI = true;
     private LinearLayoutCompat socialLayout;
     private SignInViewModel signInViewModel;
     String idToken;
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     GoogleApiClient googleApiClient;
+    CallbackManager callbackManager = CallbackManager.Factory.create();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,26 +79,12 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
     private void initFirebaseAuth() {
         firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                // Get signedIn user
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                //if user is signed in, we call a helper method to save the user details to Firebase
-                if (user != null) {
-                    firebaseAuth.signOut();
-                }
-            }
-        };
+        firebaseAuth.signOut(); //You are in the Sign in screen, so ensure all social logins are invalidated as we will login again in this screen
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        //googleApiClient = GoogleSignIn.getClient(this, gso);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -103,6 +97,8 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
         socialLayout.setVisibility(View.VISIBLE);
         btnFacebook = findViewById(R.id.btnFacebook);
         btnGoogle = findViewById(R.id.btnGoogle);
+        btnFacebookLoginHidden = findViewById(R.id.btnFacebookLoginHidden);
+        btnFacebookLoginHidden.setReadPermissions("email", "public_profile");
 
         signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
     }
@@ -116,7 +112,8 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
         btnGoogle.setOnClickListener(googleOnClickListener);
 
         btnFacebook.setOnClickListener(view -> {
-            LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
+            btnFacebookLoginHidden.performClick();
+            //LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
         });
     }
 
@@ -173,7 +170,7 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
     }
 
     void verifyGoogleTokenWithBackend(String accessToken) {
-        showLoadingScreen();
+        signinStarted();
 
         HashMap<String, String> nameValuePairs = new HashMap<>();
         nameValuePairs.put("idToken", accessToken);
@@ -181,25 +178,22 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
         signInViewModel.signInWithGoogle(nameValuePairs);
     }
 
-    void verifyFaceBookTokenWithBackend(String accessToken) {
-        showLoadingScreen();
+    void verifyFaceBookTokenWithBackend(String email, String accessToken) {
+        signinStarted();
 
         HashMap<String, String> nameValuePairs = new HashMap<>();
         nameValuePairs.put("idToken", accessToken);
+        nameValuePairs.put("email", email);
 
         signInViewModel.signInWithFacebook(nameValuePairs);
     }
 
     void registerFaceBookCallBacks() {
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        btnFacebookLoginHidden.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-                boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-                if (isLoggedIn) {
-                    verifyFaceBookTokenWithBackend(accessToken.getToken());
-                }
+                logUtils.d("facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -210,18 +204,41 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                logUtils.e(exception);
             }
         });
 
     }
 
-    private void signinFailed() {
-        //Notify the user
-        socialLayout.setVisibility(View.VISIBLE);
+    private void handleFacebookAccessToken(AccessToken token) {
+        logUtils.d("handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            logUtils.d("signInWithCredential:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            String displayName = user.getDisplayName();
+                            verifyFaceBookTokenWithBackend(user.getEmail(), token.getToken());
+                        } else {
+                            logUtils.w("signInWithCredential:failure -> " + task.getException().getMessage());
+                            signinFailed();
+                        }
+                    }
+                });
     }
 
-    private void showLoadingScreen() {
+    private void signinFailed() {
+        socialLayout.setVisibility(View.VISIBLE);
+        Toast.makeText(SignInActivity.this, "Authentication failed.",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void signinStarted() {
         //Notify the user
         socialLayout.setVisibility(View.GONE);
     }
