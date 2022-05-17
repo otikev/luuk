@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.amazonaws.util.StringUtils.upperCase
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.data.ItemQueue
 import com.elmenture.luuk.databinding.FragmentHomeBinding
@@ -24,7 +25,7 @@ import utils.MiscUtils
 import views.cardstackview.*
 
 
-class HomeFragment : BaseFragment(), CardStackListener {
+class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }

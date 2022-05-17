@@ -80,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/dimens_mid_size"
                     android:text="Ksh 1095"
                     android:textColor="@color/luuk_mint_green"
                     android:textSize="28sp" />

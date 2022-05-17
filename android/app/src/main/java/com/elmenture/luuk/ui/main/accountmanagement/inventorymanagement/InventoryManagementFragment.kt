@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentInventoryManagementBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
@@ -16,7 +17,7 @@ import models.Item
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class InventoryManagementFragment : BaseFragment(), InventoryAdapter.CartActionListener {
+class InventoryManagementFragment : BaseFragment(), Type.ProfileSettings, InventoryAdapter.CartActionListener {
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     lateinit var binding: FragmentInventoryManagementBinding
     lateinit var viewModel: InventoryManagementViewModel

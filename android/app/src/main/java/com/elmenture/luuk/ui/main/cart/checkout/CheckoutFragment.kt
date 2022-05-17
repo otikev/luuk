@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.FragmentCheckoutBinding
 import com.elmenture.luuk.ui.main.MainActivityView
@@ -18,7 +19,7 @@ import utils.MiscUtils
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class CheckoutFragment : BaseFragment() {
+class CheckoutFragment : BaseFragment(), Type.Cart {
     lateinit var binding: FragmentCheckoutBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private lateinit var viewModel: CartViewModel

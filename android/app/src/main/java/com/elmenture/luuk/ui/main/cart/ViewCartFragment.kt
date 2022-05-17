@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentViewCartBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.Spot
@@ -17,7 +18,7 @@ import utils.MiscUtils
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ViewCartFragment : BaseFragment(), CartAdapter.CartActionListener {
+class ViewCartFragment : BaseFragment(), Type.Cart, CartAdapter.CartActionListener {
     lateinit var binding: FragmentViewCartBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private var cartList: ArrayList<Spot> = ArrayList()

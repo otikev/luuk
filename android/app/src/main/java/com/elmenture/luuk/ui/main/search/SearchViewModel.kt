@@ -13,7 +13,7 @@ import models.TagProperty
 
 class SearchViewModel : ViewModel() {
     val searchTagLiveData = MutableLiveData<ArrayList<TagProperty>>()
-    val searchItemsByTagViewState = MutableLiveData<BaseApiState>()
+    val searchItemsByTagLiveData = MutableLiveData<ArrayList<Item>>()
 
     fun fetchSearchItems(searchItem: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -31,7 +31,7 @@ class SearchViewModel : ViewModel() {
             val response = RemoteRepository.fetchItemsByTagProperty(tagPropertyId)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    searchItemsByTagViewState.value = response
+                    searchItemsByTagLiveData.value = response.data as ArrayList<Item>
                 }
             }
         }

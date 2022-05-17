@@ -1,6 +1,5 @@
-package com.elmenture.luuk.ui.main.search
+package com.elmenture.luuk.ui.main.search.viewsearchitems
 
-import android.provider.Settings.Secure.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -61,6 +60,10 @@ class ViewSearchedItemsAdapter(
                 )
             }
             view.tvPrice.text = "Ksh ${MiscUtils.getFormattedAmount(item.price!!.toDouble() / 100)}"
+
+            view.root.setOnClickListener {
+                itemActionListener.onItemClicked(item)
+            }
         }
 
     }

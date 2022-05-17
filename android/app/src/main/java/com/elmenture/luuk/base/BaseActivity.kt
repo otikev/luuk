@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.repositories.RemoteRepository
-import utils.LogUtils
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.CallbackManager.Factory.create
@@ -19,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import userdata.User
+import utils.LogUtils
 import views.ProgressDialog
 
 
@@ -63,14 +63,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.layout_fragment_container, fragment, tag)
             .commitAllowingStateLoss()
-    }
-
-    fun clearBackStack() {
-        suspend {
-            while (supportFragmentManager.backStackEntryCount > 0) {
-                supportFragmentManager.popBackStack()
-            }
-        }
     }
 
     private fun configureGoogleSignIn() {
@@ -125,7 +117,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     fun showMessage(view: View, isSuccessFullAction: Boolean, message: String? = null) {
         snackbar?.dismiss()
         var snackMsg = message
-        if(snackMsg.isNullOrEmpty()){
+        if (snackMsg.isNullOrEmpty()) {
             snackMsg = "Action Failed. Try Again"
             if (isSuccessFullAction) {
                 snackMsg = "Action Completed Successfully"
@@ -133,7 +125,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         }
 
         snackbar = Snackbar.make(view, snackMsg, Snackbar.LENGTH_INDEFINITE)
-        val textView = snackbar?.view?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        val textView =
+            snackbar?.view?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
         textView?.gravity = Gravity.CENTER
         textView?.setLines(2);
         textView?.setTextColor(resources.getColor(R.color.luuk_yellow))

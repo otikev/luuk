@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentViewSizesBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.ActualMeasurements
 import userdata.User
 
 
-class ViewMySizesFragment : BaseFragment() {
+class ViewMySizesFragment : BaseFragment(), Type.ProfileSettings {
 
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private lateinit var binding: FragmentViewSizesBinding

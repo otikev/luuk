@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.search
+package com.elmenture.luuk.ui.main.search.searchitems
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,7 +31,7 @@ class SearchAdapter(var list: ArrayList<TagProperty>, var itemActionListener: Ca
         RecyclerView.ViewHolder(view.root) {
         fun bind(tagProperty: TagProperty, itemActionListener: CartActionListener) {
             view.tvDescription.text = tagProperty.value
-            view.searchContainer.setOnClickListener { itemActionListener.onItemClicked(tagProperty) }
+            view.root.setOnClickListener { itemActionListener.onItemClicked(tagProperty) }
         }
     }
 

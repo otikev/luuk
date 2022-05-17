@@ -3,9 +3,11 @@ package com.elmenture.luuk.ui.main
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.AuthenticatedActivity
 import com.elmenture.luuk.R
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
@@ -21,8 +23,8 @@ import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutSuccessFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
-import com.elmenture.luuk.ui.main.search.SearchItemsFragment
-import com.elmenture.luuk.ui.main.search.ViewSearchedItemsFragment
+import com.elmenture.luuk.ui.main.search.searchitems.SearchItemsFragment
+import com.elmenture.luuk.ui.main.search.viewsearchitems.ViewSearchedItemsFragment
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.navigation.NavigationBarView
@@ -74,8 +76,11 @@ class MainActivity : AuthenticatedActivity(),
     }
 
     override fun startHomeFragment() {
-        clearBackStack()
-        replaceFragment(HomeFragment.newInstance(), HomeFragment::class.java.simpleName)
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            addFragment(HomeFragment.newInstance(), HomeFragment::class.java.simpleName)
+        } else {
+            replaceFragment(HomeFragment.newInstance(), HomeFragment::class.java.simpleName)
+        }
     }
 
     override fun startAccountManagementFragment() {
@@ -173,12 +178,13 @@ class MainActivity : AuthenticatedActivity(),
         )
     }
 
-    override fun startViewSearchedItemsFragment(list: List<Item>) {
+    override fun startViewSearchedItemsFragment(tagPropertyId: Long) {
         addFragment(
-            ViewSearchedItemsFragment.newInstance(list),
+            ViewSearchedItemsFragment.newInstance(tagPropertyId),
             ViewSearchedItemsFragment::class.java.canonicalName
         )
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.navHome -> {
@@ -213,6 +219,28 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun resetBottomNavigation() {
         binding.bottomNavigation.menu.findItem(R.id.navHome).isChecked = true
+    }
+
+    override fun addFragment(fragment: Fragment, tag: String) {
+        super.addFragment(fragment, tag)
+        handleBottomNav(fragment)
+    }
+
+    override fun replaceFragment(fragment: Fragment, tag: String) {
+        super.replaceFragment(fragment, tag)
+        handleBottomNav(fragment)
+    }
+
+
+    override fun handleBottomNav(type: Fragment) {
+        when (type) {
+            is Type.Search -> binding.bottomNavigation.menu.findItem(R.id.navSearch).isChecked =
+                true
+            is Type.Home -> binding.bottomNavigation.menu.findItem(R.id.navHome).isChecked = true
+            is Type.ProfileSettings -> binding.bottomNavigation.menu.findItem(R.id.navProfile).isChecked =
+                true
+            is Type.Cart -> binding.bottomNavigation.menu.findItem(R.id.navCart).isChecked = true
+        }
     }
 
     override fun showMessage(message: String?, isSuccessful: Boolean) {

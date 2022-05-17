@@ -9,6 +9,7 @@ import com.amazonaws.util.StringUtils
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentViewItemBinding
 import com.google.android.material.chip.Chip
 import models.Spot
@@ -17,7 +18,7 @@ import userdata.User
 import utils.MiscUtils
 
 
-class ViewItemFragment : BaseFragment() {
+class ViewItemFragment : BaseFragment(), Type.Home {
 
     private var activeSpot: Spot? = null
     private lateinit var binding: FragmentViewItemBinding

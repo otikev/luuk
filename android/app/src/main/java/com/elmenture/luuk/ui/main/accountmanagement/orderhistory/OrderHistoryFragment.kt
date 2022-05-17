@@ -4,25 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
-import com.elmenture.luuk.databinding.FragmentMySizesBinding
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentOrderHistoryBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import com.elmenture.luuk.ui.main.accountmanagement.mysizes.MySizesViewModel
-import com.elmenture.luuk.ui.main.cart.CartAdapter
 import models.*
-import models.enums.InternationalSizes
-import userdata.User
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class OrderHistoryFragment : BaseFragment() {
+class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings {
     lateinit var binding: FragmentOrderHistoryBinding
     lateinit var orderHistoryViewModel: OrderHistoryViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }

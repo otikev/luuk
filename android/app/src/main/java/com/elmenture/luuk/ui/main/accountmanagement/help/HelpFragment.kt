@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentHelpBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class HelpFragment : BaseFragment() {
+class HelpFragment : BaseFragment(), Type.ProfileSettings {
     lateinit var binding: FragmentHelpBinding
 
     companion object {

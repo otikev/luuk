@@ -48,8 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/items/open");//for testing
-        web.ignoring().antMatchers("/items/search");//for testing
-        web.ignoring().antMatchers("/items/with-property");//for testing
         web.ignoring().antMatchers("/");
         web.ignoring().antMatchers("/image/**");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/facebooksignin");
