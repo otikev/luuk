@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "208881508192",
+    "project_id": "strange-retina-348106",
+    "storage_bucket": "strange-retina-348106.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208881508192:android:c93860fbfa91e3d32c8805",
+        "android_client_info": {
+          "package_name": "com.elmenture.luuk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208881508192-0k1bp05sci3o9j6ob1skd8bs6mbh6j8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elmenture.luuk",
+            "certificate_hash": "5f36d23b5d8b86317283e4c561a69668da1e5e16"
+          }
+        },
+        {
+          "client_id": "208881508192-u4mdj37fn6eg16ok23rv05cbn8efnpk8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elmenture.luuk",
+            "certificate_hash": "381e2b32de0ac0e79c21a67ba91f6fa5f5999ed5"
+          }
+        },
+        {
+          "client_id": "208881508192-gmsifrtiuuhnga53fg8lknv0vp9hcd99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrg6Ds3fRXopTa8YCH5jxp1-4riWd3oCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208881508192-gmsifrtiuuhnga53fg8lknv0vp9hcd99.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

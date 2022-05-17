@@ -34,8 +34,8 @@
         android:id="@+id/socialLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/dimens_large_size"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -45,21 +45,21 @@
             android:id="@+id/btnGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Continue with Google"
-            android:paddingHorizontal="48dp"
             android:background="@drawable/rectangle_outlined"
             android:drawableStart="@drawable/ic_google"
+            android:paddingHorizontal="48dp"
+            android:text="Continue with Google"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnFacebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Continue with Facebook"
-            android:paddingHorizontal="48dp"
             android:layout_marginTop="@dimen/dimens_large_size"
             android:background="@drawable/rectangle_outlined"
             android:drawableStart="@drawable/ic_facebook"
+            android:paddingHorizontal="48dp"
+            android:text="Continue with Facebook"
             android:textAllCaps="false" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

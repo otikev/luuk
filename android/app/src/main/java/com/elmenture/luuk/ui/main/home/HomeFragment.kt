@@ -109,15 +109,11 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
             ItemQueue.addItems(filteredList)
             adapter.notifyDataSetChanged()
             if (ItemQueue.isEmpty()) {
-                if (!binding.rbAll.isChecked) {
-                    binding.noItems.visibility = VISIBLE
-                }
                 binding.itemInfo.visibility = GONE
                 binding.cardStackView.visibility = INVISIBLE
             } else {
                 binding.itemInfo.visibility = VISIBLE
                 binding.cardStackView.visibility = VISIBLE
-                binding.noItems.visibility = GONE
             }
         }
     }
@@ -144,15 +140,11 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
         adapter.notifyDataSetChanged()
 
         if (ItemQueue.isEmpty()) {
-            if (!binding.rbAll.isChecked) {
-                binding.noItems.visibility = VISIBLE
-            }
             binding.itemInfo.visibility = GONE
             binding.cardStackView.visibility = INVISIBLE
         } else {
             binding.itemInfo.visibility = VISIBLE
             binding.cardStackView.visibility = VISIBLE
-            binding.noItems.visibility = GONE
         }
 
         when (direction) {

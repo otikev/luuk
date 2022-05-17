@@ -13,9 +13,6 @@ import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.login.LoginManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import userdata.User
 import utils.LogUtils
@@ -27,17 +24,12 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
     protected var logUtils = LogUtils(this.javaClass)
 
     @JvmField
-    protected var mGoogleSignInClient: GoogleSignInClient? = null
-
-    @JvmField
     protected var callbackManager: CallbackManager? = null
     private var loader: DialogFragment? = null
     private var snackbar: Snackbar? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        configureGoogleSignIn()
         configureFacebookSignin()
         observeGlobalEvents()
     }

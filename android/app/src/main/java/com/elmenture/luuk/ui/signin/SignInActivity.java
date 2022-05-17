@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,29 +18,39 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-import models.SignInResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 import java.util.HashMap;
 
+import models.SignInResponse;
 import userdata.User;
 import utils.SecureUtils;
 
 //https://developers.google.com/identity/sign-in/android/backend-auth
-public class SignInActivity extends BaseActivity {
+public class SignInActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener {
     private Button btnGoogle;
     private Button btnFacebook;
 
     private static final String EMAIL = "email";
     private static final String AUTH_TYPE = "rerequest";
     private static final int RC_SIGN_IN = 10001;
-
+    private boolean showOneTapUI = true;
     private LinearLayoutCompat socialLayout;
     private SignInViewModel signInViewModel;
+    String idToken;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +58,44 @@ public class SignInActivity extends BaseActivity {
 
         setContentView(R.layout.activity_sign_in);
         initView();
+        initFirebaseAuth();
         registerFaceBookCallBacks();
         setupEventListeners();
         observeLiveData();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void initFirebaseAuth() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                // Get signedIn user
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                //if user is signed in, we call a helper method to save the user details to Firebase
+                if (user != null) {
+                    firebaseAuth.signOut();
+                }
+            }
+        };
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        //googleApiClient = GoogleSignIn.getClient(this, gso);
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     private void initView() {
@@ -63,8 +109,8 @@ public class SignInActivity extends BaseActivity {
 
     private void setupEventListeners() {
         View.OnClickListener googleOnClickListener = view -> {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+            startActivityForResult(intent, RC_SIGN_IN);
         };
 
         btnGoogle.setOnClickListener(googleOnClickListener);
