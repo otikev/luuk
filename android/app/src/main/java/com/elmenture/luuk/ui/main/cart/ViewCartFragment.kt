@@ -55,10 +55,11 @@ class ViewCartFragment : BaseFragment(), Type.Cart, CartAdapter.CartActionListen
 
                 binding.btnCheckout.text = "Checkout ${it.size} Items"
 
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     binding.llSubtotal.visibility = View.VISIBLE
-                    binding.tvSubtotal.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(it))}"
-                }else{
+                    binding.tvSubtotal.text =
+                        "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(it))}"
+                } else {
                     binding.llSubtotal.visibility = View.GONE
                     binding.btnCheckout.isEnabled = it.isNotEmpty()
                 }
@@ -77,19 +78,22 @@ class ViewCartFragment : BaseFragment(), Type.Cart, CartAdapter.CartActionListen
 
     private fun initView() {
         viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        cartAdapter = CartAdapter(cartList,this)
+        cartAdapter = CartAdapter(cartList, this)
         binding.rvCart.layoutManager = LinearLayoutManager(context)
         binding.rvCart.adapter = cartAdapter
     }
 
     private fun setUpEventListeners() {
-        binding.btnCheckout.setOnClickListener{ activityView.startViewCheckoutFragment()}
+        binding.btnCheckout.setOnClickListener { activityView.startViewCheckoutFragment() }
+        binding.toolBar.setNavClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onSaveForLaterClicked(spot: Spot) {
         val cart = viewModel.cartItemsLiveData.value
         cart?.remove(spot)
-         viewModel.updateCart(cart)
+        viewModel.updateCart(cart)
     }
 
     override fun onDiscardClicked(spot: Spot) {

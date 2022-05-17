@@ -16,6 +16,8 @@ import models.StkConfirmationResponse
 class CartViewModel : ViewModel() {
 
     var cartItemsLiveData = MediatorLiveData<MutableSet<Spot>>()
+    var profileDetailsLiveData = MediatorLiveData<ProfileStatus>()
+
     var paymentApiState = MutableLiveData<BaseApiState>()
     var orderConfirmationApiState = MutableLiveData<BaseApiState>()
     var paymentStatus = MutableLiveData<PaymentStatus>(PaymentStatus.EmptyState)
@@ -24,6 +26,16 @@ class CartViewModel : ViewModel() {
         cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) {
             cartItemsLiveData.setValue(it)
         }
+        profileDetailsLiveData.addSource(LocalRepository.userDetailsLiveData) {
+            profileDetailsLiveData.value =
+                if (it.email.isNullOrEmpty() || it.contactPhoneNumber.isNullOrEmpty() || it.physicalAddress.isNullOrEmpty()) ProfileStatus.Incomplete() else ProfileStatus.Complete()
+
+        }
+    }
+
+    sealed class ProfileStatus() {
+        class Incomplete : ProfileStatus()
+        class Complete : ProfileStatus()
     }
 
     fun updateCart(cart: MutableSet<Spot>?) {
@@ -41,11 +53,11 @@ class CartViewModel : ViewModel() {
     fun validateCartItems() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = AccountManagementRepository.validateCartItems(getCartItems())
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 paymentApiState.value = response
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     paymentStatus.value = PaymentStatus.RequestSentState
-                }else{
+                } else {
                     paymentStatus.value = PaymentStatus.RequestFailedState
                 }
             }
@@ -64,7 +76,7 @@ class CartViewModel : ViewModel() {
         LocalRepository.swipeRecords.likes.value?.clear()
     }
 
-    sealed class PaymentStatus{
+    sealed class PaymentStatus {
         object EmptyState : PaymentStatus()
         object RequestSentState : PaymentStatus()
         object RequestFailedState : PaymentStatus()

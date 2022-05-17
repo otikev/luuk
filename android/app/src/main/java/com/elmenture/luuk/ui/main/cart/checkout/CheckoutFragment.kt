@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.base.repositories.LocalRepository
@@ -61,12 +62,29 @@ class CheckoutFragment : BaseFragment(), Type.Cart {
                 }
             }
         }
+
+        viewModel.profileDetailsLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is CartViewModel.ProfileStatus.Complete -> {
+                    binding.tvChange.text = MiscUtils.getSpannedText(getString(R.string.update_details, "Change Details"))
+                    binding.btnPayNow.isEnabled = true
+                    binding.tvChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
+                is CartViewModel.ProfileStatus.Incomplete -> {
+                    binding.tvChange.text = MiscUtils.getSpannedText(getString(R.string.update_details, "Update Details To Proceed"))
+                    binding.btnPayNow.isEnabled = false
+                    binding.tvChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_alert_triangle, 0);
+
+                }
+            }
+        }
+
         viewModel.orderConfirmationApiState.observe(viewLifecycleOwner) { orderState ->
             orderState?.let {
-                if(orderState.isSuccessful){
+                if (orderState.isSuccessful) {
                     activityView.startCheckoutSuccessFragment()
                     viewModel.clearCartData();
-                }else{
+                } else {
                     activityView.startCheckoutFailureFragment()
                 }
             }
@@ -80,7 +98,8 @@ class CheckoutFragment : BaseFragment(), Type.Cart {
         binding.tvLocation.text = userData?.physicalAddress
         binding.tvName.text = userData?.name
         binding.tvAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
-        binding.tvSubtotalAmount.text = "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
+        binding.tvSubtotalAmount.text =
+            "Ksh ${MiscUtils.getFormattedAmount(calculateSubTotal(set))}"
         binding.tvItemCount.text = set.size.toString()
         binding.tvPhoneNumber.text = userData?.contactPhoneNumber
     }
@@ -100,7 +119,7 @@ class CheckoutFragment : BaseFragment(), Type.Cart {
     private fun setUpEventListeners() {
         binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
         binding.tvChangeOrder.setOnClickListener { requireActivity().onBackPressed() }
-        binding.tvChangeLocation.setOnClickListener { activityView.startProfileSettingsFragment() }
+        binding.tvChange.setOnClickListener { activityView.startProfileSettingsFragment() }
 
         binding.btnPayNow.setOnClickListener {
             if (viewModel.paymentStatus.value == CartViewModel.PaymentStatus.RequestSentState) {

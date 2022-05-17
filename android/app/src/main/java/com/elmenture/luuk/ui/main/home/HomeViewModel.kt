@@ -12,10 +12,13 @@ import models.*
 class HomeViewModel : ViewModel() {
     var actions: Action = Action()
     var itemsLiveData = MediatorLiveData<ArrayList<Item>>()
+    var cartItemsLiveData = MediatorLiveData<MutableSet<Spot>>()
 
     init {
         itemsLiveData.addSource(LocalRepository.itemListLiveData) { itemsLiveData.setValue(it) }
-    }
+        cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) {cartItemsLiveData.setValue(it)}
+
+        }
 
     fun clearItems(){
         LocalRepository.itemListLiveData.value?.clear()

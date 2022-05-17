@@ -12,7 +12,9 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:toolbar_title="View Item" />
+        app:toolbar_title="View Item"
+        app:helperText_title="Add To Cart"
+        app:helperText_visible="true"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

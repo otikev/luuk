@@ -1,10 +1,12 @@
 package com.elmenture.luuk.ui.main.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.util.StringUtils
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
@@ -22,6 +24,7 @@ class ViewItemFragment : BaseFragment(), Type.Home {
 
     private var activeSpot: Spot? = null
     private lateinit var binding: FragmentViewItemBinding
+    private lateinit var homeViewModel: HomeViewModel
 
     companion object {
         fun newInstance(activeSpot: Spot?): ViewItemFragment {
@@ -44,13 +47,30 @@ class ViewItemFragment : BaseFragment(), Type.Home {
         super.onViewCreated(view, savedInstanceState)
         initView()
         setEventListeners()
+        observeLiveData()
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun observeLiveData() {
+        homeViewModel.cartItemsLiveData.observe(viewLifecycleOwner) {
+            val helperText = binding.toolBar.getHelperText()
+            helperText?.text = if (it.contains(activeSpot)) "Item In Cart" else "Add To Cart"
+        }
     }
 
     private fun setEventListeners() {
         binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
+        binding.toolBar.setHelperTextClickListener {
+            homeViewModel.updateSwipesData(
+                like = activeSpot
+            )
+        }
+
     }
 
     private fun initView() {
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java);
+
         activeSpot?.let {
             binding.tvDescription.text = it.description
             binding.tvPrice.text =

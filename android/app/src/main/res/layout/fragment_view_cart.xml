@@ -7,44 +7,41 @@
     android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     tools:ignore="MissingDefaultResource">
 
-    <androidx.appcompat.widget.SearchView
-        android:visibility="gone"
+    <views.CustomToolBar
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="24dp"
-        android:background="@drawable/rectangle_outlined"
-        app:defaultQueryHint="Search Here"
-        app:iconifiedByDefault="false"
-        app:queryBackground="@null"
-        app:searchIcon="@drawable/ic_search_unselected" />
+        app:nav_visible="false"
+        app:toolbar_title="View Cart" />
 
     <LinearLayout
         android:id="@+id/ll_subtotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Subtotal"
-            android:textSize="16sp"
             android:textColor="@color/black"
-            android:layout_weight="1"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_subtotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
             android:text="0"
             android:textColor="@color/black"
-            android:gravity="end"
-            android:textStyle="bold"
             android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -52,6 +49,7 @@
         android:id="@+id/rv_cart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:layout_weight="1"
@@ -65,6 +63,7 @@
         style="@style/buttonStylePrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="24dp"
         android:text="Checkout 1 item" />
 </LinearLayout>

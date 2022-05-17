@@ -134,6 +134,8 @@ class ProfileSettingsFragment : BaseFragment(), Type.ProfileSettings {
                 binding.rbFemale.isChecked = it.contains(Tags.f.name)
                 binding.rbKids.isChecked = it.contains(Tags.c.name)
             }
+
+            handleEditTexts(it)
         }
 
         setDataChangeListeners()
@@ -192,6 +194,24 @@ class ProfileSettingsFragment : BaseFragment(), Type.ProfileSettings {
         binding.rbFemale.setOnCheckedChangeListener(checkedChangeListener)
         binding.rbMale.setOnCheckedChangeListener(checkedChangeListener)
         binding.rbKids.setOnCheckedChangeListener(checkedChangeListener)
+    }
+
+    private fun handleEditTexts(user: SignInResponse) {
+        if (user.email.isNullOrEmpty()) {
+            binding.etEmail.error = "Required Field"
+        } else {
+            binding.etEmail.error = null
+        }
+        if (user.contactPhoneNumber.isNullOrEmpty()) {
+            binding.etContactPhone.error = "Required Field"
+        } else {
+            binding.etContactPhone.error = null
+        }
+        if (user.physicalAddress.isNullOrEmpty()) {
+            binding.etAddress.error = "Required Field"
+        } else {
+            binding.etAddress.error = null
+        }
     }
 
     private fun initView() {

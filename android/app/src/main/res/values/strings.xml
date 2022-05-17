@@ -19,6 +19,7 @@
     <string name="track_your_order"><u>Track Your Order</u></string>
     <string name="that_did_now_work_please_try_again">That did now work, <b>please try again</b></string>
     <string name="strike_amt"><strike>Ksh 300</strike></string>
+    <string name="update_details"><![CDATA[<u>%s</u>]]></string>
     <string-array name="item_target_array">
         <item>Select target...</item>
         <item>Female</item>
