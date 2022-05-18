@@ -23,6 +23,9 @@ public class Item extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "external_id")
+    private Integer externalId;
+
     @Column(name = "brand")
     private String brand;
 
