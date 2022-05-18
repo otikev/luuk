@@ -23,5 +23,5 @@ public interface ItemService {
 
     List<ItemDto> getAllItems(String keyword);
 
-    List<ItemDto> getAllItems(List<Long> itemIds);
+    List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold);
 }

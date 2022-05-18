@@ -129,8 +129,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllItems(List<Long> itemIds) {
-        List<Item> items = itemRepository.findAllById(itemIds);
+    public List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold) {
+        List<Item> items = itemRepository.findBySoldAndIdIn(sold,itemIds);
         List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
         return response;
     }

@@ -1,6 +1,5 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.model.Item;
 import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.ItemDto;
@@ -8,7 +7,6 @@ import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
 import com.elmenture.core.utils.AppConstants;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +82,7 @@ public class ItemController extends BaseController {
     @GetMapping("/with-property")
     public List<ItemDto> searchItemsWithTagProperty(@RequestParam(value = "tag_property") Long tagPropertyId) {
         List<Long> itemIds = itemPropertyRepository.findItemIdByTagPropertyId(tagPropertyId);
-        return itemService.getAllItems(itemIds);
+        return itemService.getAllAvailableItemsBySold(itemIds,false);
     }
 
     @RequestMapping("/open")
