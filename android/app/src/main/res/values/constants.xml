@@ -5,7 +5,8 @@
     <string name="server_client_id">208881508192-gmsifrtiuuhnga53fg8lknv0vp9hcd99.apps.googleusercontent.com</string>
     <string name="maps_api_key">AIzaSyDrg6Ds3fRXopTa8YCH5jxp1-4riWd3oCQ</string>
     <!-- Facebook -->
-    <string name="facebook_app_id">684178072610069</string>
+    <string name="facebook_app_id">1125818961315306</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">56789</string>
+    <string name="facebook_client_token">8ee2754fab026c90670ba67b1a5864ea</string>
+
 </resources>

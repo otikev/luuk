@@ -12,6 +12,7 @@ interface EndPoints {
     @GET("user/measurements")
     fun getUserBodyMeasurements(): Call<BodyMeasurements>
 
+    @FormUrlEncoded
     @POST("auth/facebooksignin")
     fun facebookSignIn(@FieldMap params: Map<String, String>): Call<SignInResponse>
 
