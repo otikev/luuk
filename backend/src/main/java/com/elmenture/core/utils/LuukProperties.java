@@ -23,7 +23,7 @@ public class LuukProperties {
     public static final String STK_ACCOUNT_REFERENCE = System.getenv("STK_ACCOUNT_REFERENCE");
     public static final String secret = CONSUMER_KEY + ":" + CONSUMER_SECRET;
     public static final String DARAJA_PASSKEY = System.getenv("DARAJA_PASSKEY");
-    public static final String BASE_URL = "https://2b43-41-80-25-101.in.ngrok.io/";//System.getenv("BASE_URL");
+    public static final String BASE_URL = System.getenv("BASE_URL");
     public static final String BUSINESS_SHORT_CODE = System.getenv("BUSINESS_SHORT_CODE");
 
     public static final String STK_CALLBACK_URL = BASE_URL + "order/payment-confirmed";
