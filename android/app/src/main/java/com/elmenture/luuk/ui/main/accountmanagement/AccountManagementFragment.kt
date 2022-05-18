@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.elmenture.luuk.BuildConfig
 import com.elmenture.luuk.databinding.FragmentAccountManagementBinding
 
 import com.elmenture.luuk.base.BaseFragment
@@ -38,6 +39,8 @@ class AccountManagementFragment : BaseFragment() {
         if(!User.getCurrent().userDetails.isStaff){
             binding.itemInventoryManagement.visibility = GONE
         }
+
+        binding.appVersion.text = "Version ${BuildConfig.VERSION_NAME}"
         setUpEventListeners()
     }
 

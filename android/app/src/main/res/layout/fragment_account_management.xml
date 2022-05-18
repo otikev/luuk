@@ -7,29 +7,30 @@
     android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical">
+
     <views.CustomToolBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:nav_visible="false"
-        app:toolbar_title="Account Management"/>
+        app:toolbar_title="Account Management" />
 
     <views.BannerView
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp" />
+        android:layout_margin="24dp"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="ScrollViewCount"
-        android:layout_marginTop="@dimen/dimens_large_size">
+        android:layout_marginTop="@dimen/dimens_large_size"
+        tools:ignore="ScrollViewCount">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="24dp">
+            android:layout_marginHorizontal="24dp"
+            android:orientation="vertical">
 
             <views.SimpleItemView
                 android:id="@+id/item_my_sizes"
@@ -81,6 +82,13 @@
                 app:image="@drawable/ic_logout"
                 app:title="Logout" />
 
+            <TextView
+                android:padding="10dp"
+                android:gravity="center_horizontal"
+                android:text="Version"
+                android:id="@+id/app_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
