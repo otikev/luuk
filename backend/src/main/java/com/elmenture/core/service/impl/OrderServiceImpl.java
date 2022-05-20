@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         if (res.isSuccessful()) {
             stkPushResponse = new Gson().fromJson(responseBody, StkPushResponseDto.class);
         } else {
-            System.out.println(responseBody);
+            System.out.println("STK Callback:" + responseBody);
         }
         return stkPushResponse;
     }
@@ -114,6 +114,16 @@ public class OrderServiceImpl implements OrderService {
 
         JSONObject stkCallback = body.getJSONObject("stkCallback");
         String merchantRequestId = stkCallback.getString("MerchantRequestID");
+        int resultCode = stkCallback.getInt("ResultCode");
+
+
+        orderConfirmationDto.setCallbackResultCode(resultCode);
+        orderConfirmationDto.setCallbackMerchantId(merchantRequestId);
+        orderConfirmationDto.setOrder(orderRepository.findByMerchantRequestID(merchantRequestId));
+
+        if(resultCode !=0){
+            return orderConfirmationDto;
+        }
 
         JSONObject callbackMetadata = stkCallback.getJSONObject("CallbackMetadata");
         JSONArray itemlist = callbackMetadata.getJSONArray("Item");
@@ -121,9 +131,7 @@ public class OrderServiceImpl implements OrderService {
         String mpesaReceiptNumber = itemlist.getJSONObject(1).getString("Value");
         Long phoneNumber = itemlist.getJSONObject(4).getLong("Value");
 
-        orderConfirmationDto.setCallbackResultCode(stkCallback.getInt("ResultCode"));
-        orderConfirmationDto.setCallbackMerchantId(merchantRequestId);
-        orderConfirmationDto.setOrder(orderRepository.findByMerchantRequestID(merchantRequestId));
+
         orderConfirmationDto.setAmount(amount);
         orderConfirmationDto.setMpesaReceiptNumber(mpesaReceiptNumber);
         orderConfirmationDto.setPhoneNumber(phoneNumber);
@@ -187,9 +195,9 @@ public class OrderServiceImpl implements OrderService {
 
         Order pendingOrder = orderRepository.findByUserAndState(loggedInUser, "pending");
 
-        if(pendingOrder!=null){
+        if (pendingOrder != null) {
             System.out.println("An order already exists for user");
-            return new ResponseEntity<>("Clear pending order",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Clear pending order", HttpStatus.BAD_REQUEST);
         }
 
         List<Item> soldList = itemRepository.findBySoldAndIdIn(true, orderList);
