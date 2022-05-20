@@ -51,7 +51,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagRepository.save(new Tag("hood"));
             tagRepository.save(new Tag("material"));
             tagRepository.save(new Tag("neckline"));
+            tagRepository.save(new Tag("pants length"));
             tagRepository.save(new Tag("pattern"));
+            tagRepository.save(new Tag("skirt length"));
             tagRepository.save(new Tag("sleeves"));
             tagRepository.save(new Tag("style"));
             tagRepository.save(new Tag("subcategory"));
@@ -182,11 +184,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         TagProperty tagProperty = tagPropertyRepository.findByValue("black & white");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "black & white"));
-        }
-
-        tagProperty = tagPropertyRepository.findByValue("white, burgundy");
-        if (tagProperty == null) {
-            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "white, burgundy"));
         }
 
         tagProperty = tagPropertyRepository.findByValue("formal");

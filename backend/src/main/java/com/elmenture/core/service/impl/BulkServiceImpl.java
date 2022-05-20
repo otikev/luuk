@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.elmenture.core.utils.LuukProperties.LUUK_AWS_S3_BUCKET;
 
@@ -29,8 +28,8 @@ import static com.elmenture.core.utils.LuukProperties.LUUK_AWS_S3_BUCKET;
  */
 @Service
 public class BulkServiceImpl implements BulkService {
-    static String[] CATALOG_HEADERS = {"id", "brand", "size_type", "size", "color", "length", "neckline", "pattern", "material", "sleeves", "style", "subcategory"};
-    public static String TYPE = "text/csv";
+    public static String TYPE_CSV = "text/csv";
+
     @Autowired
     TagPropertyRepository tagPropertyRepository;
 
@@ -53,15 +52,14 @@ public class BulkServiceImpl implements BulkService {
 
                 Iterable<CSVRecord> csvRecords = csvParser.getRecords();
                 for (CSVRecord csvRecord : csvRecords) {
-                    if(csvRecord.get("brand")== null ||csvRecord.get("brand").isEmpty() ){
-                        issues.add("Brand is missing for id "+csvRecord.get("id"));
-                    }
                     ItemDto item = new ItemDto();
                     item.setTarget("f");
                     item.setExternalId(Integer.parseInt(csvRecord.get("id")));
-                    System.out.println("Parsing item : "+csvRecord.get("id"));
+                    System.out.println("Parsing item : " + csvRecord.get("id"));
                     item.setBrand(csvRecord.get("brand"));
-                    item.setDescription(csvRecord.get("brand"));
+                    item.setDescription(csvRecord.get("description"));
+                    float price = Float.parseFloat(csvRecord.get("price"));//price in KES
+                    item.setPrice((long) (price * 100));//convert price to cents
                     if (csvRecord.get("size_type").equalsIgnoreCase("international")) {
                         item.setSizeType("INT");
                         item.setSizeInternational(csvRecord.get("size"));
@@ -69,7 +67,7 @@ public class BulkServiceImpl implements BulkService {
                         item.setSizeType(csvRecord.get("size_type"));
                         item.setSizeNumber(Long.valueOf(csvRecord.get("size")));
                     }
-                    item.setImageUrl("https://"+LUUK_AWS_S3_BUCKET+".s3.eu-central-1.amazonaws.com/"+csvRecord.get("id")+".jpg");
+                    item.setImageUrl("https://" + LUUK_AWS_S3_BUCKET + ".s3.eu-central-1.amazonaws.com/" + csvRecord.get("id") + ".jpg");
 
                     List<Long> tagProperties = getTagProperties(csvRecord);
                     item.setTagProperties(tagProperties);
@@ -89,7 +87,7 @@ public class BulkServiceImpl implements BulkService {
     }
 
     private boolean hasCSVFormat(MultipartFile file) {
-        if (!TYPE.equals(file.getContentType())) {
+        if (!TYPE_CSV.equals(file.getContentType())) {
             return false;
         }
         return true;
@@ -97,39 +95,39 @@ public class BulkServiceImpl implements BulkService {
 
     private List<Long> getTagProperties(CSVRecord csvRecord) {
         List<Long> tagProperties = new ArrayList<>();
-        Long id = getTagProperty(csvRecord,"color");
+        Long id = getTagProperty(csvRecord, "color");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"skirt length");
+        id = getTagProperty(csvRecord, "skirt length");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"cut");
+        id = getTagProperty(csvRecord, "cut");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"neckline");
+        id = getTagProperty(csvRecord, "neckline");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"pattern");
+        id = getTagProperty(csvRecord, "pattern");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"material");
+        id = getTagProperty(csvRecord, "material");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"sleeves");
+        id = getTagProperty(csvRecord, "sleeves");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"style");
+        id = getTagProperty(csvRecord, "style");
         if (id != null) {
             tagProperties.add(id);
         }
-        id = getTagProperty(csvRecord,"subcategory");
+        id = getTagProperty(csvRecord, "subcategory");
         if (id != null) {
             tagProperties.add(id);
         }
@@ -137,16 +135,16 @@ public class BulkServiceImpl implements BulkService {
     }
 
     private Long getTagProperty(CSVRecord csvRecord, String tagValue) {
-        System.out.println("Processing Tag : "+tagValue);
+        System.out.println("Processing Tag : " + tagValue);
         String tagPropertyValue = csvRecord.get(tagValue);
         if (tagPropertyValue != null && !tagPropertyValue.isEmpty()) {
             Tag tag = tagRepository.findByValue(tagValue);
-            System.out.println("Getting TagProperty : "+tagPropertyValue.toLowerCase());
-            List<TagProperty> tagProperty = tagPropertyRepository.findByValueAndTagId(tagPropertyValue.toLowerCase(),tag.getId());
-            if(tagProperty != null && !tagProperty.isEmpty()){
+            System.out.println("Getting TagProperty : " + tagPropertyValue.toLowerCase());
+            List<TagProperty> tagProperty = tagPropertyRepository.findByValueAndTagId(tagPropertyValue.toLowerCase(), tag.getId());
+            if (tagProperty != null && !tagProperty.isEmpty()) {
                 return tagProperty.get(0).getId();
             }
-        }else{
+        } else {
             return null;
         }
         issues.add("Could not find Tag Property : " + tagPropertyValue);
