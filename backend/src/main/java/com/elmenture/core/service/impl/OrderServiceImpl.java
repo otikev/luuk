@@ -39,6 +39,8 @@ public class OrderServiceImpl implements OrderService {
     private ItemRepository itemRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
     @Autowired
     private OrderRepository orderRepository;
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         body.setPassword(password);
         body.setTimestamp(timeStamp);
         body.setTransactionType(STK_TRANSACTION_TYPE);
-        body.setAmount(amount);
+        body.setAmount(1/*amount*/);
         body.setPartyB(shortCode);
         body.setCallBackURL(STK_CALLBACK_URL);
         body.setPartyA(userNumberLong);
