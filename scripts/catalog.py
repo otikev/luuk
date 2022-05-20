@@ -6,14 +6,14 @@ import json
 from pathlib import Path
 
 file_ids = ''
-headers={'LuukToken': 'kjhkjadshfkjadsfnkj348989fdj32498f8jh','DryRun':'false'}
+headers={'LuukToken': '','DryRun':'true'}
 # Upload file
 
 f = open('sample.csv', 'rb')
 
 files = {"file": ("sample.csv", f,'text/csv')}
 
-resp = requests.post("http://localhost:8080/bulk/csv/catalog", files=files, headers=headers )
+resp = requests.post("https://luukatme.herokuapp.com/bulk/csv/catalog", files=files, headers=headers )
 print (resp.text)
 print ("status code " + str(resp.status_code))
 
