@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto createItem(ItemDto postDto) {
         // convert DTO to entity
         Item post = mapToEntity(postDto);
-        post.setTarget("f");//FIXME: Targetting only female dresses for now
+        post.setTarget("f");//Targetting only female dresses for now
         Item newItem = itemRepository.save(post);
 
         for (Long id : postDto.getTagProperties()) {
@@ -59,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         // convert entity to DTO
-        ItemDto postResponse = mapToDTO(newItem);
+            ItemDto postResponse = mapToDTO(newItem);
         return postResponse;
     }
 
@@ -257,11 +257,14 @@ public class ItemServiceImpl implements ItemService {
     private ItemDto mapToDTO(Item item) {
         ItemDto itemDto = new ItemDto();
         itemDto.setId(item.getId());
+        itemDto.setExternalId(item.getExternalId());
+        itemDto.setBrand(item.getBrand());
         itemDto.setDescription(item.getDescription());
         itemDto.setSizeInternational(item.getSizeInternational());
         itemDto.setSizeNumber(item.getSizeNumber());
         itemDto.setPrice(item.getPrice());
         itemDto.setTarget(item.getTarget());
+        itemDto.setSold(item.getSold());
         itemDto.setSizeType(item.getSizeType());
         if (item.getImageUrl() == null || item.getImageUrl().isEmpty() || item.getImageUrl().equals("https://i.pinimg.com/236x/13/a8/b7/13a8b7ba22d77c1318eedeb1814be30d.jpg")) {
             itemDto.setImageUrl("https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png");//Default image
@@ -281,11 +284,14 @@ public class ItemServiceImpl implements ItemService {
     private Item mapToEntity(ItemDto itemDto) {
         Item item = new Item();
         item.setId(itemDto.getId());
+        item.setExternalId(itemDto.getExternalId());
+        item.setBrand(itemDto.getBrand());
         item.setDescription(itemDto.getDescription());
         item.setSizeInternational(itemDto.getSizeInternational());
         item.setSizeNumber(itemDto.getSizeNumber());
         item.setPrice(itemDto.getPrice());
         item.setImageUrl(itemDto.getImageUrl());
+        item.setSold(itemDto.isSold());
         item.setTarget(itemDto.getTarget().toLowerCase());
         item.setSizeType(itemDto.getSizeType());
         return item;

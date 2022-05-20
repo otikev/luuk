@@ -57,8 +57,8 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagRepository.save(new Tag("sleeves"));
             tagRepository.save(new Tag("style"));
             tagRepository.save(new Tag("subcategory"));
-
         }
+
         System.out.println("Tags = " + tagRepository.count());
 
         if (tagPropertyRepository.count() == 0) {
@@ -123,12 +123,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "wrap"));
             tagPropertyRepository.save(new TagProperty(tag, "hooded"));
             tagPropertyRepository.save(new TagProperty(tag, "off shoulder"));
-            //7 - pants length
-            tag = tagRepository.findByValue("pants length");
-            tagPropertyRepository.save(new TagProperty(tag, "shorts"));
-            tagPropertyRepository.save(new TagProperty(tag, "long pants"));
-            tagPropertyRepository.save(new TagProperty(tag, "3/4 pants"));
-            tagPropertyRepository.save(new TagProperty(tag, "1/8 pants"));
             //8 - Pattern
             tag = tagRepository.findByValue("pattern");
             tagPropertyRepository.save(new TagProperty(tag, "text"));
@@ -143,23 +137,18 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "chevron"));
             tagPropertyRepository.save(new TagProperty(tag, "floral"));
             tagPropertyRepository.save(new TagProperty(tag, "lace"));
-            //9 - skirt length
-            tag = tagRepository.findByValue("skirt length");
-            tagPropertyRepository.save(new TagProperty(tag, "maxi skirt"));
-            tagPropertyRepository.save(new TagProperty(tag, "midi skirt"));
-            tagPropertyRepository.save(new TagProperty(tag, "mini skirt"));
             //10 - Sleeves
             tag = tagRepository.findByValue("sleeves");
-            tagPropertyRepository.save(new TagProperty(tag, "short sleeves"));
+            tagPropertyRepository.save(new TagProperty(tag, "short"));
             tagPropertyRepository.save(new TagProperty(tag, "sleeveless"));
-            tagPropertyRepository.save(new TagProperty(tag, "3/4 sleeves"));
-            tagPropertyRepository.save(new TagProperty(tag, "long sleeves"));
+            tagPropertyRepository.save(new TagProperty(tag, "3/4"));
+            tagPropertyRepository.save(new TagProperty(tag, "long"));
             //11 - Style
             tag = tagRepository.findByValue("style");
             tagPropertyRepository.save(new TagProperty(tag, "casual"));
             tagPropertyRepository.save(new TagProperty(tag, "elegant"));
-            tagPropertyRepository.save(new TagProperty(tag, "sport dresses"));
-            tagPropertyRepository.save(new TagProperty(tag, "wedding dresses"));
+            tagPropertyRepository.save(new TagProperty(tag, "sport dress"));
+            tagPropertyRepository.save(new TagProperty(tag, "wedding dress"));
             //12 - Subcategory
             tag = tagRepository.findByValue("subcategory");
             tagPropertyRepository.save(new TagProperty(tag, "blouse dresses"));
@@ -169,34 +158,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "sundresses"));
         }
         System.out.println("Tag properties = " + tagPropertyRepository.count());
-
-        if (itemRepository.count() == 0) {
-            Random rn = new Random();
-            String placeholderImageUrl = "https://cdn2.iconfinder.com/data/icons/pick-a-dress/900/dress-dresses-fashion-clothes-clothing-silhouette-shadow-15-512.png";
-            //Generate 50 dummy items
-            for (int i = 1; i <= 50; i++) {
-                int size_max = CLOTHING_SIZES.length - 1;
-                int size_min = 0;
-                String clothingSize = CLOTHING_SIZES[rn.nextInt(size_max - size_min + 1) + size_min];
-                int price_max = 600000;
-                int price_min = 20000;
-                long price = rn.nextInt(price_max - price_min + 1) + price_min;
-                Item item = new Item("Clothing " + i, clothingSize, "US", 18L, price, placeholderImageUrl);
-                item.setTarget("f");
-                itemRepository.save(item);
-
-                //Generate 5 dummy tags
-                for (int j = 0; j < 5; j++) {
-                    //Generate tags
-                    int maxTagPropertyId = (int) tagPropertyRepository.count();
-                    int minTagPropertyId = 1;
-                    long tagPropertyId = rn.nextInt(maxTagPropertyId - minTagPropertyId + 1) + minTagPropertyId;
-                    TagProperty tagProperty = tagPropertyRepository.getById(tagPropertyId);
-                    ItemProperty itemProperty = new ItemProperty(item, tagProperty);
-                    itemPropertyRepository.save(itemProperty);
-                }
-            }
-        }
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
 
@@ -207,12 +168,36 @@ public class DatabaseSeeder implements CommandLineRunner {
             itemRepository.save(item);
         }
 
-         ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        cleanUpTags();
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 emailService.sendAppStartedEmail();
             }
         });
+    }
+
+    private void cleanUpTags() {
+        TagProperty tagProperty = tagPropertyRepository.findByValue("black & white");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "black & white"));
+        }
+
+        tagProperty = tagPropertyRepository.findByValue("formal");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("style"), "formal"));
+        }
+
+        tagProperty = tagPropertyRepository.findByValue("polyester");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("material"), "polyester"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("work dress");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("subcategory"), "work dress"));
+        }
     }
 }

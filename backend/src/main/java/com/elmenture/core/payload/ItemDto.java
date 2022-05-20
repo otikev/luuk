@@ -10,10 +10,13 @@ import java.util.List;
 @Data
 public class ItemDto {
     private long id;
+    private int externalId;
     private String description;
+    private String brand;
     private String sizeInternational;
     private String sizeType;
     private Long sizeNumber;
+    private boolean sold;
     private long price;
     private String imageUrl;
     private String target;

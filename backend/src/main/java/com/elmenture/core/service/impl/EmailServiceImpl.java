@@ -35,13 +35,14 @@ public class EmailServiceImpl implements EmailService {
         if (!LuukProperties.enableEmails) {
             return;
         }
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(LuukProperties.smtpUsername);
         message.setTo(SITE_ADMINS);
         message.setSubject("LUUK SERVICE NOTIFICATION");
         message.setText("Luuk backend has started running");
         emailSender.send(message);
-        logSent(Arrays.toString(BUSINESS_ADMINS));
+        logSent(Arrays.toString(SITE_ADMINS));
     }
 
     @Override
