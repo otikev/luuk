@@ -95,59 +95,92 @@ public class BulkServiceImpl implements BulkService {
 
     private List<Long> getTagProperties(CSVRecord csvRecord) {
         List<Long> tagProperties = new ArrayList<>();
-        Long id = getTagProperty(csvRecord, "color");
-        if (id != null) {
-            tagProperties.add(id);
+        List<Long> ids = getTagProperty(csvRecord, "color");
+        if (ids != null) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "skirt length");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "skirt length");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "cut");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "cut");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "neckline");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "neckline");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "pattern");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "pattern");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "material");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "material");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "sleeves");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "sleeves");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "style");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "style");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
-        id = getTagProperty(csvRecord, "subcategory");
-        if (id != null) {
-            tagProperties.add(id);
+        ids = getTagProperty(csvRecord, "subcategory");
+        if (!ids.isEmpty()) {
+            tagProperties.addAll(ids);
         }
         return tagProperties;
     }
 
-    private Long getTagProperty(CSVRecord csvRecord, String tagValue) {
+    private List<Long> getTagProperty(CSVRecord csvRecord, String tagValue) {
+        List<Long> ids = new ArrayList<>();
         System.out.println("Processing Tag : " + tagValue);
         String tagPropertyValue = csvRecord.get(tagValue);
         if (tagPropertyValue != null && !tagPropertyValue.isEmpty()) {
             Tag tag = tagRepository.findByValue(tagValue);
-            System.out.println("Getting TagProperty : " + tagPropertyValue.toLowerCase());
-            List<TagProperty> tagProperty = tagPropertyRepository.findByValueAndTagId(tagPropertyValue.toLowerCase(), tag.getId());
-            if (tagProperty != null && !tagProperty.isEmpty()) {
-                return tagProperty.get(0).getId();
+
+            if (tagPropertyValue.contains(",")) {
+                String[] values = tagPropertyValue.split(",");
+                for (String val : values) {
+                    if (val.equalsIgnoreCase("other")) {
+                        System.out.println("Ignoring TagProperty : " + val.toLowerCase());
+                        continue;//Ignore 'Other' tags
+                    }
+                    System.out.println("Getting TagProperty : " + val.toLowerCase());
+                    Long id = getTagPropertyIds(val, tag);
+                    if (id == null) {
+                        issues.add(csvRecord.get("id") + ": Could not find Tag Property : " + val);
+                    } else {
+                        ids.add(id);
+                    }
+                }
+            } else {
+                if (tagPropertyValue.equalsIgnoreCase("other")) {
+                    System.out.println("Ignoring TagProperty : " + tagPropertyValue.toLowerCase());
+                } else {
+                    System.out.println("Getting TagProperty : " + tagPropertyValue.toLowerCase());
+                    Long id = getTagPropertyIds(tagPropertyValue, tag);
+                    if (id == null) {
+                        issues.add(csvRecord.get("id") + ": Could not find Tag Property : " + tagPropertyValue);
+                    } else {
+                        ids.add(id);
+                    }
+                }
             }
-        } else {
-            return null;
         }
-        issues.add("Could not find Tag Property : " + tagPropertyValue);
+
+        return ids;
+    }
+
+    private Long getTagPropertyIds(String tagPropertyValue, Tag tag) {
+        String value = tagPropertyValue.toLowerCase().trim();
+        System.out.println("Getting TagProperty : " + value);
+        List<TagProperty> tagProperty = tagPropertyRepository.findByValueAndTagId(value, tag.getId());
+        if (tagProperty != null && !tagProperty.isEmpty()) {
+            return tagProperty.get(0).getId();
+        }
         return null;
     }
 }

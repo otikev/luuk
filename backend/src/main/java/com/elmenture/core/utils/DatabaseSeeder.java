@@ -1,7 +1,6 @@
 package com.elmenture.core.utils;
 
 import com.elmenture.core.model.Item;
-import com.elmenture.core.model.ItemProperty;
 import com.elmenture.core.model.Tag;
 import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.repository.ItemPropertyRepository;
@@ -14,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -185,12 +183,10 @@ public class DatabaseSeeder implements CommandLineRunner {
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "black & white"));
         }
-
         tagProperty = tagPropertyRepository.findByValue("formal");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("style"), "formal"));
         }
-
         tagProperty = tagPropertyRepository.findByValue("polyester");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("material"), "polyester"));
@@ -198,6 +194,74 @@ public class DatabaseSeeder implements CommandLineRunner {
         tagProperty = tagPropertyRepository.findByValue("work dress");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("subcategory"), "work dress"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("burgundy");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "burgundy"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("dark blue");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "dark blue"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("blue");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "blue"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("navy");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "navy"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("maroon");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "maroon"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("color block");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("pattern"), "color block"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("cowl");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("neckline"), "cowl"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("sweetheart");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("neckline"), "sweetheart"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("chiffon");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("material"), "chiffon"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("drop back");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "drop back"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("maroon");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "maroon"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("cream");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "cream"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("jungle green");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "jungle green"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("luminous green");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "luminous green"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("red-orange");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "red-orange"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("collar frill");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "colar frill"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("fuschia");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "fuschia"));
         }
     }
 }
