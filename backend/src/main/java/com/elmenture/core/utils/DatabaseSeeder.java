@@ -257,7 +257,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         }
         tagProperty = tagPropertyRepository.findByValue("collar frill");
         if (tagProperty == null) {
-            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "colar frill"));
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "collar frill"));
         }
         tagProperty = tagPropertyRepository.findByValue("fuschia");
         if (tagProperty == null) {
