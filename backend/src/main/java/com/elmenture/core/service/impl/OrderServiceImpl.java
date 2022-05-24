@@ -93,13 +93,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrder(User loggedInUser, List<Long> orderList, StkPushResponseDto stkPushResponse) {
-        Order order = orderRepository.findByUserAndState(loggedInUser, "pending");
-
-        if (order != null)
-            return;
-        order = new Order(loggedInUser, "pending", stkPushResponse.getMerchantRequestID());
+        Order order = new Order(loggedInUser, "pending", stkPushResponse.getMerchantRequestID());
         orderRepository.save(order);
-
         List<Item> itemList = itemRepository.findAllById(orderList);
 
         for (Item item : itemList) {
@@ -123,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
         orderConfirmationDto.setCallbackMerchantId(merchantRequestId);
         orderConfirmationDto.setOrder(orderRepository.findByMerchantRequestID(merchantRequestId));
 
-        if(resultCode !=0){
+        if (resultCode != 0) {
             return orderConfirmationDto;
         }
 
@@ -197,11 +192,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order pendingOrder = orderRepository.findByUserAndState(loggedInUser, "pending");
 
-        if (pendingOrder != null) {
-            System.out.println("An order already exists for user");
-            return new ResponseEntity<>("Clear pending order", HttpStatus.BAD_REQUEST);
-        }
-
         List<Item> soldList = itemRepository.findBySoldAndIdIn(true, orderList);
         if (!soldList.isEmpty()) {
             return new ResponseEntity<>(soldList, HttpStatus.FOUND);
@@ -212,7 +202,12 @@ public class OrderServiceImpl implements OrderService {
         try {
             StkPushResponseDto stkPushResponse = triggerStkPush(amount, loggedInUser);
             if (stkPushResponse != null) {
-                createOrder(loggedInUser, orderList, stkPushResponse);
+                if (pendingOrder == null) {
+                    createOrder(loggedInUser, orderList, stkPushResponse);
+                } else {
+                    pendingOrder.setMerchantRequestID(stkPushResponse.getMerchantRequestID());
+                    orderRepository.save(pendingOrder);
+                }
                 return new ResponseEntity<>(stkPushResponse, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("Error executing Stk API", HttpStatus.BAD_REQUEST);
