@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         body.setPassword(password);
         body.setTimestamp(timeStamp);
         body.setTransactionType(STK_TRANSACTION_TYPE);
-        body.setAmount(1/*amount*/);
+        body.setAmount(amount);
         body.setPartyB(shortCode);
         body.setCallBackURL(STK_CALLBACK_URL);
         body.setPartyA(userNumberLong);
@@ -204,9 +204,6 @@ public class OrderServiceImpl implements OrderService {
             if (stkPushResponse != null) {
                 if (pendingOrder == null) {
                     createOrder(loggedInUser, orderList, stkPushResponse);
-                } else {
-                    pendingOrder.setMerchantRequestID(stkPushResponse.getMerchantRequestID());
-                    orderRepository.save(pendingOrder);
                 }
                 return new ResponseEntity<>(stkPushResponse, HttpStatus.CREATED);
             } else {

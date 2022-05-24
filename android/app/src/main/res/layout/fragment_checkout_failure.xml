@@ -68,7 +68,7 @@
             android:layout_marginBottom="@dimen/dimens_large_size"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
-            android:text="@string/that_did_now_work_please_try_again"
+            android:text="@string/that_did_not_work_please_try_again"
             android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatButton
