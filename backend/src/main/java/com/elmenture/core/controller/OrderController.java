@@ -59,19 +59,18 @@ public class OrderController extends BaseController {
     private void sendEmail(Long orderId) {
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
-        List<Long> orderItemIds = new ArrayList<>();
+        List<Integer> externalItemIds = new ArrayList<>();
         long totalCents = 0;
         String customerName = order.getUser().getFirstName() +" "+ order.getUser().getLastName();
         String address = order.getUser().getPhysicalAddress();
 
         for (OrderItem orderItem : orderItems) {
             Item item = orderItem.getItem();
-            orderItemIds.add(orderItem.getId());
-            totalCents += item.getPrice();
+            externalItemIds.add(item.getExternalId());
         }
 
         try {
-            emailService.sendNewOrderEmail(order.getId(), orderItemIds, totalCents, customerName, address, "Standard");
+            emailService.sendNewOrderEmail(order.getId(), externalItemIds, totalCents, customerName, address, "Standard");
         } catch (MessagingException e) {
             e.printStackTrace();
         }

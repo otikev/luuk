@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendNewOrderEmail(Long orderId, List<Long> orderItemIds, long orderTotalCents, String customerName, String deliveryAddress, String deliveryMode) throws MessagingException {
+    public void sendNewOrderEmail(Long orderId, List<Integer> externalItemIds, long orderTotalCents, String customerName, String deliveryAddress, String deliveryMode) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -67,8 +67,12 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
                         "<b>Delivery Address:</b> " + deliveryAddress + "<br><br>" +
-                        "<b>Delivery Mode:</b> " + deliveryMode;
+                        "<b>Delivery Mode:</b> " + deliveryMode+
+                        "<b>Item Ids:</b><br>";
 
+        for(Integer externalId : externalItemIds){
+            emailBody=emailBody+"- "+externalId+"<br>";
+        }
         helper.setText(emailBody, html);
         emailSender.send(message);
         logSent(ORDERS_NOTIFICATIONS_EMAIL);
