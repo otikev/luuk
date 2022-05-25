@@ -66,6 +66,7 @@ public class OrderController extends BaseController {
 
         for (OrderItem orderItem : orderItems) {
             Item item = orderItem.getItem();
+            totalCents += item.getPrice();
             externalItemIds.add(item.getExternalId());
         }
 

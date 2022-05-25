@@ -67,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
                         "<b>Delivery Address:</b> " + deliveryAddress + "<br><br>" +
-                        "<b>Delivery Mode:</b> " + deliveryMode+
+                        "<b>Delivery Mode:</b> " + deliveryMode+"<br><br>" +
                         "<b>Item Ids:</b><br>";
 
         for(Integer externalId : externalItemIds){
