@@ -87,7 +87,7 @@
 
         </LinearLayout>
         <ImageView
-            android:visibility="invisible"
+            android:id="@+id/iv_next"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"

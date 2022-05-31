@@ -1,14 +1,8 @@
 package com.elmenture.core.service.impl;
 
 import com.elmenture.core.model.*;
-import com.elmenture.core.payload.DarajaAuthDto;
-import com.elmenture.core.payload.OrderConfirmationDto;
-import com.elmenture.core.payload.StkPushRequestDto;
-import com.elmenture.core.payload.StkPushResponseDto;
-import com.elmenture.core.repository.ItemRepository;
-import com.elmenture.core.repository.OrderItemRepository;
-import com.elmenture.core.repository.OrderRepository;
-import com.elmenture.core.repository.TransactionDetailsRepository;
+import com.elmenture.core.payload.*;
+import com.elmenture.core.repository.*;
 import com.elmenture.core.service.OrderService;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -25,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.elmenture.core.utils.LuukProperties.*;
 
@@ -39,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private ItemRepository itemRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private ItemPropertyRepository itemPropertyRepository;
 
     @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
@@ -182,9 +179,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void undoCreatedOrder(Order order) {
-        orderItemRepository.deleteByOrderId(order.getId());
-        orderRepository.delete(order);
+    public void cancelOrder(Order order) {
+        order.setState("cancelled");
+        orderRepository.save(order);
     }
 
     @Override
@@ -222,5 +219,36 @@ public class OrderServiceImpl implements OrderService {
         } else {
             return new ResponseEntity<>("order payment for merchantRequestID : " + merchantRequestID + " does not exist", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public ResponseEntity getOrderItems(int orderId) {
+        orderItemRepository.findByOrderId(orderId);
+        List<ItemDto> itemDtoList = orderItemRepository.findByOrderId(orderId).stream().map(orderItem -> mapToDTO(orderItem.getItem()))
+                .collect(Collectors.toList());
+        return new ResponseEntity(itemDtoList, HttpStatus.OK);
+    }
+
+    private ItemDto mapToDTO(Item item) {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setId(item.getId());
+        itemDto.setExternalId(item.getExternalId());
+        itemDto.setBrand(item.getBrand());
+        itemDto.setDescription(item.getDescription());
+        itemDto.setSizeInternational(item.getSizeInternational());
+        itemDto.setSizeNumber(item.getSizeNumber());
+        itemDto.setPrice(item.getPrice());
+        itemDto.setTarget(item.getTarget());
+        itemDto.setSold(item.getSold());
+        itemDto.setSizeType(item.getSizeType());
+        itemDto.setImageUrl(item.getImageUrl());
+
+        List<ItemProperty> properties = itemPropertyRepository.findByItemId(item.getId());
+        List<Long> ids = new ArrayList<>();
+        for (ItemProperty property : properties) {
+            ids.add(property.getTagPropertyId());
+        }
+        itemDto.setTagProperties(ids);
+        return itemDto;
     }
 }

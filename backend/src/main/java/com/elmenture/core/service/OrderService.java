@@ -19,9 +19,12 @@ public interface OrderService {
 
     void saveTransactionDetails(OrderConfirmationDto orderConfirmationDto);
 
-    void undoCreatedOrder(Order order);
+    void cancelOrder(Order order);
 
     ResponseEntity validateOrder(List<Long> orderList, User loggedInUser);
 
     ResponseEntity confirmOrderPaid(User user, String merchantRequestID);
+
+    ResponseEntity getOrderItems(int orderId);
+
 }

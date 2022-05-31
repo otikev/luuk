@@ -16,6 +16,7 @@ import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createne
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.EditMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.mysizes.ViewMySizesFragment
 import com.elmenture.luuk.ui.main.accountmanagement.orderhistory.OrderHistoryFragment
+import com.elmenture.luuk.ui.main.accountmanagement.orderhistory.orderitems.OrderItemsFragment
 import com.elmenture.luuk.ui.main.accountmanagement.profilesettings.ProfileSettingsFragment
 import com.elmenture.luuk.ui.main.cart.ViewCartFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFailureFragment
@@ -26,7 +27,6 @@ import com.elmenture.luuk.ui.main.home.ViewItemFragment
 import com.elmenture.luuk.ui.main.search.searchitems.SearchItemsFragment
 import com.elmenture.luuk.ui.main.search.viewsearchitems.ViewSearchedItemsFragment
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.navigation.NavigationBarView
 import models.Item
 import models.Spot
@@ -189,10 +189,17 @@ class MainActivity : AuthenticatedActivity(),
         )
     }
 
-    override fun startViewSearchedItemsFragment(tagPropertyId: Long) {
+    override fun startViewSearchedItemsFragment(query: String) {
         addFragment(
-            ViewSearchedItemsFragment.newInstance(tagPropertyId),
+            ViewSearchedItemsFragment.newInstance(query),
             ViewSearchedItemsFragment::class.java.canonicalName
+        )
+    }
+
+    override fun startOrderItemsFragment(id: Int) {
+        addFragment(
+            OrderItemsFragment.newInstance(id),
+            OrderItemsFragment::class.java.canonicalName
         )
     }
 

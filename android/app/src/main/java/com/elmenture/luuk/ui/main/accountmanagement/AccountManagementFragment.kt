@@ -10,13 +10,14 @@ import com.elmenture.luuk.BuildConfig
 import com.elmenture.luuk.databinding.FragmentAccountManagementBinding
 
 import com.elmenture.luuk.base.BaseFragment
+import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.ui.main.MainActivityView
 import userdata.User
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class AccountManagementFragment : BaseFragment() {
+class AccountManagementFragment : BaseFragment(), Type.ProfileSettings {
     lateinit var binding: FragmentAccountManagementBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
 

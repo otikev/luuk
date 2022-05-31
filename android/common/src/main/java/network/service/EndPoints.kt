@@ -54,9 +54,9 @@ interface EndPoints {
     fun userDetails(): Call<SignInResponse>
 
     @GET("items/search")
-    fun fetchSearchItems(@Query("filter") searchItem: String): Call<List<TagProperty>>
+    fun fetchItemsWithQuery(@Query("filter") searchItem: String): Call<List<Item>>
 
-    @GET("items/with-property")
-    fun fetchAllWithProperty(@Query("tag_property") tagPropertyId: Long): Call<List<Item>>
+    @GET("order/items")
+    fun fetchOrderItems(@Query("order_id") id: Int): Call<List<Item>>
 
 }

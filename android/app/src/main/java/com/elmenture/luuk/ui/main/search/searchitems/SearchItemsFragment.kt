@@ -15,6 +15,7 @@ import com.elmenture.luuk.databinding.FragmentSearchBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.elmenture.luuk.ui.main.search.SearchViewModel
 import models.TagProperty
+import userdata.User
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -22,9 +23,7 @@ import models.TagProperty
 class SearchItemsFragment : BaseFragment(), Type.Search, SearchAdapter.CartActionListener {
     lateinit var binding: FragmentSearchBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
-    private var itemList: ArrayList<TagProperty> = ArrayList()
-    var adapter = SearchAdapter(itemList, this)
-
+    var adapter = SearchAdapter(User.getCurrent().tagProperties as ArrayList<TagProperty>, this)
     private lateinit var viewModel: SearchViewModel
 
 
@@ -45,6 +44,7 @@ class SearchItemsFragment : BaseFragment(), Type.Search, SearchAdapter.CartActio
         initView()
         setUpEventListeners()
         observeLiveData()
+
     }
 
     private fun initView() {
@@ -58,13 +58,12 @@ class SearchItemsFragment : BaseFragment(), Type.Search, SearchAdapter.CartActio
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty())
-                    viewModel.fetchSearchItems(query);
+                    activityView.startViewSearchedItemsFragment(query)
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty())
-                    viewModel.fetchSearchItems(newText);
+            override fun onQueryTextChange(newText: String): Boolean {
+                adapter.filter(newText)
                 return false
             }
         })
@@ -72,15 +71,15 @@ class SearchItemsFragment : BaseFragment(), Type.Search, SearchAdapter.CartActio
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeLiveData() {
-        viewModel.searchTagLiveData.observe(viewLifecycleOwner) {
-            itemList.clear()
-            itemList.addAll(it)
-            adapter.notifyDataSetChanged()
-        }
+//        viewModel.searchTagLiveData.observe(viewLifecycleOwner) {
+//            itemList.clear()
+//            itemList.addAll(it)
+//            adapter.notifyDataSetChanged()
+//        }
 
     }
 
     override fun onItemClicked(tagProperty: TagProperty) {
-        activityView.startViewSearchedItemsFragment(tagProperty.id!!)
+        binding.svItems.setQuery(tagProperty.value, false)
     }
 }

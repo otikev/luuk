@@ -2,7 +2,7 @@ package com.elmenture.luuk.base
 
 class BaseApiState(
     var data: Any? = null,
-    var errorCode: Int? = null,
+    var responseCode: Int? = null,
     var errorMessage: String? = null,
     var currentState: State? = null,
 ) {

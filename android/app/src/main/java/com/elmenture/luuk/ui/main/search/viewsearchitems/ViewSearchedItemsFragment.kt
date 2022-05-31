@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentSearchBinding
+import com.elmenture.luuk.databinding.FragmentSearchResultsBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.elmenture.luuk.ui.main.search.SearchViewModel
 import models.Item
@@ -21,19 +22,20 @@ import models.Spot
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ViewSearchedItemsFragment : BaseFragment(), Type.Search, ViewSearchedItemsAdapter.CartActionListener {
-    lateinit var binding: FragmentSearchBinding
+class ViewSearchedItemsFragment : BaseFragment(), Type.Search,
+    ViewSearchedItemsAdapter.CartActionListener {
+    lateinit var binding: FragmentSearchResultsBinding
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private var itemList: ArrayList<Item> = ArrayList()
-    var tagPropertyId: Long = 0
+    lateinit var query: String
     lateinit var adapter: ViewSearchedItemsAdapter
     private lateinit var viewModel: SearchViewModel
 
 
     companion object {
-        fun newInstance(tagPropertyId: Long) : ViewSearchedItemsFragment {
+        fun newInstance(query: String): ViewSearchedItemsFragment {
             val frag = ViewSearchedItemsFragment()
-            frag.tagPropertyId = tagPropertyId
+            frag.query = query
             return frag
         }
     }
@@ -42,7 +44,7 @@ class ViewSearchedItemsFragment : BaseFragment(), Type.Search, ViewSearchedItems
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding = FragmentSearchResultsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -50,7 +52,12 @@ class ViewSearchedItemsFragment : BaseFragment(), Type.Search, ViewSearchedItems
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeLiveData()
-        viewModel.fetchItemsByTag(tagPropertyId)
+        setEventListeners()
+        viewModel.fetchItemsByQuery(query)
+    }
+
+    private fun setEventListeners() {
+        binding.toolBar.setNavClickListener { requireActivity().onBackPressed() }
     }
 
     private fun initView() {
@@ -64,10 +71,10 @@ class ViewSearchedItemsFragment : BaseFragment(), Type.Search, ViewSearchedItems
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeLiveData() {
-        viewModel.searchItemsByTagLiveData.observe(viewLifecycleOwner) {
+        viewModel.searchItemsByQueryLiveData.observe(viewLifecycleOwner) {
             itemList.clear()
             itemList.addAll(it)
-            adapter.notifyItemRangeChanged(0, itemList.lastIndex)
+            adapter.notifyDataSetChanged()
         }
     }
 

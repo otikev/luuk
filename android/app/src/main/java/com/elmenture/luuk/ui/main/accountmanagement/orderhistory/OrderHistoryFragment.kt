@@ -16,7 +16,8 @@ import models.*
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings {
+class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings,
+    OrderHistoryAdapter.CartActionListener {
     lateinit var binding: FragmentOrderHistoryBinding
     lateinit var orderHistoryViewModel: OrderHistoryViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
@@ -63,8 +64,12 @@ class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings {
 
     private fun initView() {
         orderHistoryViewModel = ViewModelProvider(this).get(OrderHistoryViewModel::class.java)
-        orderAdapter = OrderHistoryAdapter(orderList)
+        orderAdapter = OrderHistoryAdapter(orderList, this)
         binding.rvOrders.layoutManager = LinearLayoutManager(context)
         binding.rvOrders.adapter = orderAdapter
+    }
+
+    override fun onNextClicked(order: Order) {
+        activityView.startOrderItemsFragment(order.id!!)
     }
 }

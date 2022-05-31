@@ -26,7 +26,7 @@ public class OrderItem extends BaseEntity {
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    public Item item;
 
     @JsonIgnore
     @ManyToOne

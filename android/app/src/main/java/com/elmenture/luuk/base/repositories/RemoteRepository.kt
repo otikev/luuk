@@ -15,7 +15,6 @@ import utils.NetUtils
 
 object RemoteRepository {
     val logUtils = LogUtils(javaClass)
-    val responseErrorCode = MutableLiveData<Int>()
     val blockUserInteraction = MutableLiveData(false)
 
     private fun processRequest(call: Call<*>, blockUi: Boolean = true): BaseApiState {
@@ -29,24 +28,24 @@ object RemoteRepository {
                 viewState = BaseApiState.SUCCESS_STATE
                 logUtils.i("Success")
             } else {
-                BaseApiState.ERROR_STATE.errorCode = response.code()
+                BaseApiState.ERROR_STATE.responseCode = response.code()
                 BaseApiState.ERROR_STATE.errorMessage = response.errorBody()?.string()
                 viewState = BaseApiState.ERROR_STATE
-                logUtils.w("Api Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
+                logUtils.w("Api Error: %d".format(BaseApiState.ERROR_STATE.responseCode))
 
             }
         } catch (e: Exception) {
             if (e is ConnectivityInterceptor.NoConnectivityException) {
-                BaseApiState.ERROR_STATE.errorCode = NetUtils.CONNECTIVITY_ERROR_CODE
+                BaseApiState.ERROR_STATE.responseCode = NetUtils.CONNECTIVITY_ERROR_CODE
             } else {
-                BaseApiState.ERROR_STATE.errorCode = NetUtils.NETWORK_ERROR_CODE
+                BaseApiState.ERROR_STATE.responseCode = NetUtils.NETWORK_ERROR_CODE
             }
-            logUtils.w("Connectivity Error: %d".format(BaseApiState.ERROR_STATE.errorCode))
+            logUtils.w("Connectivity Error: %d".format(BaseApiState.ERROR_STATE.responseCode))
             BaseApiState.ERROR_STATE.errorMessage = e.message
             viewState = BaseApiState.ERROR_STATE
 
         }
-        viewState.errorCode?.let { responseErrorCode.postValue(it) }
+        viewState.responseCode
         if (blockUi)
             this.blockUserInteraction.postValue(false)
         return viewState
@@ -138,13 +137,15 @@ object RemoteRepository {
         return processRequest(call, blockUi = false)
     }
 
-    fun fetchSearchTags(searchItem: String): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchSearchItems(searchItem)
-        return processRequest(call, blockUi = false)
+    fun fetchItemsByQuery(query: String): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .fetchItemsWithQuery(query)
+        return processRequest(call, blockUi = true)
     }
 
-    fun fetchItemsByTagProperty(tagPropertyId: Long): BaseApiState {
-        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchAllWithProperty(tagPropertyId)
-        return processRequest(call, blockUi = false)
+    fun fetchOrderItems(id: Int): BaseApiState {
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchOrderItems(id)
+        return processRequest(call, blockUi = true)
     }
 }

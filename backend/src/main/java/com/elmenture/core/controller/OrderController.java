@@ -2,14 +2,9 @@ package com.elmenture.core.controller;
 
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.OrderConfirmationDto;
-import com.elmenture.core.payload.StkPushResponseDto;
-import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.OrderItemRepository;
 import com.elmenture.core.repository.OrderRepository;
-import com.elmenture.core.repository.TransactionDetailsRepository;
 import com.elmenture.core.service.OrderService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +33,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Order>> fetchOrders() {
-        List<Order> orderList = orderRepository.findAllByUserId(getLoggedInUser().getId());
+        List<Order> orderList = orderRepository.findAllByUserIdAndState(getLoggedInUser().getId(), "paid");
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
@@ -52,7 +46,7 @@ public class OrderController extends BaseController {
             orderService.saveTransactionDetails(orderConfirmationDto);
             executor.execute(() -> sendEmail(orderConfirmationDto.getOrder().getId()));
         } else {
-            orderService.undoCreatedOrder(orderConfirmationDto.getOrder());
+            orderService.cancelOrder(orderConfirmationDto.getOrder());
         }
     }
 
@@ -87,6 +81,11 @@ public class OrderController extends BaseController {
     @PostMapping("/validate")
     public ResponseEntity validateOrder(@Valid @org.springframework.web.bind.annotation.RequestBody List<Long> orderList) {
         return orderService.validateOrder(orderList, getLoggedInUser());
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity getOrderItems(@RequestParam(value = "order_id") int orderId) {
+        return orderService.getOrderItems(orderId);
     }
 
 }

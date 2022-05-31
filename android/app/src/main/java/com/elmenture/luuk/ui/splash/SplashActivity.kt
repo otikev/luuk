@@ -49,7 +49,7 @@ class SplashActivity : BaseActivity() {
                     User.getCurrent().setUserDetails(it.data as SignInResponse)
                     startMainScreen()
                 } else {
-                    logUtils.w("Auth failed : " + it.errorCode)
+                    logUtils.w("Auth failed : " + it.responseCode)
                     SecureUtils.setUserSessionKey(this@SplashActivity, null)
                     startLoginScreen()
                 }

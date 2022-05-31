@@ -13,7 +13,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     public Order findByMerchantRequestID(String merchantRequestID);
 
-    public List<Order> findAllByUserId(Long userId);
+    public List<Order> findAllByUserIdAndState(Long userId, String state);
     public Order findByUserAndState(User user, String state);
     public Order findByUserAndMerchantRequestIDAndState(User user, String merchantRequestID, String state);
 }

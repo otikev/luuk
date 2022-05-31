@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.elmenture.luuk.R
@@ -14,6 +15,7 @@ import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.FragmentCheckoutBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import com.elmenture.luuk.ui.main.cart.CartViewModel
+import models.Item
 import models.Spot
 import utils.MiscUtils
 
@@ -60,20 +62,38 @@ class CheckoutFragment : BaseFragment(), Type.Cart {
                 CartViewModel.PaymentStatus.RequestFailedState -> {
                     activityView.startCheckoutFailureFragment()
                 }
+                CartViewModel.PaymentStatus.ItemsSoldState -> {
+                    handleItemsSoldState()
+                }
             }
         }
 
         viewModel.profileDetailsLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is CartViewModel.ProfileStatus.Complete -> {
-                    binding.tvChange.text = MiscUtils.getSpannedText(getString(R.string.update_details, "Change Details"))
+                    binding.tvChange.text = MiscUtils.getSpannedText(
+                        getString(
+                            R.string.update_details,
+                            "Change Details"
+                        )
+                    )
                     binding.btnPayNow.isEnabled = true
                     binding.tvChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
                 is CartViewModel.ProfileStatus.Incomplete -> {
-                    binding.tvChange.text = MiscUtils.getSpannedText(getString(R.string.update_details, "Update Details To Proceed"))
+                    binding.tvChange.text = MiscUtils.getSpannedText(
+                        getString(
+                            R.string.update_details,
+                            "Update Details To Proceed"
+                        )
+                    )
                     binding.btnPayNow.isEnabled = false
-                    binding.tvChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_alert_triangle, 0);
+                    binding.tvChange.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        R.drawable.ic_alert_triangle,
+                        0
+                    );
 
                 }
             }
@@ -90,6 +110,11 @@ class CheckoutFragment : BaseFragment(), Type.Cart {
             }
         }
 
+    }
+
+    private fun handleItemsSoldState() {
+        Toast.makeText(requireContext(),"Removing already sold items from cart",Toast.LENGTH_LONG).show();
+        activityView.startViewCartFragment()
     }
 
     @SuppressLint("SetTextI18n")

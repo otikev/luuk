@@ -38,6 +38,7 @@
                 android:layout_marginTop="@dimen/dimens_large_size"
                 android:background="@drawable/rectangle_circled"
                 android:backgroundTint="@color/off_white"
+                android:visibility="gone"
                 android:padding="6dp"
                 android:src="@drawable/ic_trash" />
 
@@ -80,6 +81,7 @@
                 android:textColor="@color/black" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:visibility="gone"
                 android:id="@+id/btn_save_for_later"
                 style="@style/buttonStyleSecondary"
                 android:layout_width="match_parent"

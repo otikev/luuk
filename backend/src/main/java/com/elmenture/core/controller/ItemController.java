@@ -75,8 +75,8 @@ public class ItemController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<TagProperty>> searchTags(@RequestParam(value = "filter") String keyword) {
-        return new ResponseEntity<>(tagPropertyRepository.searchAllLike(keyword), HttpStatus.OK);
+    public ResponseEntity searchItemsWithQuery(@RequestParam(value = "filter") String keyword) {
+        return new ResponseEntity<>(itemService.getAllItems(keyword), HttpStatus.OK);
     }
 
     @GetMapping("/with-property")

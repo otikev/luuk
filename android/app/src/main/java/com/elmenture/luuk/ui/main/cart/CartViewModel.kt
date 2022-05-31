@@ -7,11 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.elmenture.luuk.base.BaseApiState
 import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.repositories.AccountManagementRepository
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import models.Item
 import models.Spot
 import models.StkConfirmationResponse
+import java.lang.reflect.Type
 
 class CartViewModel : ViewModel() {
 
@@ -58,10 +62,33 @@ class CartViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     paymentStatus.value = PaymentStatus.RequestSentState
                 } else {
-                    paymentStatus.value = PaymentStatus.RequestFailedState
+                    when (response.responseCode) {
+                        400 -> {
+                            paymentStatus.value = PaymentStatus.RequestFailedState
+                        }
+                        302 -> {
+                            handleItemsAlreadySold(response.errorMessage)
+                            paymentStatus.value =   PaymentStatus.ItemsSoldState
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun handleItemsAlreadySold(errorMessage: String?) {
+        val soldItems = Gson().fromJson(errorMessage, Array<Item>::class.java).toList()
+        val spotsToDiscard = arrayListOf<Spot>()
+
+
+        for (soldItem: Item in soldItems) {
+            for (spot: Spot in cartItemsLiveData.value!!) {
+                if (spot.itemId == soldItem.id)
+                    spotsToDiscard.add(spot)
+            }
+        }
+        cartItemsLiveData.value!!.removeAll(spotsToDiscard)
+        LocalRepository.swipeRecords.likes.postValue(cartItemsLiveData.value)
     }
 
     fun confirmOrder() {
@@ -80,5 +107,6 @@ class CartViewModel : ViewModel() {
         object EmptyState : PaymentStatus()
         object RequestSentState : PaymentStatus()
         object RequestFailedState : PaymentStatus()
+        object ItemsSoldState : PaymentStatus()
     }
 }
