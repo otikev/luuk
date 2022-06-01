@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id "kotlin-kapt"
     id 'com.google.gms.google-services'
 }
 
@@ -76,7 +77,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:latest.release'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation group: 'cz.msebera.android', name: 'httpclient', version: '4.5.3'
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
+    implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"

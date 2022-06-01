@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.amazonaws.util.StringUtils
-import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.Type
@@ -98,7 +98,8 @@ class ViewItemFragment : BaseFragment(), Type.Home {
                     addChipToGroup(User.getCurrent().getTagProperty(id))
                 }
             }
-            Glide.with(requireContext()).load(it.url).into(binding.ivImage)
+
+            GlideApp.with(requireContext()).load(it.url).into(binding.ivImage)
         }
     }
 
