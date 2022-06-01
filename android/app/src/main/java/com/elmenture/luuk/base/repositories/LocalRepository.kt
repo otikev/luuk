@@ -17,8 +17,7 @@ object LocalRepository {
     fun updateItemList(itemList: ArrayList<Item>?){
         val currentItemSet = itemListLiveData.value
         itemList?.let {
-            currentItemSet?.addAll(itemList)
-            itemListLiveData.postValue(currentItemSet)
+            itemListLiveData.postValue(itemList)
         }
     }
 }

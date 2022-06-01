@@ -29,6 +29,17 @@ public class ItemQueue {
         print();
     }
 
+    public static void addItemsAndFilterItemsInCart(List<Spot> _spots,List<Spot> cartItems) {
+        List<Spot> filtered = new ArrayList<>();
+
+        for (Spot spot : _spots) {
+            if (!cartContains(spot,cartItems)&&!queueContains(spot)) {
+                spots.add(spot);
+            }
+        }
+        print();
+    }
+
     public static void addItems(List<Spot> _spots) {
         for (Spot spot : _spots) {
             if (!queueContains(spot)) {
@@ -36,6 +47,17 @@ public class ItemQueue {
             }
         }
         print();
+    }
+
+    private static boolean cartContains(Spot spot,List<Spot> cartItems){
+        boolean foundInCart = false;
+        for (Spot cartItem : cartItems) {
+            if(spot.getItemId() == cartItem.getItemId()){
+                foundInCart = true;
+                break;
+            }
+        }
+        return foundInCart;
     }
 
     private static boolean queueContains(Spot _spot) {

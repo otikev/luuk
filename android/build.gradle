@@ -15,4 +15,5 @@ ext{
     OK_HTTP_VERSION = "4.3.1"
     RETROFIT_VERSION = "2.9.0"
     GLIDE_VERSION = "4.13.0"
+    lifecycle_version = "2.4.1"
 }

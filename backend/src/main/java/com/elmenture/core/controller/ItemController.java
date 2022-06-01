@@ -62,7 +62,7 @@ public class ItemController extends BaseController {
     @GetMapping("/queue")
     public ResponseEntity<List<ItemDto>> getQueue(@RequestParam(value = "filter", defaultValue = "true", required = false) boolean filter) {
         long start = System.currentTimeMillis();
-        List<ItemDto> queue = itemService.getQueue(getLoggedInUser(), filter, 20);
+        List<ItemDto> queue = itemService.getQueue(getLoggedInUser(), filter, 5);
         long totalTime = System.currentTimeMillis() - start;
         System.out.println("===== Generated queue in " + totalTime + " milliseconds. Filtered : " + filter + " =====");
         return new ResponseEntity<>(queue, HttpStatus.OK);

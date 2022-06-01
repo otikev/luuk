@@ -10,12 +10,14 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.amazonaws.util.StringUtils.upperCase
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.base.repositories.LocalRepository
+import com.elmenture.luuk.data.ItemCart
 import com.elmenture.luuk.data.ItemQueue
 import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
@@ -101,18 +103,22 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
         binding.btn5.setOnClickListener(comingSoonAction)
     }
 
+
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
 
             val cart = LocalRepository.swipeRecords.likes.value
-            val unfilteredList = createSpots(it).toMutableSet()
-            val filteredList = filterListAgainstCart(cart!!, unfilteredList)
-            ItemQueue.addItems(filteredList)
+            val unfilteredList = createSpots(it)
+            if (cart != null) {
+                ItemQueue.addItemsAndFilterItemsInCart(unfilteredList, cart.toList())
+            } else {
+                ItemQueue.addItems(unfilteredList)
+            }
             adapter.notifyDataSetChanged()
             if (ItemQueue.isEmpty()) {
                 binding.itemInfo.visibility = GONE
                 binding.cardStackView.visibility = INVISIBLE
-                if(homeViewModel.initialized()){
+                if (homeViewModel.initialized()) {
                     LuukDialog.newInstance("There are no matches for this selection")
                         .show(childFragmentManager, LuukDialog.TAG)
                 }
@@ -153,12 +159,17 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
         }
 
         when (direction) {
-            Direction.Left -> homeViewModel.updateSwipesData(
-                dislike = spot
-            )
-            Direction.Right -> homeViewModel.updateSwipesData(
-                like = spot
-            )
+            Direction.Left -> {
+                homeViewModel.updateSwipesData(
+                    dislike = spot
+                )
+            }
+            Direction.Right -> {
+                homeViewModel.updateSwipesData(
+                    like = spot
+                )
+                ItemCart.addItem(spot)
+            }
         }
 
         logUtils.d("onCardSwiped, items remaining : ${adapter.itemCount}")
