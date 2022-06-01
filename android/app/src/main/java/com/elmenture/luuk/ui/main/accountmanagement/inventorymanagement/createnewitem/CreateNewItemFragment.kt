@@ -23,6 +23,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
 import com.bumptech.glide.Glide
 import com.elmenture.luuk.R
+import com.elmenture.luuk.base.BaseActivity
 import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.databinding.FragmentCreateNewItemBinding
 import com.elmenture.luuk.ui.main.MainActivityView
@@ -66,14 +67,14 @@ class CreateNewItemFragment : BaseFragment() {
             return frag
         }
 
-        val BUCKET_NAME =
-            "luukatme-dev" //TODO: set dev or prod bucket depending on the APK build type
+        lateinit var BUCKET_NAME: String//set dev or prod bucket depending on the APK build type
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        BUCKET_NAME = resources.getString(R.string.s3_bucket)
         binding = FragmentCreateNewItemBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -97,8 +98,18 @@ class CreateNewItemFragment : BaseFragment() {
                 progressBar.dismissAllowingStateLoss()
             }
         }
-
+        createNewItemViewModel.updateItemApiState.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isSuccessful) {
+                    activityView.showMessage("Item Updated Successfully")
+                } else {
+                    activityView.showMessage("Failed To Update Item", false)
+                }
+                progressBar.dismissAllowingStateLoss()
+            }
+        }
     }
+
 
 
     private fun initView() {
@@ -199,6 +210,8 @@ class CreateNewItemFragment : BaseFragment() {
         val editListener = View.OnClickListener {
             item.imageUrl = editableItem?.imageUrl
             item.id = editableItem?.id
+            progressBar = CustomProgressBar.newInstance()
+            progressBar.show(requireActivity().supportFragmentManager, "CustomProgressBar")
             createNewItemViewModel.updateItem(getItemDetails())
         }
 

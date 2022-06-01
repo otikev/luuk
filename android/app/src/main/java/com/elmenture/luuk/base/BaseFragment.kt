@@ -14,4 +14,14 @@ abstract class BaseFragment : Fragment() {
     open fun onResumeFromBackstack() {
         (requireActivity() as MainActivityView).handleBottomNav(this)
     }
+
+    fun showProgress(){
+        val activity:BaseActivity = activity as BaseActivity
+        activity.showProgressDialog()
+    }
+
+    fun hideProgress(){
+        val activity:BaseActivity = activity as BaseActivity
+        activity.hideProgressDialog()
+    }
 }

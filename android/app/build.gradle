@@ -34,8 +34,10 @@ android {
     buildTypes {
         debug {
             debuggable true
+            resValue "string", "s3_bucket", "luukatme-dev"
         }
         release {
+            resValue "string", "s3_bucket", "luukatme-prod"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

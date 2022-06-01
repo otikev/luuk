@@ -54,7 +54,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
 
     }
 
-    private fun showProgressDialog() {
+    fun showProgressDialog() {
         if (loader == null)
             loader = ProgressDialog.newInstance()
         if (loader!!.isAdded) {
@@ -63,7 +63,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseActivityView {
         loader?.show(supportFragmentManager, ProgressDialog.TAG)
     }
 
-    private fun hideProgressDialog() {
+    fun hideProgressDialog() {
         loader?.dismissAllowingStateLoss()
     }
 

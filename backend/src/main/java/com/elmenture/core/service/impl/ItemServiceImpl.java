@@ -163,7 +163,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getAllItems() {
-        List<Item> items = itemRepository.findAll();
+        Sort sort = Sort.by("id").descending();
+        List<Item> items = itemRepository.findAll(sort);
         List<ItemDto> itemDtos = new ArrayList<>();
         for (Item item : items) {
             itemDtos.add(mapToDTO(item));
