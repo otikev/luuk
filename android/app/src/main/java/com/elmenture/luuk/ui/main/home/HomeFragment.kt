@@ -173,8 +173,6 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
 
-        logUtils.d("onCardAppeared: ($position) ${textView.text}")
-
         val item = adapter.getSpots()[position]
         val priceCents = item.priceCents
         binding.tvPrice.text = MiscUtils.getSpannedText(
@@ -206,7 +204,6 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
 
     override fun onCardDisappeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_price)
-        logUtils.d("onCardDisappeared: ($position) ${textView.text}")
     }
 
     private fun setupCardStackView() {

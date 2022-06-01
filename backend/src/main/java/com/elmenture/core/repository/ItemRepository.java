@@ -18,7 +18,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByTargetIn(List<String> targets);
 
-    Page<Item> findBySoldFalse(Pageable pageable);
+    Page<Item> findBySoldAndIdGreaterThan(boolean sold, long id,Pageable pageable);
 
     Page<Item> findByTargetIn(List<String> targets, Pageable pageable);
 

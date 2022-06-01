@@ -11,7 +11,6 @@ import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.ItemService;
-import com.elmenture.core.utils.ChunkRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -191,12 +190,12 @@ public class ItemServiceImpl implements ItemService {
             if (offset < startTrackerPosition) {
                 startedFromBeginning = true;
                 int limit = (int) (startTrackerPosition - offset);
-                pageable = new ChunkRequest(offset, limit, sort);
+                pageable =  PageRequest.ofSize(limit).withSort(Sort.by("id").ascending());
             } else {
-                pageable = new ChunkRequest(offset, size, sort);
+                pageable = PageRequest.ofSize(size).withSort(Sort.by("id").ascending());
             }
 
-            Page<Item> items = itemRepository.findBySoldFalse(pageable);
+            Page<Item> items = itemRepository.findBySoldAndIdGreaterThan(false,offset,pageable);
             listOfItems = items.getContent();
 
             boolean exit = false;
