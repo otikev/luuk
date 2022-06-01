@@ -22,6 +22,7 @@ import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
 import models.Spot
 import utils.MiscUtils
+import views.LuukDialog
 import views.cardstackview.*
 
 
@@ -34,7 +35,6 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
     private val adapter = CardStackAdapter()
     private val manager by lazy { CardStackLayoutManager(activity, this) }
     private lateinit var homeViewModel: HomeViewModel
-    private val itemList by lazy { homeViewModel.itemsLiveData.value }
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -103,14 +103,19 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
 
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {
+
             val cart = LocalRepository.swipeRecords.likes.value
-            val unfilteredList = createSpots(itemList).toMutableSet()
+            val unfilteredList = createSpots(it).toMutableSet()
             val filteredList = filterListAgainstCart(cart!!, unfilteredList)
             ItemQueue.addItems(filteredList)
             adapter.notifyDataSetChanged()
             if (ItemQueue.isEmpty()) {
                 binding.itemInfo.visibility = GONE
                 binding.cardStackView.visibility = INVISIBLE
+                if(homeViewModel.initialized()){
+                    LuukDialog.newInstance("There are no matches for this selection")
+                        .show(childFragmentManager, LuukDialog.TAG)
+                }
             } else {
                 binding.itemInfo.visibility = VISIBLE
                 binding.cardStackView.visibility = VISIBLE

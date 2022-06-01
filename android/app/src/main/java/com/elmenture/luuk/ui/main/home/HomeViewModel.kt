@@ -13,14 +13,19 @@ class HomeViewModel : ViewModel() {
     var actions: Action = Action()
     var itemsLiveData = MediatorLiveData<ArrayList<Item>>()
     var cartItemsLiveData = MediatorLiveData<MutableSet<Spot>>()
+    var initialized: Boolean = false
 
     init {
         itemsLiveData.addSource(LocalRepository.itemListLiveData) { itemsLiveData.setValue(it) }
-        cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) {cartItemsLiveData.setValue(it)}
-
+        cartItemsLiveData.addSource(LocalRepository.swipeRecords.likes) {
+            cartItemsLiveData.setValue(
+                it
+            )
         }
 
-    fun clearItems(){
+    }
+
+    fun clearItems() {
         LocalRepository.itemListLiveData.value?.clear()
     }
 
@@ -48,10 +53,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun initialized(): Boolean {
+        return initialized
+    }
+
     fun fetchItems(showAllItems: Boolean) {
+        this.initialized
         viewModelScope.launch(Dispatchers.IO) {
             val response = RemoteRepository.fetchItemsQueue(!showAllItems)
             if (response.isSuccessful) {
+                initialized = true
                 LocalRepository.updateItemList(response.data as ArrayList<Item>?)
             }
         }

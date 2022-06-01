@@ -190,9 +190,9 @@ public class ItemServiceImpl implements ItemService {
             if (offset < startTrackerPosition) {
                 startedFromBeginning = true;
                 int limit = (int) (startTrackerPosition - offset);
-                pageable =  PageRequest.ofSize(limit).withSort(Sort.by("id").ascending());
+                pageable =  PageRequest.ofSize(limit).withSort(sort);
             } else {
-                pageable = PageRequest.ofSize(size).withSort(Sort.by("id").ascending());
+                pageable = PageRequest.ofSize(size).withSort(sort);
             }
 
             Page<Item> items = itemRepository.findBySoldAndIdGreaterThan(false,offset,pageable);
