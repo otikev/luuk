@@ -22,6 +22,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
 import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.R
 import com.elmenture.luuk.base.BaseActivity
 import com.elmenture.luuk.base.BaseFragment
@@ -169,7 +170,7 @@ class CreateNewItemFragment : BaseFragment() {
             "EU" -> binding.rbEu.isChecked = true
             "INT" -> binding.rbInt.isChecked = true
         }
-        Glide.with(requireContext()).load(it.imageUrl).into(binding.ivS3image)
+        GlideApp.with(requireContext()).load(it.imageUrl).into(binding.ivS3image)
     }
 
     private fun setUpSizesSpinner() {

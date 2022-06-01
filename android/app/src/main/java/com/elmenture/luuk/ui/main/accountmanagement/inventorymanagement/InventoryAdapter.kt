@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.databinding.ItemInventoryBinding
 import models.Item
 import utils.MiscUtils
@@ -45,7 +46,7 @@ class InventoryAdapter(var list: ArrayList<Item>, var cartActionListener: CartAc
             }else{
                 view.tvSize.text = "Size ${item.sizeNumber.toString()}(${item.sizeType})"
             }
-            Glide.with(context).load(item.imageUrl).into(view.ivItemImage)
+            GlideApp.with(context).load(item.imageUrl).into(view.ivItemImage)
 
             view.ivDiscard.setOnClickListener { actionListener.onDiscardClicked(item) }
             view.btnEditItem.setOnClickListener { actionListener.onEditClicked(item) }

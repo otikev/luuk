@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.databinding.OrderHistoryItemBinding
 import models.Order
 import utils.MiscUtils
@@ -42,7 +43,7 @@ class OrderHistoryAdapter(var list: ArrayList<Order>, var cardActionListener: Ca
             val context = view.root.context
             view.tvStatus.text = order.state
             view.tvPrice.text = "KES ${MiscUtils.getFormattedAmount(amount.toDouble() / 100)}"
-            Glide.with(context).load(order.orderItems?.getOrNull(0)?.item?.imageUrl)
+            GlideApp.with(context).load(order.orderItems?.getOrNull(0)?.item?.imageUrl)
                 .into(view.ivItemImage)
             view.tvCount.text = "${order.orderItems?.count()} Items"
 

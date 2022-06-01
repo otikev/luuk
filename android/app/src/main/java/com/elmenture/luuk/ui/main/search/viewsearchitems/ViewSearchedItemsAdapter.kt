@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amazonaws.util.StringUtils
-import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.R
 import com.elmenture.luuk.databinding.ItemViewSearchBinding
 import models.Item
@@ -39,7 +39,7 @@ class ViewSearchedItemsAdapter(
         val context = view.root.context
         fun bind(item: Item, itemActionListener: CartActionListener) {
             view.tvDescription.text = item.description
-            Glide.with(context).load(item.imageUrl)
+            GlideApp.with(context).load(item.imageUrl)
                 .into(view.ivImage)
 
 

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.R
 import com.elmenture.luuk.data.ItemQueue
 import models.Spot
@@ -20,15 +20,16 @@ class CardStackAdapter : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
         return ViewHolder(inflater.inflate(R.layout.item_spot, parent, false))
     }
 
-    fun setItemClickListener(listener:View.OnClickListener){
+    fun setItemClickListener(listener: View.OnClickListener) {
         this.itemClickListener = listener
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val spot = ItemQueue.spots[position]
         val description: String = spot.description
 
         holder.description.text = description
-        Glide.with(holder.image)
+        GlideApp.with(holder.image)
             .load(spot.url)
             .into(holder.image)
 
@@ -45,7 +46,7 @@ class CardStackAdapter : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
         return ItemQueue.spots
     }
 
-    fun getItem(position:Int): Spot {
+    fun getItem(position: Int): Spot {
         return ItemQueue.spots[position]
     }
 

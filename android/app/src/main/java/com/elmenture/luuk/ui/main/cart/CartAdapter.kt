@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.elmenture.luuk.GlideApp
 import com.elmenture.luuk.databinding.ItemCartBinding
 import models.Spot
 import utils.MiscUtils
@@ -43,7 +43,7 @@ class CartAdapter(var list: ArrayList<Spot>, var cartActionListener: CartActionL
             } else {
                 view.tvSize.text = "Size ${item.sizeNumber.toString()}(${item.sizeType})"
             }
-            Glide.with(context).load(item.url).into(view.ivItemImage)
+            GlideApp.with(context).load(item.url).into(view.ivItemImage)
 
             actionListener?.let {
                 view.ivDiscard.visibility = View.VISIBLE
