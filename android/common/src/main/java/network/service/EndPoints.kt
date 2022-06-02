@@ -50,6 +50,9 @@ interface EndPoints {
     @GET("order/all")
     fun fetchAllOrders(): Call<List<Order>>
 
+    @GET("order/orders")
+    fun fetchOrdersByState(@Query("state") state: String): Call<List<Order>>
+
     @GET("user/details")
     fun userDetails(): Call<SignInResponse>
 

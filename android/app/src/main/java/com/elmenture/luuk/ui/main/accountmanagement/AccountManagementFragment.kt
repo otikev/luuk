@@ -39,6 +39,7 @@ class AccountManagementFragment : BaseFragment(), Type.ProfileSettings {
 
         if(!User.getCurrent().userDetails.isStaff){
             binding.itemInventoryManagement.visibility = GONE
+            binding.itemFulfillment.visibility = GONE
         }
 
         binding.appVersion.text = "Version ${BuildConfig.VERSION_NAME}"
@@ -71,6 +72,9 @@ class AccountManagementFragment : BaseFragment(), Type.ProfileSettings {
         }
         binding.itemOrderHistory.setOnClickListener {
             activityView.startOrderHistoryFragment()
+        }
+        binding.itemFulfillment.setOnClickListener {
+            activityView.startFulfillmentFragment()
         }
     }
 

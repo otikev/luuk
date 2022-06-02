@@ -76,4 +76,8 @@ object AccountManagementRepository {
     fun fetchAllOrders(): BaseApiState {
         return RemoteRepository.fetchAllOrders()
     }
+
+    fun fetchOrdersByState(state:String): BaseApiState {
+        return RemoteRepository.fetchOrdersByState(state)
+    }
 }

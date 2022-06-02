@@ -1,10 +1,16 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.model.*;
+import com.elmenture.core.exception.ResourceNotFoundException;
+import com.elmenture.core.model.Item;
+import com.elmenture.core.model.Order;
+import com.elmenture.core.model.OrderItem;
+import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.OrderConfirmationDto;
+import com.elmenture.core.payload.OrderStateUpdate;
 import com.elmenture.core.repository.OrderItemRepository;
 import com.elmenture.core.repository.OrderRepository;
 import com.elmenture.core.service.OrderService;
+import com.elmenture.core.utils.OrderState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +37,23 @@ public class OrderController extends BaseController {
     @Autowired
     private OrderService orderService;
 
+    @PostMapping("/update-state")
+    public ResponseEntity<String> updateOrderState(@Valid @RequestBody OrderStateUpdate stateUpdate) {
+        try {
+            orderService.updateOrderState(stateUpdate);
+            return ResponseEntity.ok("Item successfully updated");
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>> fetchOrdersByState(@RequestParam(value = "state") String state) {
+        List<Order> orderList = orderService.getOrdersByState(OrderState.getOrderState(state));
+        return new ResponseEntity<>(orderList, HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<Order>> fetchOrders() {
         List<Order> orderList = orderRepository.findAllByUserIdAndState(getLoggedInUser().getId(), "paid");
@@ -39,7 +62,7 @@ public class OrderController extends BaseController {
 
     @PostMapping("/payment-confirmed")
     public void paymentConfirmed(@Valid @RequestBody Object request) {
-        OrderConfirmationDto orderConfirmationDto =orderService.getOrderDetailsFromMerchantId(request);
+        OrderConfirmationDto orderConfirmationDto = orderService.getOrderDetailsFromMerchantId(request);
         if (orderConfirmationDto.getOrder() == null)
             return;
         if (orderConfirmationDto.getCallbackResultCode() == 0) {
@@ -55,7 +78,7 @@ public class OrderController extends BaseController {
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
         List<Integer> externalItemIds = new ArrayList<>();
         long totalCents = 0;
-        String customerName = order.getUser().getFirstName() +" "+ order.getUser().getLastName();
+        String customerName = order.getUser().getFirstName() + " " + order.getUser().getLastName();
         String address = order.getUser().getPhysicalAddress();
 
         for (OrderItem orderItem : orderItems) {

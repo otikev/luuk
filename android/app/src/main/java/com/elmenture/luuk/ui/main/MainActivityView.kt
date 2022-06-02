@@ -24,6 +24,7 @@ interface MainActivityView : BaseActivityView {
     fun startCheckoutSuccessFragment()
     fun startCheckoutFailureFragment()
     fun startOrderHistoryFragment()
+    fun startFulfillmentFragment()
     fun startSearchItemsFragment()
     fun startViewSearchedItemsFragment(query: String)
     fun handleBottomNav(type: Fragment)

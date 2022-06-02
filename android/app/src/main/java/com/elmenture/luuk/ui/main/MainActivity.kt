@@ -10,6 +10,7 @@ import com.elmenture.luuk.R
 import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
+import com.elmenture.luuk.ui.main.accountmanagement.fulfillment.FulfillmentFragment
 import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
@@ -179,6 +180,13 @@ class MainActivity : AuthenticatedActivity(),
         addFragment(
             OrderHistoryFragment.newInstance(),
             OrderHistoryFragment::class.java.canonicalName
+        )
+    }
+
+    override fun startFulfillmentFragment() {
+        addFragment(
+            FulfillmentFragment.newInstance(),
+            FulfillmentFragment::class.java.canonicalName
         )
     }
 

@@ -1,14 +1,17 @@
 package com.elmenture.core.service.impl;
 
+import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.*;
 import com.elmenture.core.service.OrderService;
+import com.elmenture.core.utils.OrderState;
 import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.elmenture.core.utils.LuukProperties.*;
@@ -227,6 +228,26 @@ public class OrderServiceImpl implements OrderService {
         List<ItemDto> itemDtoList = orderItemRepository.findByOrderId(orderId).stream().map(orderItem -> mapToDTO(orderItem.getItem()))
                 .collect(Collectors.toList());
         return new ResponseEntity(itemDtoList, HttpStatus.OK);
+    }
+
+    @Override
+    public List<Order> getOrdersByState(OrderState orderState) {
+        return orderRepository.findAllByState(orderState.toString().toLowerCase(Locale.ROOT), Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public void updateOrderState(OrderStateUpdate stateUpdate) throws ResourceNotFoundException {
+        Optional<Order> order = orderRepository.findById(stateUpdate.getOrderId());
+        if(order.isEmpty()){
+            throw new ResourceNotFoundException("Could not find order id "+stateUpdate.getOrderId());
+        }
+
+        if(OrderState.getOrderState(stateUpdate.getNewState())==null){
+            throw new IllegalArgumentException("State not found : "+stateUpdate.getNewState());
+        }
+        Order _order = order.get();
+        _order.setState(stateUpdate.getNewState());
+        orderRepository.save(_order);
     }
 
     private ItemDto mapToDTO(Item item) {

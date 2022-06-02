@@ -67,14 +67,18 @@
                 android:layout_height="wrap_content"
                 app:image="@drawable/ic_inventory_management"
                 app:title="Inventory Management" />
-
+            <views.SimpleItemView
+                android:id="@+id/item_fulfillment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:image="@drawable/ic_order_history"
+                app:title="Fulfillment" />
             <views.SimpleItemView
                 android:id="@+id/item_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:image="@drawable/ic_info_square"
                 app:title="Help" />
-
             <views.SimpleItemView
                 android:id="@+id/item_logout"
                 android:layout_width="match_parent"
