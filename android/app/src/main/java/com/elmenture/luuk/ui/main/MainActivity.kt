@@ -31,6 +31,7 @@ import com.elmenture.luuk.ui.main.search.viewsearchitems.ViewSearchedItemsFragme
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.navigation.NavigationBarView
 import models.Item
+import models.Order
 import models.Spot
 
 
@@ -64,14 +65,20 @@ class MainActivity : AuthenticatedActivity(),
             }
         }
 
-        mainActivityViewModel.profileDetailsLiveData.observe(this){
+        mainActivityViewModel.profileDetailsLiveData.observe(this) {
             it?.let {
-                if(it.email.isNullOrEmpty()|| it.contactPhoneNumber.isNullOrEmpty() || it.physicalAddress.isNullOrEmpty()){
+                if (it.email.isNullOrEmpty() || it.contactPhoneNumber.isNullOrEmpty() || it.physicalAddress.isNullOrEmpty()) {
                     binding.bottomNavigation.menu.getItem(3).icon =
-                        ContextCompat.getDrawable(this, R.drawable.ic_profile_selector_profile_incomplete)
-                }else{
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.ic_profile_selector_profile_incomplete
+                        )
+                } else {
                     binding.bottomNavigation.menu.getItem(3).icon =
-                        ContextCompat.getDrawable(this, R.drawable.ic_profile_selector_profile_complete)
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.ic_profile_selector_profile_complete
+                        )
                 }
             }
         }
@@ -205,9 +212,9 @@ class MainActivity : AuthenticatedActivity(),
         )
     }
 
-    override fun startFulfillmentOrderItemsFragment(id: Int) {
+    override fun startFulfillmentOrderItemsFragment(order: Order) {
         addFragment(
-            FulfillmentOrderItemsFragment.newInstance(id),
+            FulfillmentOrderItemsFragment.newInstance(order),
             FulfillmentOrderItemsFragment::class.java.canonicalName
         )
     }
@@ -268,9 +275,11 @@ class MainActivity : AuthenticatedActivity(),
 
     override fun handleBottomNav(type: Fragment) {
         when (type) {
-            is Type.Search -> binding.bottomNavigation.menu.findItem(R.id.navSearch).isChecked =true
+            is Type.Search -> binding.bottomNavigation.menu.findItem(R.id.navSearch).isChecked =
+                true
             is Type.Home -> binding.bottomNavigation.menu.findItem(R.id.navHome).isChecked = true
-            is Type.ProfileSettings -> binding.bottomNavigation.menu.findItem(R.id.navProfile).isChecked =true
+            is Type.ProfileSettings -> binding.bottomNavigation.menu.findItem(R.id.navProfile).isChecked =
+                true
             is Type.Cart -> binding.bottomNavigation.menu.findItem(R.id.navCart).isChecked = true
         }
     }

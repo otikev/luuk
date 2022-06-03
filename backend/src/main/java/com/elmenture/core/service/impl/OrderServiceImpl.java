@@ -232,7 +232,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrdersByState(OrderState orderState) {
-        return orderRepository.findAllByState(orderState.toString().toLowerCase(Locale.ROOT), Sort.by(Sort.Direction.DESC, "id"));
+        return orderRepository.findAllByState(orderState.toString(), Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override

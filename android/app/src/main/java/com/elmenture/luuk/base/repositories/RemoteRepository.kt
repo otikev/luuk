@@ -2,6 +2,7 @@ package com.elmenture.luuk.base.repositories
 
 import androidx.lifecycle.MutableLiveData
 import com.elmenture.luuk.base.BaseApiState
+import models.OrderStateUpdate
 import models.Action
 import models.ActualMeasurements
 import models.Item
@@ -152,6 +153,12 @@ object RemoteRepository {
     fun fetchOrderItems(id: Int): BaseApiState {
         val call =
             RestClient.serviceWithUserAuthentication(EndPoints::class.java).fetchOrderItems(id)
+        return processRequest(call, blockUi = true)
+    }
+
+    fun updateOrderState(stateUpdate: OrderStateUpdate): BaseApiState {
+        val call =
+            RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateOrderState(stateUpdate)
         return processRequest(call, blockUi = true)
     }
 }

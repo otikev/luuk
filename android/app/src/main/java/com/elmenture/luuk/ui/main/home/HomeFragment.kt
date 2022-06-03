@@ -119,26 +119,13 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
                 binding.itemInfo.visibility = GONE
                 binding.cardStackView.visibility = INVISIBLE
                 if (homeViewModel.initialized()) {
-                    LuukDialog.newInstance("There are no matches for this selection")
-                        .show(childFragmentManager, LuukDialog.TAG)
+                    showDialog("There are no matches for this selection")
                 }
             } else {
                 binding.itemInfo.visibility = VISIBLE
                 binding.cardStackView.visibility = VISIBLE
             }
         }
-    }
-
-    private fun filterListAgainstCart(
-        cartList: MutableSet<Spot>,
-        unfilteredList: MutableSet<Spot>
-    ): List<Spot> {
-        for (i in 0 until cartList.size) {
-            if (unfilteredList.contains(cartList.elementAt(i))) {
-                unfilteredList.remove(cartList.elementAt(i))
-            }
-        }
-        return unfilteredList.toMutableList()
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {

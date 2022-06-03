@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.elmenture.luuk.GlideApp
-import com.elmenture.luuk.databinding.OrderHistoryItemBinding
+import com.elmenture.luuk.databinding.FulfillmentItemBinding
 import models.Order
 import utils.MiscUtils
 
@@ -12,7 +12,7 @@ class FulfillmentAdapter(var list: ArrayList<Order>, var cardActionListener: Car
     RecyclerView.Adapter<FulfillmentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = OrderHistoryItemBinding.inflate(
+        val view = FulfillmentItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -29,7 +29,7 @@ class FulfillmentAdapter(var list: ArrayList<Order>, var cardActionListener: Car
         return list.size
     }
 
-    class ViewHolder(private val view: OrderHistoryItemBinding) :
+    class ViewHolder(private val view: FulfillmentItemBinding) :
         RecyclerView.ViewHolder(view.root) {
 
         fun bind(order: Order, cardActionListener: CartActionListener) {
@@ -40,15 +40,15 @@ class FulfillmentAdapter(var list: ArrayList<Order>, var cardActionListener: Car
                 amount += orderItem?.item?.price!!
             }
             val context = view.root.context
+            view.txtOrderNumber.text = "Order # "+order.id
             view.tvStatus.text = order.state
             view.tvPrice.text = "KES ${MiscUtils.getFormattedAmount(amount.toDouble() / 100)}"
             GlideApp.with(context).load(order.orderItems?.getOrNull(0)?.item?.imageUrl)
                 .into(view.ivItemImage)
             view.tvCount.text = "${order.orderItems?.count()} Items"
 
-            view.ivNext.setOnClickListener { cardActionListener.onNextClicked(order)}
+            view.ivNext.setOnClickListener { cardActionListener.onNextClicked(order) }
         }
-
     }
 
     interface CartActionListener {

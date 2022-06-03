@@ -3,8 +3,8 @@ package com.elmenture.luuk.ui.main
 import androidx.fragment.app.Fragment
 import com.elmenture.luuk.base.BaseActivityView
 import models.Item
+import models.Order
 import models.Spot
-import models.TagProperty
 
 interface MainActivityView : BaseActivityView {
     fun startHomeFragment()
@@ -29,5 +29,5 @@ interface MainActivityView : BaseActivityView {
     fun startViewSearchedItemsFragment(query: String)
     fun handleBottomNav(type: Fragment)
     fun startOrderItemsFragment(id: Int)
-    fun startFulfillmentOrderItemsFragment(id: Int)
+    fun startFulfillmentOrderItemsFragment(order: Order)
 }

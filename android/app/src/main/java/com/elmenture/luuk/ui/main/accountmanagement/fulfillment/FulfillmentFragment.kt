@@ -108,6 +108,6 @@ class FulfillmentFragment : BaseFragment(), Type.ProfileSettings,
     }
 
     override fun onNextClicked(order: Order) {
-        activityView.startOrderItemsFragment(order.id!!)
+        activityView.startFulfillmentOrderItemsFragment(order)
     }
 }
