@@ -1,4 +1,4 @@
-package com.elmenture.luuk.ui.main.accountmanagement.fulfillment.orderitems
+package com.elmenture.luuk.ui.main.accountmanagement.fulfillment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.elmenture.luuk.base.BaseFragment
 import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.FragmentOrderItemsBinding
 import com.elmenture.luuk.ui.main.MainActivityView
-import com.elmenture.luuk.ui.main.accountmanagement.orderhistory.OrderHistoryViewModel
 import com.elmenture.luuk.ui.main.cart.CartAdapter
 import models.Item
 import models.Spot
@@ -20,17 +19,17 @@ import models.Spot
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class OrderItemsFragment : BaseFragment(), Type.ProfileSettings {
+class FulfillmentOrderItemsFragment : BaseFragment(), Type.ProfileSettings {
     lateinit var binding: FragmentOrderItemsBinding
-    lateinit var orderHistoryViewModel: OrderHistoryViewModel
+    lateinit var fulfillmentViewModel: FulfillmentViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private var orderItemList = arrayListOf<Spot>()
     lateinit var orderItemAdapter: CartAdapter
     var orderId: Int = 0
 
     companion object {
-        fun newInstance(orderId: Int): OrderItemsFragment {
-            val frag = OrderItemsFragment()
+        fun newInstance(orderId: Int): FulfillmentOrderItemsFragment {
+            val frag = FulfillmentOrderItemsFragment()
             frag.orderId = orderId
             return frag
         }
@@ -50,7 +49,7 @@ class OrderItemsFragment : BaseFragment(), Type.ProfileSettings {
         initView()
         observeLiveData()
         setEventListeners()
-        orderHistoryViewModel.fetchOrdersItems(orderId)
+        fulfillmentViewModel.fetchOrdersItems(orderId)
     }
 
     private fun setEventListeners() {
@@ -59,7 +58,7 @@ class OrderItemsFragment : BaseFragment(), Type.ProfileSettings {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeLiveData() {
-        orderHistoryViewModel.ordersItemsApiState.observe(viewLifecycleOwner) {
+        fulfillmentViewModel.ordersItemsApiState.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isSuccessful) {
                     orderItemList.clear()
@@ -74,7 +73,7 @@ class OrderItemsFragment : BaseFragment(), Type.ProfileSettings {
 
 
     private fun initView() {
-        orderHistoryViewModel = ViewModelProvider(this).get(OrderHistoryViewModel::class.java)
+        fulfillmentViewModel = ViewModelProvider(this).get(FulfillmentViewModel::class.java)
         orderItemAdapter = CartAdapter(orderItemList)
         binding.rvOrderItems.layoutManager = LinearLayoutManager(context)
         binding.rvOrderItems.adapter = orderItemAdapter

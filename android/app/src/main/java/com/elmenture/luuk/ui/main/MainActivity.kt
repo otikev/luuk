@@ -11,6 +11,7 @@ import com.elmenture.luuk.base.Type
 import com.elmenture.luuk.databinding.ActivityMainBinding
 import com.elmenture.luuk.ui.main.accountmanagement.AccountManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.fulfillment.FulfillmentFragment
+import com.elmenture.luuk.ui.main.accountmanagement.fulfillment.FulfillmentOrderItemsFragment
 import com.elmenture.luuk.ui.main.accountmanagement.help.HelpFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.InventoryManagementFragment
 import com.elmenture.luuk.ui.main.accountmanagement.inventorymanagement.createnewitem.CreateNewItemFragment
@@ -201,6 +202,13 @@ class MainActivity : AuthenticatedActivity(),
         addFragment(
             ViewSearchedItemsFragment.newInstance(query),
             ViewSearchedItemsFragment::class.java.canonicalName
+        )
+    }
+
+    override fun startFulfillmentOrderItemsFragment(id: Int) {
+        addFragment(
+            FulfillmentOrderItemsFragment.newInstance(id),
+            FulfillmentOrderItemsFragment::class.java.canonicalName
         )
     }
 

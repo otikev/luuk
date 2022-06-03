@@ -8,8 +8,8 @@ import com.elmenture.luuk.databinding.OrderHistoryItemBinding
 import models.Order
 import utils.MiscUtils
 
-class FUlfillmentAdapter(var list: ArrayList<Order>, var cardActionListener: CartActionListener) :
-    RecyclerView.Adapter<FUlfillmentAdapter.ViewHolder>() {
+class FulfillmentAdapter(var list: ArrayList<Order>, var cardActionListener: CartActionListener) :
+    RecyclerView.Adapter<FulfillmentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = OrderHistoryItemBinding.inflate(

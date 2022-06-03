@@ -29,4 +29,5 @@ interface MainActivityView : BaseActivityView {
     fun startViewSearchedItemsFragment(query: String)
     fun handleBottomNav(type: Fragment)
     fun startOrderItemsFragment(id: Int)
+    fun startFulfillmentOrderItemsFragment(id: Int)
 }

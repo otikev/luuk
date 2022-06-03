@@ -21,12 +21,12 @@ import utils.OrderState
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class FulfillmentFragment : BaseFragment(), Type.ProfileSettings,
-    FUlfillmentAdapter.CartActionListener {
+    FulfillmentAdapter.CartActionListener {
     lateinit var binding: FragmentFulfillmentBinding
     lateinit var fulfillmentViewModel: FulfillmentViewModel
     private val activityView: MainActivityView by lazy { requireActivity() as MainActivityView }
     private var orderList = arrayListOf<Order>()
-    lateinit var orderAdapter: FUlfillmentAdapter
+    lateinit var orderAdapter: FulfillmentAdapter
     val spinnerArray = ArrayList<String>()
 
     companion object {
@@ -102,7 +102,7 @@ class FulfillmentFragment : BaseFragment(), Type.ProfileSettings,
 
     private fun initView() {
         fulfillmentViewModel = ViewModelProvider(this).get(FulfillmentViewModel::class.java)
-        orderAdapter = FUlfillmentAdapter(orderList, this)
+        orderAdapter = FulfillmentAdapter(orderList, this)
         binding.rvOrders.layoutManager = LinearLayoutManager(context)
         binding.rvOrders.adapter = orderAdapter
     }

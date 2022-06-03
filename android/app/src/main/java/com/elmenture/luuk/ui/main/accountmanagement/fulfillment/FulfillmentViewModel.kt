@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class FulfillmentViewModel : ViewModel() {
     val ordersApiState = MutableLiveData<BaseApiState>()
+    val ordersItemsApiState = MutableLiveData<BaseApiState>()
 
     fun fetchOrders(state:String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -18,4 +19,9 @@ class FulfillmentViewModel : ViewModel() {
         }
     }
 
+    fun fetchOrdersItems(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            ordersItemsApiState.postValue(RemoteRepository.fetchOrderItems(id))
+        }
+    }
 }
