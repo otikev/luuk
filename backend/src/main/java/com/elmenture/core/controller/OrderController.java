@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.elmenture.core.utils.OrderState.PAID;
+
 /**
  * Created by otikev on 17-Mar-2022
  */
@@ -40,6 +42,10 @@ public class OrderController extends BaseController {
     @PostMapping("/update-state")
     public ResponseEntity<String> updateOrderState(@Valid @RequestBody OrderStateUpdate stateUpdate) {
         try {
+            OrderState newState = OrderState.valueOf(stateUpdate.getNewState());
+            if(newState == PAID){
+                throw new IllegalArgumentException("User cannot update state to PAID");
+            }
             orderService.updateOrderState(stateUpdate);
             return ResponseEntity.ok("Item successfully updated");
         } catch (ResourceNotFoundException e) {
