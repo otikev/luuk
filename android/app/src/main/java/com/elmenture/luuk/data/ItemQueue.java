@@ -19,7 +19,9 @@ public class ItemQueue {
         print();
     }
 
-
+    public static int count(){
+        return spots.size();
+    }
     public static boolean isEmpty() {
         return spots.isEmpty();
     }

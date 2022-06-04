@@ -24,7 +24,6 @@ import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
 import models.Spot
 import utils.MiscUtils
-import views.LuukDialog
 import views.cardstackview.*
 
 
@@ -71,15 +70,18 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
         observeViewModelLiveData()
         setupCardStackView()
         setEventListeners()
-
+        if (ItemQueue.count() < 5) {
+            homeViewModel.fetchItems(showAllItemsInQueue())
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        //Always fetch a new set of items when the app resumes
-        ItemQueue.clear()
-        adapter.notifyDataSetChanged()
-        homeViewModel.fetchItems(showAllItemsInQueue())
+        //Always show a new item when the app resumes
+        if (!ItemQueue.isEmpty()) {
+            ItemQueue.removeTopItem()
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun setEventListeners() {
