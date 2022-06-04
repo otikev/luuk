@@ -71,6 +71,14 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
         observeViewModelLiveData()
         setupCardStackView()
         setEventListeners()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //Always fetch a new set of items when the app resumes
+        ItemQueue.clear()
+        adapter.notifyDataSetChanged()
         homeViewModel.fetchItems(showAllItemsInQueue())
     }
 
