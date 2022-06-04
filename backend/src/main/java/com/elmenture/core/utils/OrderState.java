@@ -1,7 +1,7 @@
 package com.elmenture.core.utils;
 
 public enum OrderState {
-    PENDING, PAID, PREPARING, READY, ENROUTE, DELIVERED, CLOSED;
+    PENDING, PAID, PREPARING, READY, ENROUTE, DELIVERED, CLOSED, CANCELLED;
 
     public static OrderState getOrderState(String value) {
         for (OrderState orderState : OrderState.values()) {

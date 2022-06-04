@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.elmenture.core.utils.LuukProperties.*;
+import static com.elmenture.core.utils.OrderState.*;
 
 /**
  * Created by otikev on 23-Apr-2022
@@ -154,11 +155,11 @@ public class OrderServiceImpl implements OrderService {
                 orderConfirmationDto.getMpesaReceiptNumber());
 
         transactionDetailsRepository.save(transactionDetails);
-        order.setState("paid");
+        order.setState(PAID.toString());
         orderRepository.save(order);
     }
 
-    String getAuthentication(String darajaAuthUrl, String secret) throws IOException {
+    private String getAuthentication(String darajaAuthUrl, String secret) throws IOException {
         String auth = Base64.getEncoder().encodeToString(secret.getBytes());
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
@@ -181,14 +182,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void cancelOrder(Order order) {
-        order.setState("cancelled");
+        order.setState(CANCELLED.toString());
         orderRepository.save(order);
     }
 
     @Override
     public ResponseEntity validateOrder(List<Long> orderList, User loggedInUser) {
 
-        Order pendingOrder = orderRepository.findByUserAndState(loggedInUser, "pending");
+        Order pendingOrder = orderRepository.findByUserAndState(loggedInUser, PENDING.toString());
 
         List<Item> soldList = itemRepository.findBySoldAndIdIn(true, orderList);
         if (!soldList.isEmpty()) {
@@ -214,7 +215,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity confirmOrderPaid(User user, String merchantRequestID) {
-        Order order = orderRepository.findByUserAndMerchantRequestIDAndState(user, merchantRequestID, "paid");
+        Order order = orderRepository.findByUserAndMerchantRequestIDAndState(user, merchantRequestID, PAID.toString());
         if (order != null) {
             return new ResponseEntity<>(order, HttpStatus.OK);
         } else {
