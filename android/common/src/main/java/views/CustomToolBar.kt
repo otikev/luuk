@@ -57,6 +57,10 @@ class CustomToolBar : LinearLayout {
         tvHelperText = findViewById(R.id.tv_save)
     }
 
+    fun setTitle(title: String){
+        tvTitle!!.text = title
+    }
+
     fun getHelperText():TextView? {
         return tvHelperText
     }

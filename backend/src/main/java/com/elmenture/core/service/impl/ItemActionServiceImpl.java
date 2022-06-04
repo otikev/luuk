@@ -8,6 +8,7 @@ import com.elmenture.core.utils.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.elmenture.core.utils.Action.DISLIKE;
@@ -61,6 +62,16 @@ public class ItemActionServiceImpl implements ItemActionService {
     @Override
     public ItemAction getAction(Long userId, Long itemId, Action action) {
         return itemActionRepository.findByUserIdAndItemIdAndAction(userId, itemId, action.value());
+    }
+
+    @Override
+    public List<Long> getAllItemsForUser(Action action, Long userId) {
+        List<ItemAction> itemActions = itemActionRepository.findAllByUserIdAndAction(userId,action.value());
+        List<Long> itemIds = new ArrayList<>();
+        for(ItemAction itemAction:itemActions){
+            itemIds.add(itemAction.getItemId());
+        }
+        return itemIds;
     }
 
 }

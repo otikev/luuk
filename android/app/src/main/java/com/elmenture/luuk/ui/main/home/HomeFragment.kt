@@ -23,6 +23,7 @@ import com.elmenture.luuk.databinding.FragmentHomeBinding
 import com.elmenture.luuk.ui.main.MainActivityView
 import models.Item
 import models.Spot
+import utils.CannedSearch
 import utils.MiscUtils
 import views.cardstackview.*
 
@@ -103,16 +104,25 @@ class HomeFragment : BaseFragment(), Type.Home, CardStackListener {
             }
         }
 
-        val comingSoonAction = View.OnClickListener {
-            Toast.makeText(requireContext(), "Feature Coming Soon", Toast.LENGTH_SHORT).show()
+        binding.btnFavorites.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.FAVORITES)
         }
-        binding.btn1.setOnClickListener(comingSoonAction)
-        binding.btn2.setOnClickListener(comingSoonAction)
-        binding.btn3.setOnClickListener(comingSoonAction)
-        binding.btn4.setOnClickListener(comingSoonAction)
-        binding.btn5.setOnClickListener(comingSoonAction)
+        binding.btnRecentlyViewed.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.RECENTLY_VIEWED)
+        }
+        binding.btnOnSale.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.ON_SALE)
+        }
+        binding.btnStyleWeLove.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.STYLE_WE_LOVE)
+        }
+        binding.btnBrandsYouLove.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.BRANDS_YOU_LOVE)
+        }
+        binding.btnGoneForever.setOnClickListener{
+            activityView.startCannedItemsFragment(CannedSearch.GONE_FOREVER)
+        }
     }
-
 
     private fun observeViewModelLiveData() {
         homeViewModel.itemsLiveData.observe(viewLifecycleOwner) {

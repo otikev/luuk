@@ -2,6 +2,7 @@ package com.elmenture.core.service.impl;
 
 import com.elmenture.core.engine.SizeMapper;
 import com.elmenture.core.model.Item;
+import com.elmenture.core.model.ItemAction;
 import com.elmenture.core.model.ItemProperty;
 import com.elmenture.core.model.User;
 import com.elmenture.core.payload.ItemDto;
@@ -10,7 +11,10 @@ import com.elmenture.core.repository.ItemPropertyRepository;
 import com.elmenture.core.repository.ItemRepository;
 import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
+import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
+import com.elmenture.core.utils.Action;
+import com.elmenture.core.utils.CannedSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +46,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ItemActionService itemActionService;
+
     @Override
     public ItemDto createItem(ItemDto postDto) {
         // convert DTO to entity
@@ -58,7 +65,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         // convert entity to DTO
-            ItemDto postResponse = mapToDTO(newItem);
+        ItemDto postResponse = mapToDTO(newItem);
         return postResponse;
     }
 
@@ -128,12 +135,27 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemDto> getCannedItems(CannedSearch keyword, long userId) {
+
+        switch (keyword) {
+            case FAVORITES:
+                return favorites(userId);
+            default:
+        }
+        return new ArrayList<>();
+    }
+
+    private List<ItemDto> favorites(long userId) {
+        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE,userId);
+        return getAllAvailableItemsBySold(itemIds,false);
+    }
+
+    @Override
     public List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold) {
-        List<Item> items = itemRepository.findBySoldAndIdIn(sold,itemIds);
+        List<Item> items = itemRepository.findBySoldAndIdIn(sold, itemIds);
         List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
         return response;
     }
-
 
     @Override
     public ItemResponse getAllItems(List<String> targets, int page, int size, String sortBy, String sortDir) {
@@ -190,12 +212,12 @@ public class ItemServiceImpl implements ItemService {
             if (offset < startTrackerPosition) {
                 startedFromBeginning = true;
                 int limit = (int) (startTrackerPosition - offset);
-                pageable =  PageRequest.ofSize(limit).withSort(sort);
+                pageable = PageRequest.ofSize(limit).withSort(sort);
             } else {
                 pageable = PageRequest.ofSize(size).withSort(sort);
             }
 
-            Page<Item> items = itemRepository.findBySoldAndIdGreaterThan(false,offset,pageable);
+            Page<Item> items = itemRepository.findBySoldAndIdGreaterThan(false, offset, pageable);
             listOfItems = items.getContent();
 
             boolean exit = false;

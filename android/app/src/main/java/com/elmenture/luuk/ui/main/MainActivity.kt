@@ -26,6 +26,7 @@ import com.elmenture.luuk.ui.main.cart.checkout.CheckoutFragment
 import com.elmenture.luuk.ui.main.cart.checkout.CheckoutSuccessFragment
 import com.elmenture.luuk.ui.main.home.HomeFragment
 import com.elmenture.luuk.ui.main.home.ViewItemFragment
+import com.elmenture.luuk.ui.main.search.canned.CannedItemsFragment
 import com.elmenture.luuk.ui.main.search.searchitems.SearchItemsFragment
 import com.elmenture.luuk.ui.main.search.viewsearchitems.ViewSearchedItemsFragment
 import com.google.android.libraries.places.api.Places
@@ -33,6 +34,7 @@ import com.google.android.material.navigation.NavigationBarView
 import models.Item
 import models.Order
 import models.Spot
+import utils.CannedSearch
 
 
 class MainActivity : AuthenticatedActivity(),
@@ -209,6 +211,13 @@ class MainActivity : AuthenticatedActivity(),
         addFragment(
             ViewSearchedItemsFragment.newInstance(query),
             ViewSearchedItemsFragment::class.java.canonicalName
+        )
+    }
+
+    override fun startCannedItemsFragment(query: CannedSearch) {
+        addFragment(
+            CannedItemsFragment.newInstance(query),
+            CannedItemsFragment::class.java.canonicalName
         )
     }
 

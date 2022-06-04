@@ -3,6 +3,7 @@ package com.elmenture.core.service;
 import com.elmenture.core.model.User;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
+import com.elmenture.core.utils.CannedSearch;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public interface ItemService {
     ItemResponse getAllItems(List<String> targets, String sizeInternational, int page, int size, String sortBy, String sortDir);
 
     List<ItemDto> getAllItems(String keyword);
+
+    List<ItemDto> getCannedItems(CannedSearch keyword, long userId);
 
     List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold);
 }

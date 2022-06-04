@@ -11,6 +11,7 @@ import network.RestClient
 import network.interceptors.ConnectivityInterceptor
 import network.service.EndPoints
 import retrofit2.Call
+import utils.CannedSearch
 import utils.LogUtils
 import utils.NetUtils
 
@@ -159,6 +160,12 @@ object RemoteRepository {
     fun updateOrderState(stateUpdate: OrderStateUpdate): BaseApiState {
         val call =
             RestClient.serviceWithUserAuthentication(EndPoints::class.java).updateOrderState(stateUpdate)
+        return processRequest(call, blockUi = true)
+    }
+
+    fun fetchCannedItems(query: CannedSearch): BaseApiState {
+        val call = RestClient.serviceWithUserAuthentication(EndPoints::class.java)
+            .fetchCannedItems(query.toString())
         return processRequest(call, blockUi = true)
     }
 }

@@ -16,7 +16,7 @@ public class LuukApp extends Application {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        RestAdapterBuilderFactory.APP_ENDPOINT = NetUtils.BASE_URL;
+        RestAdapterBuilderFactory.APP_ENDPOINT = NetUtils.LOCAL_TEST_URL;
         NetUtils.Companion.setContext(getApplicationContext());
     }
 }

@@ -65,4 +65,7 @@ interface EndPoints {
     @GET("order/items")
     fun fetchOrderItems(@Query("order_id") id: Int): Call<List<Item>>
 
+    @GET("items/search/canned")
+    fun fetchCannedItems(@Query("can") can: String): Call<List<Item>>
+
 }

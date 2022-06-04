@@ -5,6 +5,7 @@ import com.elmenture.luuk.base.BaseActivityView
 import models.Item
 import models.Order
 import models.Spot
+import utils.CannedSearch
 
 interface MainActivityView : BaseActivityView {
     fun startHomeFragment()
@@ -30,4 +31,5 @@ interface MainActivityView : BaseActivityView {
     fun handleBottomNav(type: Fragment)
     fun startOrderItemsFragment(id: Int)
     fun startFulfillmentOrderItemsFragment(order: Order)
+    fun startCannedItemsFragment(query: CannedSearch)
 }

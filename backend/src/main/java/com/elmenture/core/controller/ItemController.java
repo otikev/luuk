@@ -7,6 +7,7 @@ import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
 import com.elmenture.core.utils.AppConstants;
+import com.elmenture.core.utils.CannedSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +84,12 @@ public class ItemController extends BaseController {
     public List<ItemDto> searchItemsWithTagProperty(@RequestParam(value = "tag_property") Long tagPropertyId) {
         List<Long> itemIds = itemPropertyRepository.findItemIdByTagPropertyId(tagPropertyId);
         return itemService.getAllAvailableItemsBySold(itemIds,false);
+    }
+
+    @GetMapping("/search/canned")
+    public ResponseEntity getCannedSearch(@RequestParam(value = "can") String can) {
+        CannedSearch keyword = CannedSearch.valueOf(can);
+        return new ResponseEntity<>(itemService.getCannedItems(keyword, getLoggedInUser().getId()), HttpStatus.OK);
     }
 
     @RequestMapping("/open")
