@@ -43,4 +43,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE lower(i.description) LIKE lower(concat('%', :nameToFind,'%')) OR lower(i.brand) LIKE lower(concat('%', :nameToFind,'%'))")
     List<Item> searchAllLike(@Param("nameToFind") String keyword);
 
+    @Query(value = "select * from items where size_type =?1 and size_number=?3 or size_international=?2 order by price ASC limit ?4 ", nativeQuery = true)
+    List<Item> fetchAllBySize(String sizeType,String sizeInternational , int sizeNumber, long limit);
+
+    @Query(value = "select count(*) from items where size_type =?1 and size_number=?3 or size_international=?2", nativeQuery = true)
+    Long countOfUserSizedItems(String sizeType,String sizeInternational , int sizeNumber);
 }
