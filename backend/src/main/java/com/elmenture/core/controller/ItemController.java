@@ -1,6 +1,5 @@
 package com.elmenture.core.controller;
 
-import com.elmenture.core.model.TagProperty;
 import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
@@ -83,7 +82,7 @@ public class ItemController extends BaseController {
     @GetMapping("/with-property")
     public List<ItemDto> searchItemsWithTagProperty(@RequestParam(value = "tag_property") Long tagPropertyId) {
         List<Long> itemIds = itemPropertyRepository.findItemIdByTagPropertyId(tagPropertyId);
-        return itemService.getAllAvailableItemsBySold(itemIds,false);
+        return itemService.getAllItemsWithIdAndSoldStatus(itemIds,false);
     }
 
     @GetMapping("/search/canned")

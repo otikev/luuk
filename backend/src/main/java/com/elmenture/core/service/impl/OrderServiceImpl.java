@@ -4,6 +4,7 @@ import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.*;
+import com.elmenture.core.service.OrderItemService;
 import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.OrderState;
 import com.google.gson.Gson;
@@ -37,15 +38,21 @@ import static com.elmenture.core.utils.OrderState.*;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private ItemRepository itemRepository;
-    @Autowired
-    private OrderItemRepository orderItemRepository;
+
     @Autowired
     private ItemPropertyRepository itemPropertyRepository;
 
     @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
+
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    OrderItemService orderItemService;
 
     @Override
     public StkPushResponseDto triggerStkPush(int amount, User user) throws IOException {
@@ -98,11 +105,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order(loggedInUser, "pending", stkPushResponse.getMerchantRequestID());
         orderRepository.save(order);
         List<Item> itemList = itemRepository.findAllById(orderList);
-
-        for (Item item : itemList) {
-            OrderItem orderItem = new OrderItem(item, order);
-            orderItemRepository.save(orderItem);
-        }
+        orderItemService.saveOrderItems(order, itemList);
     }
 
     @Override
@@ -227,11 +230,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity getOrderItems(int orderId) {
+    public List<ItemDto> getItems(int orderId) {
         orderItemRepository.findByOrderId(orderId);
         List<ItemDto> itemDtoList = orderItemRepository.findByOrderId(orderId).stream().map(orderItem -> mapToDTO(orderItem.getItem()))
                 .collect(Collectors.toList());
-        return new ResponseEntity(itemDtoList, HttpStatus.OK);
+        return itemDtoList;
     }
 
     @Override
@@ -258,6 +261,18 @@ public class OrderServiceImpl implements OrderService {
         _order.setState(stateUpdate.getNewState());
         System.out.println("Updating order " + _order.getId() + "'s state to " + newState);
         orderRepository.save(_order);
+    }
+
+    @Override
+    public Order getPaidOrderForItemId(Long itemId) {
+        List<OrderItem> orderItems = orderItemService.getOrderItemsForItemId(itemId);
+        for (OrderItem orderItem : orderItems) {
+            Order order = orderItem.getOrder();
+            if (order.isPaid()) {
+                return order;
+            }
+        }
+        return null;
     }
 
     private ItemDto mapToDTO(Item item) {

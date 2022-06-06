@@ -26,5 +26,5 @@ public interface ItemService {
 
     List<ItemDto> getCannedItems(CannedSearch keyword, long userId);
 
-    List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold);
+    List<ItemDto> getAllItemsWithIdAndSoldStatus(List<Long> itemIds, boolean sold);
 }

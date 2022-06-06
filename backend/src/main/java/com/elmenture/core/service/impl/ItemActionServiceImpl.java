@@ -6,6 +6,7 @@ import com.elmenture.core.repository.ItemActionRepository;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.utils.Action;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,11 +65,16 @@ public class ItemActionServiceImpl implements ItemActionService {
         return itemActionRepository.findByUserIdAndItemIdAndAction(userId, itemId, action.value());
     }
 
+    /**
+     * @param action
+     * @param userId
+     * @return Item ids ordered by the count in descending order
+     */
     @Override
     public List<Long> getAllItemsForUser(Action action, Long userId) {
-        List<ItemAction> itemActions = itemActionRepository.findAllByUserIdAndAction(userId,action.value());
+        List<ItemAction> itemActions = itemActionRepository.findAllByUserIdAndAction(userId, action.value(), Sort.by(Sort.Direction.DESC, "count"));
         List<Long> itemIds = new ArrayList<>();
-        for(ItemAction itemAction:itemActions){
+        for (ItemAction itemAction : itemActions) {
             itemIds.add(itemAction.getItemId());
         }
         return itemIds;

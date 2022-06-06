@@ -2,10 +2,7 @@ package com.elmenture.core.service.impl;
 
 import com.elmenture.core.engine.SizeMapper;
 import com.elmenture.core.engine.charts.MeasurementUnit;
-import com.elmenture.core.model.ClothingSize;
-import com.elmenture.core.model.Item;
-import com.elmenture.core.model.ItemProperty;
-import com.elmenture.core.model.User;
+import com.elmenture.core.model.*;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
 import com.elmenture.core.repository.ItemPropertyRepository;
@@ -14,6 +11,7 @@ import com.elmenture.core.repository.TagPropertyRepository;
 import com.elmenture.core.repository.UserRepository;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
+import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.Action;
 import com.elmenture.core.utils.CannedSearch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +48,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemActionService itemActionService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public ItemDto createItem(ItemDto postDto) {
@@ -134,6 +137,20 @@ public class ItemServiceImpl implements ItemService {
         return response;
     }
 
+    private List<ItemDto> goneForever(long userId) {
+        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE, userId);
+        List<ItemDto> itemsLikedAndAlreadySold = getAllItemsWithIdAndSoldStatus(itemIds, true);
+
+        List<ItemDto> boughtByOthers = new ArrayList<>();
+        for (ItemDto itemDto : itemsLikedAndAlreadySold) {
+            Order order = orderService.getPaidOrderForItemId(itemDto.getId());
+            if (order.getUser().getId() != userId) {
+                boughtByOthers.add(itemDto);
+            }
+        }
+        return boughtByOthers;
+    }
+
     @Override
     public List<ItemDto> getCannedItems(CannedSearch keyword, long userId) {
 
@@ -144,6 +161,8 @@ public class ItemServiceImpl implements ItemService {
                 return onSale(userId);
             case STYLE_WE_LOVE:
                 return styleWeLove();
+            case GONE_FOREVER:
+                return goneForever(userId);
             default:
         }
         return new ArrayList<>();
@@ -226,13 +245,27 @@ public class ItemServiceImpl implements ItemService {
 
     private List<ItemDto> favorites(long userId) {
         List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE, userId);
-        return getAllAvailableItemsBySold(itemIds, false);
+        return getAllItemsWithIdAndSoldStatus(itemIds, false);
     }
 
     @Override
-    public List<ItemDto> getAllAvailableItemsBySold(List<Long> itemIds, boolean sold) {
+    public List<ItemDto> getAllItemsWithIdAndSoldStatus(List<Long> itemIds, boolean sold) {
         List<Item> items = itemRepository.findBySoldAndIdIn(sold, itemIds);
-        List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        //ensure ordering as per the itemIds list
+        List<Item> ordered = new ArrayList<>(items.size());
+        do {
+            for (Long id : itemIds) {
+                for (Item item : items) {
+                    if (item.getId() == id) {
+                        ordered.add(item);
+                        items.remove(item);
+                        break;
+                    }
+                }
+            }
+        } while (items.size() > 0);
+
+        List<ItemDto> response = ordered.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
         return response;
     }
 

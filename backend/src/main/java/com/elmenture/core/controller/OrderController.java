@@ -4,11 +4,11 @@ import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.Order;
 import com.elmenture.core.model.OrderItem;
-import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.payload.OrderConfirmationDto;
 import com.elmenture.core.payload.OrderStateUpdate;
 import com.elmenture.core.repository.OrderItemRepository;
 import com.elmenture.core.repository.OrderRepository;
+import com.elmenture.core.service.OrderItemService;
 import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.OrderState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +39,14 @@ public class OrderController extends BaseController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
     @PostMapping("/update-state")
     public ResponseEntity<String> updateOrderState(@Valid @RequestBody OrderStateUpdate stateUpdate) {
         try {
             OrderState newState = OrderState.valueOf(stateUpdate.getNewState());
-            if(newState == PAID){
+            if (newState == PAID) {
                 throw new IllegalArgumentException("User cannot update state to PAID");
             }
             orderService.updateOrderState(stateUpdate);
@@ -114,7 +117,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("/items")
     public ResponseEntity getOrderItems(@RequestParam(value = "order_id") int orderId) {
-        return orderService.getOrderItems(orderId);
+        return new ResponseEntity<>(orderService.getItems(orderId), HttpStatus.OK);
     }
 
 }

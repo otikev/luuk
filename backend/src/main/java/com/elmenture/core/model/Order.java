@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.elmenture.core.utils.OrderState.*;
+
 /**
  * Created by otikev on 17-Mar-2022
  */
@@ -41,5 +43,16 @@ public class Order extends BaseEntity {
         this.user = user;
         this.state = state;
         this.merchantRequestID = merchantRequestID;
+    }
+
+    public boolean isPaid(){
+        return state.equals(PAID.toString())
+                || state.equals(PREPARING.toString())
+                || state.equals(READY.toString())
+                || state.equals(ENROUTE.toString())
+                || state.equals(DELIVERED.toString())
+                || state.equals(CLOSED.toString())
+                || state.equals(RETURNED.toString());
+
     }
 }

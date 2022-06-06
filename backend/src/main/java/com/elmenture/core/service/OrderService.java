@@ -3,6 +3,7 @@ package com.elmenture.core.service;
 import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.Order;
 import com.elmenture.core.model.User;
+import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.OrderConfirmationDto;
 import com.elmenture.core.payload.OrderStateUpdate;
 import com.elmenture.core.payload.StkPushResponseDto;
@@ -28,9 +29,11 @@ public interface OrderService {
 
     ResponseEntity confirmOrderPaid(User user, String merchantRequestID);
 
-    ResponseEntity getOrderItems(int orderId);
-
     List<Order> getOrdersByState(OrderState orderState);
 
     void updateOrderState(OrderStateUpdate stateUpdate) throws ResourceNotFoundException;
+
+    Order getPaidOrderForItemId(Long itemId);
+
+    List<ItemDto> getItems(int orderId);
 }
