@@ -165,7 +165,7 @@ public class ItemServiceImpl implements ItemService {
             case MONDAY:
             case TUESDAY:
             case WEDNESDAY:
-                recommendation.add("work");
+                recommendation.add("work dress");
                 break;
             case THURSDAY:
             case FRIDAY:
