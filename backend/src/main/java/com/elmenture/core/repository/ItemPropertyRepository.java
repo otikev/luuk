@@ -14,10 +14,15 @@ import java.util.List;
 
 public interface ItemPropertyRepository extends JpaRepository<ItemProperty, Long> {
     List<ItemProperty> findByItemIdAndIdNotIn(Long itemId, List<Long> ids);
+
     List<ItemProperty> findByItemId(Long itemId);
+
     List<ItemProperty> findByTagPropertyId(Long tagPropertyId);
 
     @Query(value = "select item_id from item_properties where tag_property_id=?1", nativeQuery = true)
     List<Long> findItemIdByTagPropertyId(Long tagPropertyId);
+
+    @Query(value = "select item_id from item_properties where tag_property_id in (?1)", nativeQuery = true)
+    List<Long> findItemIdsByTagPropertyId(List<Long> tagPropertyIds);
 
 }

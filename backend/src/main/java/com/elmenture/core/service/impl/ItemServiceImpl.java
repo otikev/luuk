@@ -23,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -143,33 +143,42 @@ public class ItemServiceImpl implements ItemService {
             case ON_SALE:
                 return onSale(userId);
             case STYLE_WE_LOVE:
-                return styleWeLove(userId);
+                return styleWeLove();
             default:
         }
         return new ArrayList<>();
     }
 
-    private List<ItemDto> styleWeLove(long userId) {
-        List<String> recommendation = getRecommendationByDay();
-        return new ArrayList<>();
+    private List<ItemDto> styleWeLove() {
+        List<String> recommendation = getRecommendationByDayAndTime();
+        List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(recommendation);
+        List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
+        List<ItemDto> itemDtoList = itemRepository.findAllById(itemIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        return itemDtoList;
     }
 
-    private List<String> getRecommendationByDay() {
+    private List<String> getRecommendationByDayAndTime() {
         ArrayList<String> recommendation = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        switch (today.getDayOfWeek()){
+        LocalDateTime today = LocalDateTime.now();
+        switch (today.getDayOfWeek()) {
             case SUNDAY:
             case MONDAY:
             case TUESDAY:
             case WEDNESDAY:
                 recommendation.add("work");
+                break;
             case THURSDAY:
             case FRIDAY:
             case SATURDAY:
                 recommendation.add("casual");
                 recommendation.add("evening dress");
-                //if(today.isAfter() || )
-
+                if (today.getHour() > 21 && today.getHour() < 6) {
+                    recommendation.add("Sweetheart");
+                    recommendation.add("Mini");
+                    recommendation.add("Strapless");
+                    recommendation.add("Shoulder Straps");
+                }
+                break;
         }
         return recommendation;
     }
@@ -201,16 +210,16 @@ public class ItemServiceImpl implements ItemService {
             sizeType = MeasurementUnit.US.name();
         }
 
-        long count =  (long)(itemRepository.countOfUserSizedItems(
+        long count = (long) (itemRepository.countOfUserSizedItems(
                 sizeType,
                 sizeInternational,
-                sizeNumber)*0.4);
+                sizeNumber) * 0.4);
 
         List<ItemDto> itemDtoList = itemRepository.fetchAllBySize(
                 sizeType,
                 sizeInternational,
                 sizeNumber,
-                count).stream().map(item->mapToDTO(item)).collect(Collectors.toList());
+                count).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
 
         return itemDtoList;
     }

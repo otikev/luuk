@@ -18,5 +18,9 @@ public interface TagPropertyRepository extends JpaRepository<TagProperty, Long> 
     List<TagProperty> findByTagId(Long tagId);
 
     TagProperty findByValue(String value);
+
     List<TagProperty> findByValueAndTagId(String value, Long tagId);
+
+    @Query(value = "select t.id from TagProperty t where t.value in :values")
+    List<Long> getTagPropertyIds(@Param("values") List<String> recommendation);
 }
