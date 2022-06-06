@@ -1,8 +1,9 @@
 package com.elmenture.core.service.impl;
 
 import com.elmenture.core.engine.SizeMapper;
+import com.elmenture.core.engine.charts.MeasurementUnit;
+import com.elmenture.core.model.ClothingSize;
 import com.elmenture.core.model.Item;
-import com.elmenture.core.model.ItemAction;
 import com.elmenture.core.model.ItemProperty;
 import com.elmenture.core.model.User;
 import com.elmenture.core.payload.ItemDto;
@@ -22,9 +23,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -140,14 +140,84 @@ public class ItemServiceImpl implements ItemService {
         switch (keyword) {
             case FAVORITES:
                 return favorites(userId);
+            case ON_SALE:
+                return onSale(userId);
+            case STYLE_WE_LOVE:
+                return styleWeLove(userId);
             default:
         }
         return new ArrayList<>();
     }
 
+    private List<ItemDto> styleWeLove(long userId) {
+        List<String> recommendation = getRecommendationByDay();
+        return new ArrayList<>();
+    }
+
+    private List<String> getRecommendationByDay() {
+        ArrayList<String> recommendation = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        switch (today.getDayOfWeek()){
+            case SUNDAY:
+            case MONDAY:
+            case TUESDAY:
+            case WEDNESDAY:
+                recommendation.add("work");
+            case THURSDAY:
+            case FRIDAY:
+            case SATURDAY:
+                recommendation.add("casual");
+                recommendation.add("evening dress");
+                //if(today.isAfter() || )
+
+        }
+        return recommendation;
+    }
+
+    private List<ItemDto> onSale(long userId) {
+        User user = userRepository.getById(userId);
+        ClothingSize clothingSize = user.getClothingSize();
+        String sizeType = "";
+        int sizeNumber = 0;
+        String sizeInternational = "";
+
+        if (clothingSize.getInternational() != null) {
+            sizeType = MeasurementUnit.INT.name();
+            sizeInternational = clothingSize.getInternational();
+        }
+
+        if (clothingSize.getEu() != null) {
+            sizeNumber = clothingSize.getEu();
+            sizeType = MeasurementUnit.EU.name();
+        }
+
+        if (clothingSize.getUk() != null) {
+            sizeNumber = clothingSize.getUk();
+            sizeType = MeasurementUnit.UK.name();
+        }
+
+        if (clothingSize.getUs() != null) {
+            sizeNumber = clothingSize.getUs();
+            sizeType = MeasurementUnit.US.name();
+        }
+
+        long count =  (long)(itemRepository.countOfUserSizedItems(
+                sizeType,
+                sizeInternational,
+                sizeNumber)*0.4);
+
+        List<ItemDto> itemDtoList = itemRepository.fetchAllBySize(
+                sizeType,
+                sizeInternational,
+                sizeNumber,
+                count).stream().map(item->mapToDTO(item)).collect(Collectors.toList());
+
+        return itemDtoList;
+    }
+
     private List<ItemDto> favorites(long userId) {
-        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE,userId);
-        return getAllAvailableItemsBySold(itemIds,false);
+        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE, userId);
+        return getAllAvailableItemsBySold(itemIds, false);
     }
 
     @Override
