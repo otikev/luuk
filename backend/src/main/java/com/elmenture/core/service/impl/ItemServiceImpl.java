@@ -21,10 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -163,17 +162,27 @@ public class ItemServiceImpl implements ItemService {
                 return styleWeLove();
             case GONE_FOREVER:
                 return goneForever(userId);
+            case RECENTLY_VIEWED:
+                return recentlyViewed(userId);
             default:
         }
         return new ArrayList<>();
+    }
+
+    private List<ItemDto> recentlyViewed(long userId) {
+        LocalDate date = LocalDate.now();
+        date.minusDays(7);
+        Set<Long> itemIds = new HashSet<>(itemActionService.getItemsForUserWithDate(userId, date));
+        itemIds.addAll(itemActionService.getAllItemsForUser(Action.LIKE.value(),userId, date));
+        itemIds.addAll(itemActionService.getAllItemsForUser(Action.DISLIKE.value(),userId, date));
+        return getAllItemsWithIdAndSoldStatus(itemActionService.getItemsForUserWithDate(userId, date),false);
     }
 
     private List<ItemDto> styleWeLove() {
         List<String> recommendation = getRecommendationByDayAndTime();
         List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(recommendation);
         List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
-        List<ItemDto> itemDtoList = itemRepository.findAllById(itemIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
-        return itemDtoList;
+        return itemRepository.findAllById(itemIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
     }
 
     private List<String> getRecommendationByDayAndTime() {
@@ -191,7 +200,7 @@ public class ItemServiceImpl implements ItemService {
             case SATURDAY:
                 recommendation.add("casual");
                 recommendation.add("evening dress");
-                if (today.getHour() > 21 && today.getHour() < 6) {
+                if (today.getHour() > 21 || today.getHour() < 6) {
                     recommendation.add("Sweetheart");
                     recommendation.add("Mini");
                     recommendation.add("Strapless");
@@ -229,18 +238,13 @@ public class ItemServiceImpl implements ItemService {
             sizeType = MeasurementUnit.US.name();
         }
 
-        long count = (long) (itemRepository.countOfUserSizedItems(
-                sizeType,
-                sizeInternational,
-                sizeNumber) * 0.4);
+        long count = (long) Math.ceil(itemRepository.countOfUserSizedItems(sizeType,sizeInternational,sizeNumber) * 0.4);
 
-        List<ItemDto> itemDtoList = itemRepository.fetchAllBySize(
+        return itemRepository.fetchAllBySize(
                 sizeType,
                 sizeInternational,
                 sizeNumber,
                 count).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
-
-        return itemDtoList;
     }
 
     private List<ItemDto> favorites(long userId) {

@@ -4,6 +4,7 @@ import com.elmenture.core.model.ItemAction;
 import com.elmenture.core.payload.ActionDto;
 import com.elmenture.core.utils.Action;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ItemActionService {
@@ -16,4 +17,7 @@ public interface ItemActionService {
 
     List<Long> getAllItemsForUser(Action action, Long userId);
 
+    List<Long> getItemsForUserWithDate(long userId, LocalDate date);
+
+    List<Long> getAllItemsForUser(int action, long userId, LocalDate date);
 }

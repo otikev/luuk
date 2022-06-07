@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +79,16 @@ public class ItemActionServiceImpl implements ItemActionService {
             itemIds.add(itemAction.getItemId());
         }
         return itemIds;
+    }
+
+    @Override
+    public List<Long> getItemsForUserWithDate(long userId, LocalDate date) {
+        return itemActionRepository.getItemsIdsForUserWithDate(userId, date);
+    }
+
+    @Override
+    public List<Long> getAllItemsForUser(int action, long userId, LocalDate date) {
+        return itemActionRepository.getItemsForUserWithDate(action,userId,date);
     }
 
 }
