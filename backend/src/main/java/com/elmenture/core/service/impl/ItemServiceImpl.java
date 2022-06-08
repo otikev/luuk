@@ -5,10 +5,7 @@ import com.elmenture.core.engine.charts.MeasurementUnit;
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.ItemDto;
 import com.elmenture.core.payload.ItemResponse;
-import com.elmenture.core.repository.ItemPropertyRepository;
-import com.elmenture.core.repository.ItemRepository;
-import com.elmenture.core.repository.TagPropertyRepository;
-import com.elmenture.core.repository.UserRepository;
+import com.elmenture.core.repository.*;
 import com.elmenture.core.service.ItemActionService;
 import com.elmenture.core.service.ItemService;
 import com.elmenture.core.service.OrderService;
@@ -47,6 +44,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemActionService itemActionService;
+
+    @Autowired
+    private BrandRepository brandRepository;
 
     @Autowired
     private OrderService orderService;
@@ -162,11 +162,18 @@ public class ItemServiceImpl implements ItemService {
                 return styleWeLove();
             case GONE_FOREVER:
                 return goneForever(userId);
+            case BRANDS_YOU_LOVE:
+                return brandsYouLove();
             case RECENTLY_VIEWED:
                 return recentlyViewed(userId);
             default:
         }
         return new ArrayList<>();
+    }
+
+    private List<ItemDto> brandsYouLove() {
+        List<String> brandNames = brandRepository.findDescriptionByAwarenessOrPerception("High","Premium");
+        return itemRepository.findByBrandIn(brandNames).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
     }
 
     private List<ItemDto> recentlyViewed(long userId) {

@@ -1,12 +1,10 @@
 package com.elmenture.core.utils;
 
+import com.elmenture.core.model.Brand;
 import com.elmenture.core.model.Item;
 import com.elmenture.core.model.Tag;
 import com.elmenture.core.model.TagProperty;
-import com.elmenture.core.repository.ItemPropertyRepository;
-import com.elmenture.core.repository.ItemRepository;
-import com.elmenture.core.repository.TagPropertyRepository;
-import com.elmenture.core.repository.TagRepository;
+import com.elmenture.core.repository.*;
 import com.elmenture.core.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +34,9 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    BrandRepository brandRepository;
 
     String[] CLOTHING_SIZES = new String[]{"XS", "S", "M", "L", "XL", "XXL"};
 
@@ -155,9 +156,175 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "sheath dresses"));
             tagPropertyRepository.save(new TagProperty(tag, "sundresses"));
         }
+
+        if (brandRepository.count() == 0) {
+            brandRepository.save(new Brand("Amisu", "Medium", "Retail"));
+            brandRepository.save(new Brand("An- Nur Gz", "Low", "Retail"));
+            brandRepository.save(new Brand("Archivo", "None", "Retail"));
+            brandRepository.save(new Brand("Arden", "None", "Retail"));
+            brandRepository.save(new Brand("Ardene", "Medium", "Retail"));
+            brandRepository.save(new Brand("Atmospere", "None", "Retail"));
+            brandRepository.save(new Brand("Bailey Blue", "Medium", "Retail"));
+            brandRepository.save(new Brand("Banana Republic", "High", "Luxury"));
+            brandRepository.save(new Brand("Band Of Gypsies", "Low", "Retail"));
+            brandRepository.save(new Brand("Bar Iii", "Low", "Retail"));
+            brandRepository.save(new Brand("Barami", "Low", "Retail"));
+            brandRepository.save(new Brand("Bcuggbg", "Low", "Retail"));
+            brandRepository.save(new Brand("Belle De Jeur", "Medium", "Retail"));
+            brandRepository.save(new Brand("Biselena", "Low", "Retail"));
+            brandRepository.save(new Brand("Body Central", "Low", "Retail"));
+            brandRepository.save(new Brand("Bodyflirt", "Low", "Retail"));
+            brandRepository.save(new Brand("Bongo", "Low", "Retail"));
+            brandRepository.save(new Brand("Buckhead Betties", "Low", "Retail"));
+            brandRepository.save(new Brand("C.Dime", "Low", "Retail"));
+            brandRepository.save(new Brand("C&A", "Low", "Retail"));
+            brandRepository.save(new Brand("Cachecache", "Low", "Retail"));
+            brandRepository.save(new Brand("Cc.Hughes", "Low", "Retail"));
+            brandRepository.save(new Brand("Charlotte Russe", "Low", "Retail"));
+            brandRepository.save(new Brand("Ckh", "Low", "Retail"));
+            brandRepository.save(new Brand("Cole Daniel", "Low", "Retail"));
+            brandRepository.save(new Brand("Collective Concept", "Low", "Retail"));
+            brandRepository.save(new Brand("Crossroads", "Low", "Retail"));
+            brandRepository.save(new Brand("Daba Girl", "Low", "Retail"));
+            brandRepository.save(new Brand("Damai", "Low", "Retail"));
+            brandRepository.save(new Brand("David Emanuel", "Low", "Retail"));
+            brandRepository.save(new Brand("Diwo", "Low", "Retail"));
+            brandRepository.save(new Brand("Dressbarn", "Low", "Retail"));
+            brandRepository.save(new Brand("Dynamite", "Low", "Retail"));
+            brandRepository.save(new Brand("Eight Sixty", "Low", "Retail"));
+            brandRepository.save(new Brand("Eliza J", "Low", "Retail"));
+            brandRepository.save(new Brand("Emma And Michele", "Low", "Retail"));
+            brandRepository.save(new Brand("Esmara", "Medium", "Retail"));
+            brandRepository.save(new Brand("Espirit", "High", "Premium"));
+            brandRepository.save(new Brand("Espresso", "Medium", "Retail"));
+            brandRepository.save(new Brand("Esprit", "High", "Premium"));
+            brandRepository.save(new Brand("Forever 21", "Medium", "Retail"));
+            brandRepository.save(new Brand("Freedom Trail", "Medium", "Retail"));
+            brandRepository.save(new Brand("French Connection", "High", "Premium"));
+            brandRepository.save(new Brand("Fun And Flirt", "None", "Retail"));
+            brandRepository.save(new Brand("Gap", "High", "Premium"));
+            brandRepository.save(new Brand("George", "High", "Premium"));
+            brandRepository.save(new Brand("H&M", "High", "Premium"));
+            brandRepository.save(new Brand("Han Han", "Low", "Retail"));
+            brandRepository.save(new Brand("Hellen Blake", "Low", "Retail"));
+            brandRepository.save(new Brand("Hitorat", "Low", "Retail"));
+            brandRepository.save(new Brand("Holly And Whyte", "Low", "Retail"));
+            brandRepository.save(new Brand("Hwalea", "Low", "Retail"));
+            brandRepository.save(new Brand("I Love Next", "Low", "Retail"));
+            brandRepository.save(new Brand("Iief", "Low", "Retail"));
+            brandRepository.save(new Brand("Impulsive", "Low", "Retail"));
+            brandRepository.save(new Brand("Isabel Maternity", "Low", "Retail"));
+            brandRepository.save(new Brand("J.Crew", "High", "Premium"));
+            brandRepository.save(new Brand("Jessica", "Low", "Retail"));
+            brandRepository.save(new Brand("Jessica Haward", "Low", "Retail"));
+            brandRepository.save(new Brand("Jkjs", "Low", "Retail"));
+            brandRepository.save(new Brand("Joe Fresh", "Low", "Retail"));
+            brandRepository.save(new Brand("John Rocha", "Low", "Retail"));
+            brandRepository.save(new Brand("Kiabi", "Low", "Retail"));
+            brandRepository.save(new Brand("Kuberas", "Medium", "Retail"));
+            brandRepository.save(new Brand("Lauren Conrad", "Medium", "Premium"));
+            brandRepository.save(new Brand("Le Chateau", "Medium", "Premium"));
+            brandRepository.save(new Brand("Limited Edition", "High", "Retail"));
+            brandRepository.save(new Brand("Lindex", "Low", "Retail"));
+            brandRepository.save(new Brand("Linen Village", "Low", "Retail"));
+            brandRepository.save(new Brand("Loft", "High", "Premium"));
+            brandRepository.save(new Brand("Love Delirious", "Low", "Retail"));
+            brandRepository.save(new Brand("Love Linen", "Low", "Retail"));
+            brandRepository.save(new Brand("Lularoe", "Low", "Retail"));
+            brandRepository.save(new Brand("Lusa", "Low", "Retail"));
+            brandRepository.save(new Brand("M Y Queen", "Low", "Retail"));
+            brandRepository.save(new Brand("Macy & Larry", "Medium", "Retail"));
+            brandRepository.save(new Brand("Mango", "High", "Designer"));
+            brandRepository.save(new Brand("Marc New York", "Low", "Retail"));
+            brandRepository.save(new Brand("Maurice", "Low", "Retail"));
+            brandRepository.save(new Brand("Maurices", "Low", "Retail"));
+            brandRepository.save(new Brand("Mela Loves London", "Low", "Retail"));
+            brandRepository.save(new Brand("Melissa Harper", "Low", "Retail"));
+            brandRepository.save(new Brand("Merona", "Low", "Retail"));
+            brandRepository.save(new Brand("Ming", "Low", "Retail"));
+            brandRepository.save(new Brand("Miss Xue", "Low", "Retail"));
+            brandRepository.save(new Brand("Mlle Gabrielle", "Low", "Retail"));
+            brandRepository.save(new Brand("Motherhood", "Low", "Retail"));
+            brandRepository.save(new Brand("Na Wain", "Low", "Retail"));
+            brandRepository.save(new Brand("Naif", "Low", "Retail"));
+            brandRepository.save(new Brand("New Lool", "Low", "Retail"));
+            brandRepository.save(new Brand("Next", "High", "Premium"));
+            brandRepository.save(new Brand("No Boundaries", "Low", "Retail"));
+            brandRepository.save(new Brand("Nutmeg", "Low", "Retail"));
+            brandRepository.save(new Brand("Ny Collection", "Low", "Retail"));
+            brandRepository.save(new Brand("Oasis", "Low", "Retail"));
+            brandRepository.save(new Brand("Ohconcept", "Low", "Retail"));
+            brandRepository.save(new Brand("Old Navy", "High", "Premium"));
+            brandRepository.save(new Brand("One Clothing", "None", "Retail"));
+            brandRepository.save(new Brand("One Love Clothing", "Low", "Retail"));
+            brandRepository.save(new Brand("Outfit Classic", "None", "Retail"));
+            brandRepository.save(new Brand("Peter Pilotto", "Medium", "Designer"));
+            brandRepository.save(new Brand("Prenatal", "None", "Retail"));
+            brandRepository.save(new Brand("Primark", "High", "Retail"));
+            brandRepository.save(new Brand("Promod", "Medium", "Retail"));
+            brandRepository.save(new Brand("Reb&J", "Medium", "Retail"));
+            brandRepository.save(new Brand("Reitmanz", "Medium", "Premium"));
+            brandRepository.save(new Brand("Reserved", "Low", "Retail"));
+            brandRepository.save(new Brand("Ritascimento", "Medium", "Premium"));
+            brandRepository.save(new Brand("River Island", "Medium", "Premium"));
+            brandRepository.save(new Brand("Robbie Bee", "Medium", "Retail"));
+            brandRepository.save(new Brand("Rozali", "None", "Retail"));
+            brandRepository.save(new Brand("Sadie Robertson", "Low", "Retail"));
+            brandRepository.save(new Brand("Sassy Doll", "None", "Retail"));
+            brandRepository.save(new Brand("Savida", "Medium", "Retail"));
+            brandRepository.save(new Brand("Silkeer", "None", "Retail"));
+            brandRepository.save(new Brand("Sister", "Low", "Retail"));
+            brandRepository.save(new Brand("Soft Grey", "None", "Retail"));
+            brandRepository.save(new Brand("Soul", "None", "Retail"));
+            brandRepository.save(new Brand("South", "None", "Retail"));
+            brandRepository.save(new Brand("Talbots", "Medium", "Retail"));
+            brandRepository.save(new Brand("Temt", "Low", "Retail"));
+            brandRepository.save(new Brand("Time And Tru", "Medium", "Retail"));
+            brandRepository.save(new Brand("Today'S Emcee", "None", "Retail"));
+            brandRepository.save(new Brand("Tova", "None", "Retail"));
+            brandRepository.save(new Brand("Trendyol", "Low", "Retail"));
+            brandRepository.save(new Brand("Umgee", "Low", "Retail"));
+            brandRepository.save(new Brand("Urbanature", "Low", "Premium"));
+            brandRepository.save(new Brand("Vibe", "Medium", "Retail"));
+            brandRepository.save(new Brand("Xhilaration", "Medium", "Retail"));
+            brandRepository.save(new Brand("Yang Yang", "None", "Retail"));
+            brandRepository.save(new Brand("Zimmur", "None", "Retail"));
+            brandRepository.save(new Brand("Papaya", "Low", "Retail"));
+            brandRepository.save(new Brand("Smash", "None", "Retail"));
+            brandRepository.save(new Brand("Mossimo", "Medium", "Retail"));
+            brandRepository.save(new Brand("Kate Spade", "Medium", "Designer"));
+            brandRepository.save(new Brand("Anna Sui", "Medium", "Luxury"));
+            brandRepository.save(new Brand("Mikarose", "Medium", "Premium"));
+            brandRepository.save(new Brand("Justfab", "Medium", "Retail"));
+            brandRepository.save(new Brand("Ally", "None", "Retail"));
+            brandRepository.save(new Brand("L.L.Bean", "Medium", "Retail"));
+            brandRepository.save(new Brand("Knox Rose", "Medium", "Retail"));
+            brandRepository.save(new Brand("Tommy Bahama", "Medium", "Designer"));
+            brandRepository.save(new Brand("Laredoute", "Medium", "Retail"));
+            brandRepository.save(new Brand("Express", "Low", "Retail"));
+            brandRepository.save(new Brand("Giani Bini", "Medium", "Premium"));
+            brandRepository.save(new Brand("Dunnes", "Medium", "Retail"));
+            brandRepository.save(new Brand("Shein", "Medium", "Retail"));
+            brandRepository.save(new Brand("Jessica Howard", "Low", "Retail"));
+            brandRepository.save(new Brand("Glassons", "Medium", "Retail"));
+            brandRepository.save(new Brand("Amly", "Low", "Retail"));
+            brandRepository.save(new Brand("Studio", "None", "Retail"));
+            brandRepository.save(new Brand("Womanwithin", "Medium", "Retail"));
+            brandRepository.save(new Brand("Falls Creek", "Medium", "Retail"));
+            brandRepository.save(new Brand("Peppermint Bay", "Low", "Retail"));
+            brandRepository.save(new Brand("Faded Glory", "Medium", "Retail"));
+            brandRepository.save(new Brand("Patrizia Dini", "Medium", "Premium"));
+            brandRepository.save(new Brand("Thread+Supply", "Low", "Retail"));
+            brandRepository.save(new Brand("Sunday", "None", "Retail"));
+            brandRepository.save(new Brand("Jms Chaopin", "None", "Retail"));
+            brandRepository.save(new Brand("Universal Thread", "None", "Retail"));
+            brandRepository.save(new Brand("Zihui", "None", "Retail"));
+            brandRepository.save(new Brand("Gold Coast", "None", "Retail"));
+        }
         System.out.println("Tag properties = " + tagPropertyRepository.count());
         System.out.println("Items = " + itemRepository.count());
         System.out.println("Item properties = " + itemPropertyRepository.count());
+        System.out.println("Brand = " + brandRepository.count());
 
         List<Item> items = itemRepository.findBySoldNull();
 
@@ -165,7 +332,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             item.setSold(false);
             itemRepository.save(item);
         }
-
 
         cleanUpTags();
 
