@@ -115,7 +115,7 @@ class FulfillmentOrderItemsFragment : BaseFragment(), Type.ProfileSettings {
                 if (it.isSuccessful) {
                     orderItemList.clear()
                     val spots: ArrayList<Spot> = arrayListOf()
-                    (it.data as List<Item>).map { item -> spots.add(createSpot(item)) }
+                    (it.getData<List<Item>>()).map { item -> spots.add(createSpot(item)) }
                     orderItemList.addAll(spots)
                     orderItemAdapter.notifyDataSetChanged()
                 }

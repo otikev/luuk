@@ -65,7 +65,7 @@ class HomeViewModel : ViewModel() {
             val response = RemoteRepository.fetchItemsQueue(!showAllItems)
             if (response.isSuccessful) {
                 initialized = true
-                LocalRepository.updateItemList(response.data as ArrayList<Item>?)
+                LocalRepository.updateItemList(response.getData())
             }
         }
     }

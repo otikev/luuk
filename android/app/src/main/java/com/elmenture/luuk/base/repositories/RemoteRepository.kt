@@ -20,19 +20,21 @@ object RemoteRepository {
     val blockUserInteraction = MutableLiveData(false)
 
     private fun processRequest(call: Call<*>, blockUi: Boolean = true): BaseApiState {
-        var viewState: BaseApiState
+        var baseApiState: BaseApiState
         if (blockUi)
             this.blockUserInteraction.postValue(true)
         try {
             val response = call.execute()
             if (response.isSuccessful) {
-                BaseApiState.SUCCESS_STATE.data = response.body() as Any
-                viewState = BaseApiState.SUCCESS_STATE
+
+                BaseApiState.SUCCESS_STATE.setData(response.body())
+                BaseApiState.SUCCESS_STATE.responseCode = response.code()
+                baseApiState = BaseApiState.SUCCESS_STATE
                 logUtils.i("Success")
             } else {
                 BaseApiState.ERROR_STATE.responseCode = response.code()
                 BaseApiState.ERROR_STATE.errorMessage = response.errorBody()?.string()
-                viewState = BaseApiState.ERROR_STATE
+                baseApiState = BaseApiState.ERROR_STATE
                 logUtils.w("Api Error: %d".format(BaseApiState.ERROR_STATE.responseCode))
 
             }
@@ -44,13 +46,12 @@ object RemoteRepository {
             }
             logUtils.w("Connectivity Error: %d".format(BaseApiState.ERROR_STATE.responseCode))
             BaseApiState.ERROR_STATE.errorMessage = e.message
-            viewState = BaseApiState.ERROR_STATE
+            baseApiState = BaseApiState.ERROR_STATE
 
         }
-        viewState.responseCode
         if (blockUi)
             this.blockUserInteraction.postValue(false)
-        return viewState
+        return baseApiState
     }
 
     fun doPostUserBodyMeasurements(request: ActualMeasurements): BaseApiState {

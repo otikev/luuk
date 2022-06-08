@@ -45,8 +45,8 @@ class SplashActivity : BaseActivity() {
         splashViewModel.userDetailsApiState.observe(this) {
             it?.let {
                 if (it.isSuccessful) {
-                    LocalRepository.updateUserDetails(it.data as SignInResponse)
-                    User.getCurrent().setUserDetails(it.data as SignInResponse)
+                    LocalRepository.updateUserDetails(it.getData())
+                    User.getCurrent().setUserDetails(it.getData())
                     startMainScreen()
                 } else {
                     logUtils.w("Auth failed : " + it.responseCode)

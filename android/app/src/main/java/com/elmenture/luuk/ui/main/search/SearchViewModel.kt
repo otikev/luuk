@@ -19,7 +19,7 @@ class SearchViewModel : ViewModel() {
             val response = RemoteRepository.fetchItemsByQuery(query)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    searchItemsByQueryLiveData.value = response.data as ArrayList<Item>
+                    searchItemsByQueryLiveData.value = response.getData()
                 }
             }
         }
@@ -30,7 +30,7 @@ class SearchViewModel : ViewModel() {
             val response = RemoteRepository.fetchCannedItems(query)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    cannedItemsLiveData.value = response.data as ArrayList<Item>
+                    cannedItemsLiveData.value = response.getData()
                 }
             }
         }

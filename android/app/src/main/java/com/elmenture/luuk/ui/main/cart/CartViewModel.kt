@@ -92,7 +92,7 @@ class CartViewModel : ViewModel() {
     }
 
     fun confirmOrder() {
-        val stkData = paymentApiState.value?.data as StkConfirmationResponse
+        val stkData = paymentApiState.value?.getData<StkConfirmationResponse>()!!
 
         viewModelScope.launch(Dispatchers.IO) {
             orderConfirmationApiState.postValue(AccountManagementRepository.confirmOrder(stkData.merchantRequestID))

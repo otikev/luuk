@@ -54,7 +54,7 @@ class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings,
             it?.let {
                 if(it.isSuccessful){
                     orderList.clear()
-                    orderList.addAll(it.data as List<Order>)
+                    orderList.addAll(it.getData())
                     orderAdapter.notifyDataSetChanged()
                 }
             }

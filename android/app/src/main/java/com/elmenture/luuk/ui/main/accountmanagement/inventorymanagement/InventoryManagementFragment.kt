@@ -51,7 +51,7 @@ class InventoryManagementFragment : BaseFragment(), Type.ProfileSettings, Invent
             it?.let {
                 if (it.isSuccessful) {
                     itemList.clear()
-                    itemList.addAll(it.data as ArrayList<Item>)
+                    itemList.addAll(it.getData())
                     adapter.notifyDataSetChanged()
                 }
             }
