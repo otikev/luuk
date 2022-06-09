@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "brand")
+@Table(name = "brands")
 @NoArgsConstructor
 public class Brand extends BaseEntity {
     @Id

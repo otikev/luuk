@@ -1,5 +1,5 @@
 create TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     auth_token character varying(255),
     email character varying(255),
     first_name character varying(255),
@@ -13,32 +13,35 @@ create TABLE IF NOT EXISTS users (
     clothing_recommendations character varying(255),
     item_queue_tracker bigint DEFAULT 0,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS body_measurements (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     user_id bigint,
     chest_cm integer,
     hips_cm integer,
     waist_cm integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT body_measurements_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS clothing_sizes (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     eu integer,
     international character varying(255),
     uk integer,
     us integer,
     user_id bigint NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT clothing_sizes_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS items (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     description character varying(255) NOT NULL,
     image_url character varying(255),
     price bigint,
@@ -50,65 +53,73 @@ create TABLE IF NOT EXISTS items (
     brand character varying(255),
     external_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT items_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS item_actions (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     action integer NOT NULL,
     count integer NOT NULL,
     item_id bigint NOT NULL,
     user_id bigint NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT item_actions_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS item_properties (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     item_id bigint NOT NULL,
     tag_property_id bigint NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT item_properties_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS orders (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     merchant_request_id character varying(255),
     state character varying(255),
     user_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS order_item (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     item_id bigint NOT NULL,
     order_id bigint NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT order_item_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS tags (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     value character varying(255) NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT tags_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS tag_properties (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     value character varying(255) NOT NULL,
     tag_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT tag_properties_pkey PRIMARY KEY (id)
 );
 
 create TABLE IF NOT EXISTS transaction_details (
-    id SERIAL PRIMARY KEY,
+    id bigserial NOT NULL,
     amount double precision NOT NULL,
     merchant_request_id character varying(255) NOT NULL,
     mpesa_receipt_number character varying(255) NOT NULL,
     phone_number character varying(255) NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    CONSTRAINT transaction_details_pkey PRIMARY KEY (id)
 );

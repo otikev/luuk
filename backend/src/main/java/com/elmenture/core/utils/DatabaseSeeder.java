@@ -38,11 +38,37 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Autowired
     BrandRepository brandRepository;
 
-    String[] CLOTHING_SIZES = new String[]{"XS", "S", "M", "L", "XL", "XXL"};
-
     @Override
     public void run(String... args) throws Exception {
 
+        addTags();
+        insertTagProperties();
+        insertbrands();
+
+        System.out.println("Tags = " + tagRepository.count());
+        System.out.println("Tag properties = " + tagPropertyRepository.count());
+        System.out.println("Items = " + itemRepository.count());
+        System.out.println("Item properties = " + itemPropertyRepository.count());
+        System.out.println("Brand = " + brandRepository.count());
+
+        List<Item> items = itemRepository.findBySoldNull();
+        for (Item item : items) {
+            item.setSold(false);
+            itemRepository.save(item);
+        }
+
+        cleanUpTags();
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendAppStartedEmail();
+            }
+        });
+    }
+
+    private void addTags() {
         if (tagRepository.count() == 0) {
             tagRepository.save(new Tag("color"));
             tagRepository.save(new Tag("cut"));
@@ -57,9 +83,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagRepository.save(new Tag("style"));
             tagRepository.save(new Tag("subcategory"));
         }
+    }
 
-        System.out.println("Tags = " + tagRepository.count());
-
+    private void insertTagProperties() {
         if (tagPropertyRepository.count() == 0) {
             //1- Color
             Tag tag = tagRepository.findByValue("color");
@@ -156,7 +182,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             tagPropertyRepository.save(new TagProperty(tag, "sheath dresses"));
             tagPropertyRepository.save(new TagProperty(tag, "sundresses"));
         }
+    }
 
+    private void insertbrands() {
         if (brandRepository.count() == 0) {
             brandRepository.save(new Brand("Amisu", "Medium", "Retail"));
             brandRepository.save(new Brand("An- Nur Gz", "Low", "Retail"));
@@ -321,27 +349,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             brandRepository.save(new Brand("Zihui", "None", "Retail"));
             brandRepository.save(new Brand("Gold Coast", "None", "Retail"));
         }
-        System.out.println("Tag properties = " + tagPropertyRepository.count());
-        System.out.println("Items = " + itemRepository.count());
-        System.out.println("Item properties = " + itemPropertyRepository.count());
-        System.out.println("Brand = " + brandRepository.count());
-
-        List<Item> items = itemRepository.findBySoldNull();
-
-        for (Item item : items) {
-            item.setSold(false);
-            itemRepository.save(item);
-        }
-
-        cleanUpTags();
-
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                emailService.sendAppStartedEmail();
-            }
-        });
     }
 
     private void cleanUpTags() {
@@ -428,6 +435,10 @@ public class DatabaseSeeder implements CommandLineRunner {
         tagProperty = tagPropertyRepository.findByValue("fuschia");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("color"), "fuschia"));
+        }
+        tagProperty = tagPropertyRepository.findByValue("bustier");
+        if (tagProperty == null) {
+            tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "bustier"));
         }
     }
 }
