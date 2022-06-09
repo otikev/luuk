@@ -21,14 +21,8 @@ public class LuukProperties {
     public static final String DARAJA_AUTH_URL = System.getenv("DARAJA_AUTH_URL");
     public static final String CONSUMER_KEY = System.getenv("CONSUMER_KEY");
     public static final String CONSUMER_SECRET = System.getenv("CONSUMER_SECRET");
-    public static final String STK_TRANSACTION_TYPE = System.getenv("STK_TRANSACTION_TYPE");
-    public static final String STK_ACCOUNT_REFERENCE = System.getenv("STK_ACCOUNT_REFERENCE");
-    public static final String secret = CONSUMER_KEY + ":" + CONSUMER_SECRET;
     public static final String DARAJA_PASSKEY = System.getenv("DARAJA_PASSKEY");
     public static final String BASE_URL = System.getenv("BASE_URL");
     public static final String BUSINESS_SHORT_CODE = System.getenv("BUSINESS_SHORT_CODE");
-
-    public static final String STK_CALLBACK_URL = BASE_URL + "order/payment-confirmed";
-    public static final String COUNTRY_CODE ="254";
 
 }

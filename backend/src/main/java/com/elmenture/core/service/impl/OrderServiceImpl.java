@@ -54,6 +54,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderItemService orderItemService;
 
+    static final String COUNTRY_CODE = "254";
+    static final String STK_CALLBACK_URL = BASE_URL + "order/payment-confirmed";
+
     @Override
     public StkPushResponseDto triggerStkPush(int amount, User user) throws IOException {
         StkPushResponseDto stkPushResponse = null;
@@ -71,20 +74,20 @@ public class OrderServiceImpl implements OrderService {
         body.setBusinessShortCode((int) shortCode);
         body.setPassword(password);
         body.setTimestamp(timeStamp);
-        body.setTransactionType(STK_TRANSACTION_TYPE);
+        body.setTransactionType("CustomerPayBillOnline");
         body.setAmount(amount);
         body.setPartyB(shortCode);
         body.setCallBackURL(STK_CALLBACK_URL);
         body.setPartyA(userNumberLong);
         body.setPhoneNumber(userNumberLong);
-        body.setAccountReference(STK_ACCOUNT_REFERENCE);
+        body.setAccountReference("Luuk Commerce Ltd");
         body.setTransactionDesc("Payment");
 
         Request req = new Request.Builder()
                 .url(DARAJA_STK_URL)
                 .method("POST", RequestBody.create(mediaType, new Gson().toJson(body)))
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + getAuthentication(DARAJA_AUTH_URL, secret))
+                .addHeader("Authorization", "Bearer " + getAuthentication(DARAJA_AUTH_URL, CONSUMER_KEY + ":" + CONSUMER_SECRET))
                 .addHeader("cache-control", "no-cache")
                 .build();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
