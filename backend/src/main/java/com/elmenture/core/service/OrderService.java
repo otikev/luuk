@@ -36,4 +36,6 @@ public interface OrderService {
     Order getPaidOrderForItemId(Long itemId);
 
     List<ItemDto> getItems(int orderId);
+
+    void sendNewOrderEmail(Long orderId);
 }

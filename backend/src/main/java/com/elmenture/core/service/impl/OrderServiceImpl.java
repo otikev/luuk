@@ -4,6 +4,7 @@ import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.*;
+import com.elmenture.core.service.EmailService;
 import com.elmenture.core.service.OrderItemService;
 import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.OrderState;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderItemService orderItemService;
+
+    @Autowired
+    protected EmailService emailService;
 
     static final String COUNTRY_CODE = "254";
     static final String STK_CALLBACK_URL = BASE_URL + "order/payment-confirmed";
@@ -238,6 +243,28 @@ public class OrderServiceImpl implements OrderService {
         List<ItemDto> itemDtoList = orderItemRepository.findByOrderId(orderId).stream().map(orderItem -> mapToDTO(orderItem.getItem()))
                 .collect(Collectors.toList());
         return itemDtoList;
+    }
+
+    @Override
+    public void sendNewOrderEmail(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
+        List<Integer> externalItemIds = new ArrayList<>();
+        long totalCents = 0;
+        String customerName = order.getUser().getFirstName() + " " + order.getUser().getLastName();
+        String address = order.getUser().getPhysicalAddress();
+
+        for (OrderItem orderItem : orderItems) {
+            Item item = orderItem.getItem();
+            totalCents += item.getPrice();
+            externalItemIds.add(item.getExternalId());
+        }
+
+        try {
+            emailService.sendNewOrderEmail(order.getId(), externalItemIds, totalCents, customerName, address, "Standard");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

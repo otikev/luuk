@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 public class EmailServiceImpl implements EmailService {
     private final String[] SITE_ADMINS = {"oti.kevin@gmail.com", "aycewhispero@gmail.com"};
-    private final String[] BUSINESS_ADMINS = {"k.kinyua@luukat.me"};
     private final String ORDERS_NOTIFICATIONS_EMAIL = "orders@luukat.me";
 
     @Autowired
@@ -67,11 +66,11 @@ public class EmailServiceImpl implements EmailService {
                         "<b>Total Paid:</b> KES " + (orderTotalCents / 100) + "<br><br>" +
                         "<b>Customer Name:</b> " + customerName + "<br><br>" +
                         "<b>Delivery Address:</b> " + deliveryAddress + "<br><br>" +
-                        "<b>Delivery Mode:</b> " + deliveryMode+"<br><br>" +
+                        "<b>Delivery Mode:</b> " + deliveryMode + "<br><br>" +
                         "<b>Item Ids:</b><br>";
 
-        for(Integer externalId : externalItemIds){
-            emailBody=emailBody+"- "+externalId+"<br>";
+        for (Integer externalId : externalItemIds) {
+            emailBody = emailBody + "- " + externalId + "<br>";
         }
         helper.setText(emailBody, html);
         emailSender.send(message);
