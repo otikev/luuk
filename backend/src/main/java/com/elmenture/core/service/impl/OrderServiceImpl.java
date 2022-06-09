@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrder(User loggedInUser, List<Long> orderList, StkPushResponseDto stkPushResponse) {
-        Order order = new Order(loggedInUser, "pending", stkPushResponse.getMerchantRequestID());
+        Order order = new Order(loggedInUser, PENDING.toString(), stkPushResponse.getMerchantRequestID());
         orderRepository.save(order);
         List<Item> itemList = itemRepository.findAllById(orderList);
         orderItemService.saveOrderItems(order, itemList);
