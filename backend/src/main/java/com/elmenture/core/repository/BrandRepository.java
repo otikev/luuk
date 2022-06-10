@@ -14,6 +14,6 @@ import java.util.List;
  */
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-    @Query(value = "SELECT description FROM brand WHERE awareness =:awareness or perception =:perception", nativeQuery = true)
+    @Query(value = "SELECT description FROM brands WHERE awareness =:awareness or perception =:perception", nativeQuery = true)
     List<String> findDescriptionByAwarenessOrPerception(String awareness, String perception);
 }

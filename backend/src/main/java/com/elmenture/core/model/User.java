@@ -35,9 +35,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone")
-    private String phone;
-
     @Column(name = "email")
     private String email;
 
@@ -55,9 +52,6 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "physical_address")
     private String physicalAddress;
-
-    @Column(name = "gender")
-    private String gender;
 
     /**
      * Stores the last item id in items table that was traversed while fetching the user's queue

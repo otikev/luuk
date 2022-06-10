@@ -4,6 +4,7 @@ import com.elmenture.core.exception.ResourceNotFoundException;
 import com.elmenture.core.model.*;
 import com.elmenture.core.payload.*;
 import com.elmenture.core.repository.*;
+import com.elmenture.core.service.EmailService;
 import com.elmenture.core.service.OrderItemService;
 import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.OrderState;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderItemService orderItemService;
 
+    @Autowired
+    protected EmailService emailService;
+
+    static final String COUNTRY_CODE = "254";
+    static final String STK_CALLBACK_URL = BASE_URL + "order/payment-confirmed";
+
     @Override
     public StkPushResponseDto triggerStkPush(int amount, User user) throws IOException {
         StkPushResponseDto stkPushResponse = null;
@@ -71,20 +79,20 @@ public class OrderServiceImpl implements OrderService {
         body.setBusinessShortCode((int) shortCode);
         body.setPassword(password);
         body.setTimestamp(timeStamp);
-        body.setTransactionType(STK_TRANSACTION_TYPE);
+        body.setTransactionType("CustomerPayBillOnline");
         body.setAmount(amount);
         body.setPartyB(shortCode);
         body.setCallBackURL(STK_CALLBACK_URL);
         body.setPartyA(userNumberLong);
         body.setPhoneNumber(userNumberLong);
-        body.setAccountReference(STK_ACCOUNT_REFERENCE);
+        body.setAccountReference("Luuk Commerce Ltd");
         body.setTransactionDesc("Payment");
 
         Request req = new Request.Builder()
                 .url(DARAJA_STK_URL)
                 .method("POST", RequestBody.create(mediaType, new Gson().toJson(body)))
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + getAuthentication(DARAJA_AUTH_URL, secret))
+                .addHeader("Authorization", "Bearer " + getAuthentication(DARAJA_AUTH_URL, CONSUMER_KEY + ":" + CONSUMER_SECRET))
                 .addHeader("cache-control", "no-cache")
                 .build();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -102,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrder(User loggedInUser, List<Long> orderList, StkPushResponseDto stkPushResponse) {
-        Order order = new Order(loggedInUser, "pending", stkPushResponse.getMerchantRequestID());
+        Order order = new Order(loggedInUser, PENDING.toString(), stkPushResponse.getMerchantRequestID());
         orderRepository.save(order);
         List<Item> itemList = itemRepository.findAllById(orderList);
         orderItemService.saveOrderItems(order, itemList);
@@ -235,6 +243,28 @@ public class OrderServiceImpl implements OrderService {
         List<ItemDto> itemDtoList = orderItemRepository.findByOrderId(orderId).stream().map(orderItem -> mapToDTO(orderItem.getItem()))
                 .collect(Collectors.toList());
         return itemDtoList;
+    }
+
+    @Override
+    public void sendNewOrderEmail(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
+        List<Integer> externalItemIds = new ArrayList<>();
+        long totalCents = 0;
+        String customerName = order.getUser().getFirstName() + " " + order.getUser().getLastName();
+        String address = order.getUser().getPhysicalAddress();
+
+        for (OrderItem orderItem : orderItems) {
+            Item item = orderItem.getItem();
+            totalCents += item.getPrice();
+            externalItemIds.add(item.getExternalId());
+        }
+
+        try {
+            emailService.sendNewOrderEmail(order.getId(), externalItemIds, totalCents, customerName, address, "Standard");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

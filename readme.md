@@ -1,6 +1,5 @@
 # Luuk
 
-Dev server running at https://luukatme.herokuapp.com/
 
 
 ## Deploying the Heroku backend
@@ -50,6 +49,49 @@ Now run your SQL commands
 
 ```
 luukatme::DATABASE=> select * from users;
+```
+## Environment variables
+
+### Variables used for database migrations
+```
+LUUK_DATABASE_URL
+LUUK_DATABASE_USERNAME
+LUUK_DATABASE_PASSWORD
+```
+
+### Variables used for email integration
+```
+LUUK_ENABLE_EMAILS
+LUUK_MAIL_USERNAME
+LUUK_MAIL_PASSWORD
+```
+
+### Variables used for OAuth2
+```
+GOOGLE_SERVER_CLIENT_ID
+GOOGLE_SERVER_CLIENT_SECRET
+FACEBOOK_APP_ID
+FACEBOOK_APP_SECRET
+```
+
+### Variables used for MPESA integration
+```
+DARAJA_STK_URL
+DARAJA_AUTH_URL
+CONSUMER_KEY
+CONSUMER_SECRET
+STK_TRANSACTION_TYPE
+STK_ACCOUNT_REFERENCE
+DARAJA_PASSKEY
+BASE_URL
+BUSINESS_SHORT_CODE
+```
+
+### Variables for AWS S3 integration
+```
+LUUK_AWS_S3_BUCKET
+S3_ACCESS_KEY_ID
+S3_SECRET_KEY_ID
 ```
 
 ### Reference Documentation

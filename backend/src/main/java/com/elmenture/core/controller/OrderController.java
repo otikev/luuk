@@ -1,9 +1,7 @@
 package com.elmenture.core.controller;
 
 import com.elmenture.core.exception.ResourceNotFoundException;
-import com.elmenture.core.model.Item;
 import com.elmenture.core.model.Order;
-import com.elmenture.core.model.OrderItem;
 import com.elmenture.core.payload.OrderConfirmationDto;
 import com.elmenture.core.payload.OrderStateUpdate;
 import com.elmenture.core.repository.OrderItemRepository;
@@ -17,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.elmenture.core.utils.OrderState.PAID;
@@ -76,30 +72,9 @@ public class OrderController extends BaseController {
             return;
         if (orderConfirmationDto.getCallbackResultCode() == 0) {
             orderService.saveTransactionDetails(orderConfirmationDto);
-            executor.execute(() -> sendEmail(orderConfirmationDto.getOrder().getId()));
+            executor.execute(() -> orderService.sendNewOrderEmail(orderConfirmationDto.getOrder().getId()));
         } else {
             orderService.cancelOrder(orderConfirmationDto.getOrder());
-        }
-    }
-
-    private void sendEmail(Long orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
-        List<Integer> externalItemIds = new ArrayList<>();
-        long totalCents = 0;
-        String customerName = order.getUser().getFirstName() + " " + order.getUser().getLastName();
-        String address = order.getUser().getPhysicalAddress();
-
-        for (OrderItem orderItem : orderItems) {
-            Item item = orderItem.getItem();
-            totalCents += item.getPrice();
-            externalItemIds.add(item.getExternalId());
-        }
-
-        try {
-            emailService.sendNewOrderEmail(order.getId(), externalItemIds, totalCents, customerName, address, "Standard");
-        } catch (MessagingException e) {
-            e.printStackTrace();
         }
     }
 
