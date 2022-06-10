@@ -33,7 +33,7 @@ class SearchAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (filterlist.size > 5) return 5 else filterlist.size
+        return filterlist.size
     }
 
     class ViewHolder(private val view: SearchItemBinding) :
