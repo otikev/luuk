@@ -62,7 +62,6 @@
                     android:layout_marginBottom="8dp"
                     android:gravity="center_vertical"
                     android:text="Pin Stripe"
-                    android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 

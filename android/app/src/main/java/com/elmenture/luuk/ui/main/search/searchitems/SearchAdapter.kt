@@ -13,9 +13,11 @@ class SearchAdapter(
 ) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     private var filterlist = ArrayList<TagProperty>()
+
     init {
         filterlist.addAll(mainlist)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = SearchItemBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -31,7 +33,7 @@ class SearchAdapter(
     }
 
     override fun getItemCount(): Int {
-        return filterlist.size
+        return if (filterlist.size > 5) return 5 else filterlist.size
     }
 
     class ViewHolder(private val view: SearchItemBinding) :
@@ -45,7 +47,6 @@ class SearchAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun filter(query: String) {
         filterlist.clear()
-
         for (tagProperty: TagProperty in mainlist) {
             if (tagProperty.value!!.contains(query)) filterlist.add(tagProperty)
         }
