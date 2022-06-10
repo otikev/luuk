@@ -34,18 +34,8 @@ class CheckoutFailureFragment : BaseFragment(), Type.Cart {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         setUpEventListeners()
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun observeLiveData() {
-
-    }
-
-
-    private fun initView() {
- }
 
     private fun setUpEventListeners() {
         binding.btnAccept.setOnClickListener { requireActivity().onBackPressed() }

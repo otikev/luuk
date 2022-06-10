@@ -100,7 +100,9 @@ class CartViewModel : ViewModel() {
     }
 
     fun clearCartData() {
-        LocalRepository.swipeRecords.likes.value?.clear()
+        val cartData = LocalRepository.swipeRecords.likes.value
+        cartData?.clear()
+        LocalRepository.swipeRecords.likes.value = cartData
     }
 
     sealed class PaymentStatus {

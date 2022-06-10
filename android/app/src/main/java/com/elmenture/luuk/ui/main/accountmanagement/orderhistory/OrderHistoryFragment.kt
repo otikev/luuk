@@ -56,6 +56,8 @@ class OrderHistoryFragment : BaseFragment(), Type.ProfileSettings,
                     orderList.clear()
                     orderList.addAll(it.getData())
                     orderAdapter.notifyDataSetChanged()
+                    binding.txtNoResults.visibility = if(orderList.isEmpty()) View.VISIBLE else View.GONE
+                    binding.rvOrders.visibility = if(orderList.isEmpty()) View.GONE else View.VISIBLE
                 }
             }
         }

@@ -90,12 +90,6 @@ class ViewCartFragment : BaseFragment(), Type.Cart, CartAdapter.CartActionListen
         }
     }
 
-    override fun onSaveForLaterClicked(spot: Spot) {
-        val cart = viewModel.cartItemsLiveData.value
-        cart?.remove(spot)
-        viewModel.updateCart(cart)
-    }
-
     override fun onDiscardClicked(spot: Spot) {
         val cart = viewModel.cartItemsLiveData.value
         cart?.remove(spot)

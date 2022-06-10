@@ -62,7 +62,6 @@ class OrderItemsFragment : BaseFragment(), Type.ProfileSettings {
         orderHistoryViewModel.ordersItemsApiState.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isSuccessful) {
-                    orderItemList.clear()
                     val spots: ArrayList<Spot> = arrayListOf()
                     (it.getData<List<Item>>()).map { item -> spots.add(createSpot(item)) }
                     orderItemList.addAll(spots)

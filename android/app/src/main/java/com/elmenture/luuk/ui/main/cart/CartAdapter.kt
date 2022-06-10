@@ -47,16 +47,13 @@ class CartAdapter(var list: ArrayList<Spot>, var cartActionListener: CartActionL
 
             actionListener?.let {
                 view.ivDiscard.visibility = View.VISIBLE
-                view.btnSaveForLater.visibility = View.VISIBLE
                 view.ivDiscard.setOnClickListener { actionListener.onDiscardClicked(item) }
-                view.btnSaveForLater.setOnClickListener { actionListener.onSaveForLaterClicked(item) }
             }
 
         }
     }
 
     interface CartActionListener {
-        fun onSaveForLaterClicked(spot: Spot)
         fun onDiscardClicked(spot: Spot)
     }
 

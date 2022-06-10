@@ -34,12 +34,16 @@
     <TextView
         android:id="@+id/tv_save"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:textSize="16sp"
         android:gravity="center"
-        android:visibility="gone"
-        android:textColor="#17BAA1"
+        android:paddingHorizontal="@dimen/dimens_mid_size"
+        android:paddingVertical="4dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/rectangle_circled_green"
+        android:visibility="visible"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:text="SAVE"/>
 </LinearLayout>
