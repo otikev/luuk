@@ -131,9 +131,13 @@ public class ItemServiceImpl implements ItemService {
             return new ArrayList<>();
         }
         List<Item> items = itemRepository.searchAllLike(keyword);
-        List<ItemDto> response = items.stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
 
-        return response;
+        List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(keyword);
+        List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
+        Set<Item> itemsTagged = new HashSet<>(itemRepository.findBySoldAndIdIn(false, itemIds));
+        itemsTagged.addAll(items);
+
+        return itemsTagged.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     private List<ItemDto> goneForever(long userId) {
@@ -189,7 +193,7 @@ public class ItemServiceImpl implements ItemService {
         List<String> recommendation = getRecommendationByDayAndTime();
         List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(recommendation);
         List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
-        return itemRepository.findAllById(itemIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        return getAllItemsWithIdAndSoldStatus(itemIds, false);
     }
 
     private List<String> getRecommendationByDayAndTime() {

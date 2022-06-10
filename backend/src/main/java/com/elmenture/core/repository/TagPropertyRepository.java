@@ -23,4 +23,7 @@ public interface TagPropertyRepository extends JpaRepository<TagProperty, Long> 
 
     @Query(value = "select t.id from TagProperty t where t.value in :values")
     List<Long> getTagPropertyIds(@Param("values") List<String> recommendation);
+
+    @Query(value = "select t.id from TagProperty t where t.value like :values")
+    List<Long> getTagPropertyIds(@Param("values") String value);
 }
