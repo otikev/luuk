@@ -188,7 +188,8 @@ public class ItemServiceImpl implements ItemService {
     private List<ItemDto> styleWeLove() {
         List<String> recommendation = getRecommendationByDayAndTime();
         List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(recommendation);
-        return itemPropertyRepository.findItemIdsByTagPropertyId(tagIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
+        return itemRepository.findAllById(itemIds).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
     }
 
     private List<String> getRecommendationByDayAndTime() {

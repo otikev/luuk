@@ -22,7 +22,7 @@ public interface ItemPropertyRepository extends JpaRepository<ItemProperty, Long
     @Query(value = "select item_id from item_properties where tag_property_id=?1", nativeQuery = true)
     List<Long> findItemIdByTagPropertyId(Long tagPropertyId);
 
-    @Query(value = "select * from items where id in (select item_id from item_properties where tag_property_id in (?1))", nativeQuery = true)
-    List<Item> findItemIdsByTagPropertyId(List<Long> tagPropertyIds);
+    @Query(value = "select item_id from item_properties where tag_property_id in (?1)", nativeQuery = true)
+    List<Long> findItemIdsByTagPropertyId(List<Long> tagPropertyIds);
 
 }
