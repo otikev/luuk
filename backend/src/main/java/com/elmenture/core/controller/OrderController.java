@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.elmenture.core.utils.OrderState.PAID;
@@ -61,8 +62,14 @@ public class OrderController extends BaseController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Order>> fetchOrders() {
-        List<Order> orderList = orderRepository.findAllByUserIdAndState(getLoggedInUser().getId(), "paid");
-        return new ResponseEntity<>(orderList, HttpStatus.OK);
+        List<Order> orderList = orderRepository.findAllByUserId(getLoggedInUser().getId());
+        List<Order> orders = new ArrayList<>();
+        for(Order order: orderList){
+            if(order.isPaid()){
+                orders.add(order);
+            }
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @PostMapping("/payment-confirmed")
