@@ -130,7 +130,7 @@ public class ItemServiceImpl implements ItemService {
         if (keyword == null || keyword.isEmpty()) {
             return new ArrayList<>();
         }
-        List<Item> items = itemRepository.searchAllLike(keyword);
+        List<Item> items = itemRepository.searchAllLike(keyword, false);
 
         List<Long> tagIds = tagPropertyRepository.getTagPropertyIds(keyword);
         List<Long> itemIds = itemPropertyRepository.findItemIdsByTagPropertyId(tagIds);
