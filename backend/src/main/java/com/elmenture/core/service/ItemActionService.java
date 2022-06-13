@@ -15,9 +15,9 @@ public interface ItemActionService {
 
     ItemAction getAction(Long userId, Long itemId, Action itemAction);
 
-    List<Long> getAllItemsForUser(Action action, Long userId);
+    List<Long> getAllItemsForUserAction(Action action, Long userId);
 
-    List<Long> getItemsForUserWithDate(long userId, LocalDate date);
+    List<Long> getItemIdsForUserWithDateGreaterThanOrEqualTo(long userId, LocalDate date);
 
-    List<Long> getAllItemsForUser(int action, long userId, LocalDate date);
+    List<Long> getItemsForUserWithDateLessThan(Action action, long userId, LocalDate date,long limit);
 }

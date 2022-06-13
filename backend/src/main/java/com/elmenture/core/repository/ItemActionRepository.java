@@ -17,9 +17,9 @@ public interface ItemActionRepository extends JpaRepository<ItemAction, Long> {
 
     List<ItemAction> findAllByUserIdAndAction(Long userId, Integer action, Sort sort);
 
-    @Query(value = "SELECT item_id FROM item_actions WHERE created_at >:date and user_id =:userId ", nativeQuery = true)
-    List<Long> getItemsIdsForUserWithDate(long userId, LocalDate date);
+    @Query(value = "SELECT item_id FROM item_actions WHERE updated_at >=:date and user_id =:userId order by updated_at desc", nativeQuery = true)
+    List<Long> getItemsIdsForUserWithDateGreaterThanOrEqualTo(long userId, LocalDate date);
 
-    @Query(value = "SELECT item_id FROM item_actions WHERE created_at <:date and action =:action and user_id =:userId LIMIT 10", nativeQuery = true)
-    List<Long> getItemsForUserWithDate(int action, long userId, LocalDate date);
+    @Query(value = "SELECT item_id FROM item_actions WHERE updated_at <:date and action =:action and user_id =:userId order by updated_at desc LIMIT :limit", nativeQuery = true)
+    List<Long> getItemIdsForUserWithDateLessThan(int action, long userId, LocalDate date, long limit);
 }

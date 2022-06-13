@@ -72,7 +72,7 @@ public class ItemActionServiceImpl implements ItemActionService {
      * @return Item ids ordered by the count in descending order
      */
     @Override
-    public List<Long> getAllItemsForUser(Action action, Long userId) {
+    public List<Long> getAllItemsForUserAction(Action action, Long userId) {
         List<ItemAction> itemActions = itemActionRepository.findAllByUserIdAndAction(userId, action.value(), Sort.by(Sort.Direction.DESC, "count"));
         List<Long> itemIds = new ArrayList<>();
         for (ItemAction itemAction : itemActions) {
@@ -82,13 +82,13 @@ public class ItemActionServiceImpl implements ItemActionService {
     }
 
     @Override
-    public List<Long> getItemsForUserWithDate(long userId, LocalDate date) {
-        return itemActionRepository.getItemsIdsForUserWithDate(userId, date);
+    public List<Long> getItemIdsForUserWithDateGreaterThanOrEqualTo(long userId, LocalDate date) {
+        return itemActionRepository.getItemsIdsForUserWithDateGreaterThanOrEqualTo(userId, date);
     }
 
     @Override
-    public List<Long> getAllItemsForUser(int action, long userId, LocalDate date) {
-        return itemActionRepository.getItemsForUserWithDate(action,userId,date);
+    public List<Long> getItemsForUserWithDateLessThan(Action action, long userId, LocalDate date, long limit) {
+        return itemActionRepository.getItemIdsForUserWithDateLessThan(action.value(), userId, date, limit);
     }
 
 }

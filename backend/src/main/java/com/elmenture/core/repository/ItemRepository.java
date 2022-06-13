@@ -30,7 +30,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByTargetInAndSizeInternationalIs(List<String> targets, String sizeInternational);
 
-    //@Query("select a from Item a where sold = true and id in :ids")
     List<Item> findBySoldAndIdIn(boolean sold, List<Long> ids);
 
     @Query(value = "select sum(price) from Item where id in :ids")

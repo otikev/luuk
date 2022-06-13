@@ -11,6 +11,7 @@ import com.elmenture.core.service.ItemService;
 import com.elmenture.core.service.OrderService;
 import com.elmenture.core.utils.Action;
 import com.elmenture.core.utils.CannedSearch;
+import com.elmenture.core.utils.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -141,7 +142,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private List<ItemDto> goneForever(long userId) {
-        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE, userId);
+        List<Long> itemIds = itemActionService.getAllItemsForUserAction(Action.LIKE, userId);
         List<ItemDto> itemsLikedAndAlreadySold = getAllItemsWithIdAndSoldStatus(itemIds, true);
 
         List<ItemDto> boughtByOthers = new ArrayList<>();
@@ -183,12 +184,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private List<ItemDto> recentlyViewed(long userId) {
-        LocalDate date = LocalDate.now();
-        date.minusDays(7);
-        Set<Long> itemIds = new HashSet<>(itemActionService.getItemsForUserWithDate(userId, date));
-        itemIds.addAll(itemActionService.getAllItemsForUser(Action.LIKE.value(), userId, date));
-        itemIds.addAll(itemActionService.getAllItemsForUser(Action.DISLIKE.value(), userId, date));
-        return getAllItemsWithIdAndSoldStatus(itemActionService.getItemsForUserWithDate(userId, date), false);
+        LocalDate _7DaysAgo = LocalDate.now().minusDays(7);
+        List<Long> itemIds = new ArrayList<>();
+
+        //All the items that I have swiped right OR left on in the last 1 week
+        itemIds.addAll(itemActionService.getItemIdsForUserWithDateGreaterThanOrEqualTo(userId, _7DaysAgo));
+
+        //Last 10 items that I have swiped right on older than 1 week
+        itemIds.addAll(itemActionService.getItemsForUserWithDateLessThan(Action.LIKE, userId, _7DaysAgo, 10));
+
+        //Last 10 items that I have swiped left on older than 1 week
+        itemIds.addAll(itemActionService.getItemsForUserWithDateLessThan(Action.DISLIKE, userId, _7DaysAgo, 10));
+
+        itemIds = MiscUtils.removeDuplicates(itemIds);
+
+        List<ItemDto> items = getAllItemsWithIdAndSoldStatus(itemIds, false);
+
+        return items;
     }
 
     private List<ItemDto> styleWeLove() {
@@ -273,7 +285,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private List<ItemDto> favorites(long userId) {
-        List<Long> itemIds = itemActionService.getAllItemsForUser(Action.LIKE, userId);
+        List<Long> itemIds = itemActionService.getAllItemsForUserAction(Action.LIKE, userId);
         return getAllItemsWithIdAndSoldStatus(itemIds, false);
     }
 
