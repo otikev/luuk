@@ -105,6 +105,7 @@ public class SignInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
     private void setupEventListeners() {
         View.OnClickListener googleOnClickListener = view -> {
+
             Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
             startActivityForResult(intent, RC_SIGN_IN);
         };

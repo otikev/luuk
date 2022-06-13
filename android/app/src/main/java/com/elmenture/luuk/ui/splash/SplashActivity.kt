@@ -9,7 +9,6 @@ import com.elmenture.luuk.base.repositories.LocalRepository
 import com.elmenture.luuk.databinding.ActivitySplashBinding
 import com.elmenture.luuk.ui.main.MainActivity
 import com.elmenture.luuk.ui.signin.SignInActivity
-import models.SignInResponse
 import userdata.User
 import utils.SecureUtils
 

@@ -3,6 +3,7 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -12,8 +13,8 @@ android {
         applicationId "com.elmenture.luuk"
         minSdk 26
         targetSdk 32
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 9
+        versionName "1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +37,7 @@ android {
         debug {
             debuggable true
             resValue "string", "s3_bucket", "luukatme-dev"
-            resValue "string", "base_url", "http://192.168.1.109:8080/"
+            resValue "string", "base_url", "http://192.168.1.192:8080/"
         }
         release {
             resValue "string", "s3_bucket", "luukatme-prod"
@@ -49,6 +50,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '11'
     }
@@ -62,11 +64,12 @@ dependencies {
     implementation project(':common')
 
     // Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
 
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-auth'
 
     implementation 'com.google.android.material:material:1.7.0-alpha01'

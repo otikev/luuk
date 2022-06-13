@@ -176,17 +176,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private List<ItemDto> brandsYouLove() {
-        List<String> brandNames = brandRepository.findDescriptionByAwarenessOrPerception("High","Premium");
-        return itemRepository.findByBrandIn(brandNames).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+        List<String> brandNames = brandRepository.findDescriptionByAwarenessOrPerception("High", "Premium");
+        List<Item> items = itemRepository.findByBrandIn(brandNames);
+
+        return removeSoldItems(items).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
     }
 
     private List<ItemDto> recentlyViewed(long userId) {
         LocalDate date = LocalDate.now();
         date.minusDays(7);
         Set<Long> itemIds = new HashSet<>(itemActionService.getItemsForUserWithDate(userId, date));
-        itemIds.addAll(itemActionService.getAllItemsForUser(Action.LIKE.value(),userId, date));
-        itemIds.addAll(itemActionService.getAllItemsForUser(Action.DISLIKE.value(),userId, date));
-        return getAllItemsWithIdAndSoldStatus(itemActionService.getItemsForUserWithDate(userId, date),false);
+        itemIds.addAll(itemActionService.getAllItemsForUser(Action.LIKE.value(), userId, date));
+        itemIds.addAll(itemActionService.getAllItemsForUser(Action.DISLIKE.value(), userId, date));
+        return getAllItemsWithIdAndSoldStatus(itemActionService.getItemsForUserWithDate(userId, date), false);
     }
 
     private List<ItemDto> styleWeLove() {
@@ -249,13 +251,25 @@ public class ItemServiceImpl implements ItemService {
             sizeType = MeasurementUnit.US.name();
         }
 
-        long count = (long) Math.ceil(itemRepository.countOfUserSizedItems(sizeType,sizeInternational,sizeNumber) * 0.4);
+        long count = (long) Math.ceil(itemRepository.countOfUserSizedItems(sizeType, sizeInternational, sizeNumber) * 0.4);
 
-        return itemRepository.fetchAllBySize(
+        List<Item> items = itemRepository.fetchAllBySize(
                 sizeType,
                 sizeInternational,
                 sizeNumber,
-                count).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+                count);
+
+        return removeSoldItems(items).stream().map(item -> mapToDTO(item)).collect(Collectors.toList());
+    }
+
+    private List<Item> removeSoldItems(List<Item> items) {
+        List<Item> filtered = new ArrayList<>();
+        for (Item item : items) {
+            if (!item.getSold()) {
+                filtered.add(item);
+            }
+        }
+        return filtered;
     }
 
     private List<ItemDto> favorites(long userId) {
@@ -271,7 +285,7 @@ public class ItemServiceImpl implements ItemService {
         do {
             for (Long id : itemIds) {
                 for (Item item : items) {
-                    if (item.getId() == id) {
+                    if (item.getId() == id && item.getSold() == sold) {
                         ordered.add(item);
                         items.remove(item);
                         break;
@@ -350,6 +364,9 @@ public class ItemServiceImpl implements ItemService {
             boolean exit = false;
             for (Item item : listOfItems) {
                 newTrackerPosition = item.getId();
+                if (item.getSold()) {
+                    continue;//skip sold items
+                }
                 if (startedFromBeginning && newTrackerPosition >= startTrackerPosition) {
                     System.out.println("Traversed the whole queue, exiting... ");
                     exit = true;
