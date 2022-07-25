@@ -1,9 +1,6 @@
 package com.elmenture.core.utils;
 
-import com.elmenture.core.model.Brand;
-import com.elmenture.core.model.Item;
-import com.elmenture.core.model.Tag;
-import com.elmenture.core.model.TagProperty;
+import com.elmenture.core.model.*;
 import com.elmenture.core.repository.*;
 import com.elmenture.core.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +35,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Autowired
     BrandRepository brandRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -60,6 +60,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         cleanUpTags();
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        clearAllAuthTokens();//TODO: App is disabled for now. logout everyone and disable login
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -439,6 +442,16 @@ public class DatabaseSeeder implements CommandLineRunner {
         tagProperty = tagPropertyRepository.findByValue("bustier");
         if (tagProperty == null) {
             tagPropertyRepository.save(new TagProperty(tagRepository.findByValue("cut"), "bustier"));
+        }
+    }
+
+    private void clearAllAuthTokens(){
+        List<User> users = userRepository.findAll();
+        System.out.println("Resetting user auths");
+
+        for(User user:users){
+            user.setAuthToken("");
+            userRepository.save(user);
         }
     }
 }

@@ -30,10 +30,12 @@ import static com.elmenture.core.utils.SocialAccountType.GOOGLE;
 @RestController
 @RequestMapping("/auth")
 public class AuthController extends BaseController {
-
+    boolean enableLogin = false;
 
     @PostMapping("/facebooksignin")
     public ResponseEntity<SignInResponse> facebookTokenSignin(@Valid @RequestParam MultiValueMap<String, String> idTokenString) {
+
+
         String userToken = idTokenString.get("idToken").get(0);
         String email = null;
         if(idTokenString.get("email") != null){
@@ -65,6 +67,11 @@ public class AuthController extends BaseController {
                 //boolean emailVerified = payload.getEmailVerified();
             }
             user.setEmail(email);
+            if(!enableLogin){
+                System.out.println("**** Signin disabled ****");
+                response.setSuccess(false);
+                return ResponseEntity.ok(response);
+            }
             response = createSigninResponse(response, createSession(user));
         } else {
             System.out.println("Invalid user token.");
@@ -91,8 +98,6 @@ public class AuthController extends BaseController {
 
             // Print user identifier
             String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
-
             User user = userRepository.findByUsernameAndSocialAccountType(userId, GOOGLE.value());
             if (user == null) {
                 response.setNewAccount(true);
@@ -103,6 +108,11 @@ public class AuthController extends BaseController {
                 user.setUsername(payload.getSubject());
                 user.setSocialAccountType(GOOGLE.value());
                 //boolean emailVerified = payload.getEmailVerified();
+            }
+            if(!enableLogin){
+                System.out.println("**** Signin disabled ****");
+                response.setSuccess(false);
+                return ResponseEntity.ok(response);
             }
             response = createSigninResponse(response, createSession(user));
         } else {
